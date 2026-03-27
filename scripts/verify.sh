@@ -63,7 +63,7 @@ check_level_3() {
         echo "FAIL: Level 3 - hero-spell.md frontmatter missing 'description' field"
         return 1
     fi
-    if ! grep -q '\$ARGUMENTS' "$file"; then
+    if ! grep -q "\$ARGUMENTS" "$file"; then
         echo "FAIL: Level 3 - hero-spell.md missing \$ARGUMENTS placeholder"
         return 1
     fi
@@ -146,7 +146,6 @@ check_level_7() {
 check_level_8() {
     # Level 8: An agent file named hero-agent.md with description containing <example>
     # Check both project and user agent directories
-    local found=0
     for dir in ".claude/agents" "$HOME/.claude/agents"; do
         local file="$dir/hero-agent.md"
         if [[ -f "$file" ]]; then
@@ -170,16 +169,14 @@ check_level_8() {
 check_level_9() {
     # Level 9: A plugin directory with .claude-plugin/plugin.json containing "hero" in name
     # Search in common locations
-    local found=0
     for candidate in hero-toolkit hero-plugin claude-code-hero-plugin; do
         for base in "." "$HOME"; do
             local manifest="$base/$candidate/.claude-plugin/plugin.json"
             if [[ -f "$manifest" ]]; then
                 if grep -q '"name"' "$manifest" && grep -qi 'hero' "$manifest"; then
-                    found=1
                     # Check for at least one component
                     local plugin_dir
-                    plugin_dir=$(dirname "$(dirname "$manifest")")
+                    plugin_dir="$(dirname "$(dirname "$manifest")")"
                     local has_component=0
                     [[ -d "$plugin_dir/commands" ]] && has_component=1
                     [[ -d "$plugin_dir/skills" ]] && has_component=1
@@ -204,7 +201,7 @@ LEVEL="${1:-all}"
 
 if [[ "$LEVEL" == "all" ]]; then
     for i in $(seq 1 9); do
-        if check_level_$i; then
+        if "check_level_${i}"; then
             PASS=$((PASS + 1))
         else
             FAIL=$((FAIL + 1))
@@ -214,5 +211,5 @@ if [[ "$LEVEL" == "all" ]]; then
     echo "$PASS passed, $FAIL failed out of 9 levels"
     [[ "$FAIL" -eq 0 ]] && exit 0 || exit 1
 else
-    check_level_$LEVEL
+    "check_level_${LEVEL}"
 fi
