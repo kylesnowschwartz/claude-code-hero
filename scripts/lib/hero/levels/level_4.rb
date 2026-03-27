@@ -8,6 +8,7 @@ module Hero
     artifact '.claude/settings.json'
 
     SETTINGS = '.claude/settings.json'
+    SETTINGS_LOCAL = '.claude/settings.local.json'
 
     RULES = {
       %w[permissions allow] => 'Bash\(git:',
@@ -20,6 +21,8 @@ module Hero
       RULES.each do |keys, pattern|
         json_array_match SETTINGS, keys, pattern: pattern
       end
+      file_exists SETTINGS_LOCAL
+      json_field_exists SETTINGS_LOCAL, %w[permissions]
     end
 
     clean do

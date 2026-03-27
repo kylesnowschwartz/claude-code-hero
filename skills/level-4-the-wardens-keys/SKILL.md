@@ -48,6 +48,31 @@ Permission rules use the format `ToolName(pattern)` where the pattern supports g
 
 Before you verify, test the layering. Ask Claude to run `git status` -- it should execute without asking permission. Then ask Claude to run `git push` -- it should prompt you for approval first. That's two tiers working: allow lets git flow, ask gates pushes.
 
+### The Override
+
+The ledger on the warden's desk is shared. Every adventurer in the party reads the same `settings.json`, committed to the repo. But you have a personal journal too -- one only you carry.
+
+Create `.claude/settings.local.json` with at least one permission rule of your choosing. This file is gitignored by default. It's yours alone.
+
+The cascade works like this:
+
+- **`settings.json`** -- committed to the repo, shared with the team. The party's standing orders.
+- **`settings.local.json`** -- gitignored, personal. Your private amendments.
+
+Rules in `.local.json` merge with and override rules in `settings.json`. If the team denies `Bash(rm -rf:*)` but you need it for a cleanup script, your `.local.json` can allow it. The team policy stays intact for everyone else.
+
+For this quest, add any permission you find useful. One example:
+
+```json
+{
+  "permissions": {
+    "allow": ["Bash(echo:*)"]
+  }
+}
+```
+
+The content doesn't matter much -- what matters is understanding that the cascade exists and when to use each file.
+
 ## Hints
 
 ### Hint 1
@@ -84,21 +109,25 @@ Put the three required rules in the right tiers: `Bash(git:*)` in `allow`, `Bash
 
 When you're ready, run `/verify` to check your work.
 
-### Filesystem Check
+### Filesystem Checks
 
-- Path: `.claude/settings.json`
-- The file must exist
+- `.claude/settings.json` must exist
+- `.claude/settings.local.json` must exist
 
 ### Content Checks
 
-Three rules, three tiers:
+Three rules, three tiers in `settings.json`:
 
 1. `Bash(git:*)` appears in `permissions.allow`
 2. `Bash(git push:*)` appears in `permissions.ask`
 3. `Bash(git push --force:*)` appears in `permissions.deny`
 
+And in `settings.local.json`:
+
+4. A `permissions` key exists (with at least one rule of your choice)
+
 ## Connection
 
-The keys are yours. Every door in this chamber answers to your ledger now. You decide what flows freely and what waits for your word.
+The keys are yours. The shared ledger sets the party's rules; your personal journal overrides them where you need to. Two files, one cascade -- team policy flows through `settings.json`, personal amendments through `settings.local.json`.
 
-But there's more than permission in this realm. There's presentation. You've controlled what Claude *does*. What if you could change how Claude *speaks*?
+You've controlled what Claude *does*. What if you could change how Claude *speaks*?

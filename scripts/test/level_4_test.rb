@@ -14,10 +14,38 @@ class Level4Test < HeroTestCase
     }
   end
 
-  def test_verify_passes_with_all_three_rules
+  def valid_settings_local
+    {
+      'permissions' => {
+        'allow' => ['Bash(echo:*)']
+      }
+    }
+  end
+
+  def write_settings_local(data = valid_settings_local)
+    write_file('.claude/settings.local.json', JSON.pretty_generate(data))
+  end
+
+  def test_verify_passes_with_all_three_rules_and_settings_local
     write_settings(valid_settings)
+    write_settings_local
     passed, = Hero::Level4.new.verify
     assert passed
+  end
+
+  def test_verify_fails_without_settings_local
+    write_settings(valid_settings)
+    passed, msg = Hero::Level4.new.verify
+    refute passed
+    assert_match(/settings.local.json/i, msg)
+  end
+
+  def test_verify_fails_when_settings_local_missing_permissions
+    write_settings(valid_settings)
+    write_file('.claude/settings.local.json', JSON.pretty_generate({ 'env' => {} }))
+    passed, msg = Hero::Level4.new.verify
+    refute passed
+    assert_match(/permissions/, msg)
   end
 
   def test_verify_fails_when_file_missing
