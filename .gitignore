@@ -1,6 +1,7 @@
 .agent-history/
 *.local.md
 *.local.json
+.claude/claude-code-hero.json
 
 # Force-include agent for --agent CLI discovery
 !.claude/

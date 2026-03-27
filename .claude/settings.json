@@ -1,0 +1,8 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/npm/@anthropic-ai/claude-code@latest/config-schema.json",
+  "permissions": {
+    "allow": [
+      "Bash(ruby scripts/cli.rb:*)"
+    ]
+  }
+}
