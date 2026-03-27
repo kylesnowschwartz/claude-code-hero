@@ -7,7 +7,13 @@ module Hero
   # Included by Hero::Level; methods execute in instance context.
   module Checks
     def expand(path)
-      path.sub('~', Dir.home)
+      if path.start_with?('~')
+        path.sub('~', Dir.home)
+      elsif path.start_with?('.claude/')
+        File.join(Hero::PROJECT_ROOT, path)
+      else
+        path
+      end
     end
 
     # --- Verification primitives ---

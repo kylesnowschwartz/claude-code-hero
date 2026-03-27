@@ -5,6 +5,7 @@ require 'fileutils'
 
 module Hero
   SCRIPT_DIR = File.expand_path('..', __dir__)
+  PROJECT_ROOT = File.expand_path('../..', __dir__)
 end
 
 require_relative 'hero/checks'
