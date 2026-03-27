@@ -1,27 +1,19 @@
 ---
-name: verification
-description: "Claude Code Hero level verification -- runs the verify script to check whether quest objectives have been met"
+name: verify
+description: "Verify your current Claude Code Hero quest level. Use when the learner types /verify, asks to check their work, or wants to see quest progress."
+argument-hint: "[level-number]"
+allowed-tools: Bash, Read
 ---
 
-# Verification Skill
+Verify quest completion for Claude Code Hero. Do not perform semantic evaluation -- the script is the source of truth.
 
-Verify level completion by running the programmatic verification script. Do not perform semantic evaluation -- the script is the source of truth.
+If the user provided a level number ($ARGUMENTS), verify that specific level. Otherwise, read `~/.claude/claude-code-hero.json` to find `current_level` and verify that.
 
-## Running Verification
+Run: `bash scripts/verify.sh $ARGUMENTS`
 
-To verify a specific level:
-
-```bash
-bash scripts/verify.sh <level>
-```
-
-To check all levels:
-
-```bash
-bash scripts/verify.sh
-```
-
-The script outputs PASS or FAIL with a specific error message for each level. Report the result to the learner.
+Report the result:
+- **PASS**: State what was verified and that the level is complete. Keep it brief.
+- **FAIL**: Show the failure message from the script so the user knows what to fix.
 
 ## Per-Level Artifact Reference
 
