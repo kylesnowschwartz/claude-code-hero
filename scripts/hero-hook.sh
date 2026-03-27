@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Hero Hook -- fires when /hero-spell is cast
-# This script is called by a UserPromptSubmit hook in ~/.claude/settings.json.
+# This script is called by a UserPromptSubmit hook in .claude/settings.json.
 #
 # How it works:
 # 1. Claude Code sends JSON to stdin with a "prompt" field
