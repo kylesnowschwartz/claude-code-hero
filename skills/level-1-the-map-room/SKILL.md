@@ -1,11 +1,11 @@
 ---
 name: level-1-the-map-room
-description: "Claude Code Hero Level 1: The Map Room -- explore the ~/.claude/ directory and understand what lives there"
+description: "Claude Code Hero Level 1: The Map Room -- explore the ~/.claude/ directory and document what lives there"
 ---
 
 ## Objective
 
-Explore the `~/.claude/` directory and identify its key components -- settings, commands, and plugins.
+Explore the `~/.claude/` directory and create a map documenting its key components -- settings, commands, plugins, and anything else you find.
 
 ## Why This Matters
 
@@ -15,45 +15,42 @@ Everything in Claude Code is configured through files in a handful of directorie
 
 You push open a heavy door. Beyond it, a vast chamber -- the Map Room. Its walls are lined with alcoves, each containing a different kind of artifact. Some are familiar. Others are inscribed with patterns you don't yet recognize.
 
-Your task: explore `~/.claude/` and report back what you find. Not a surface glance. A real survey.
+Your task: explore `~/.claude/` and write a map of what you find. Not a surface glance. A real survey, written down so you can refer back to it.
 
-Answer these questions:
+Create the file `~/.claude/hero-map.md` and document what you discover. Your map needs at least three sections (using `## ` headings), each covering a different part of the `~/.claude/` directory.
 
-- What does **`settings.json`** contain? Name three settings that look interesting or useful.
+Here's what to investigate:
+
+- What does **`settings.json`** contain? Name settings that look interesting or useful.
 - Where do **custom slash commands** live? What directory holds them?
-- Find an existing command file. What does its **YAML frontmatter** do? Name at least two fields and what they control.
+- Find an existing command file. What does its **YAML frontmatter** do? Name fields and what they control.
 - Where are **plugins** installed? Pick one and describe what it contains.
 - What other directories or files exist in `~/.claude/`? What do they seem to be for?
 
-Use whatever tools make sense. `ls`, `cat`, read files directly. Poke around. The Map Room rewards the curious.
+Use whatever tools make sense. `ls`, `cat`, read files directly. Poke around. The Map Room rewards the curious. Then write your findings into `~/.claude/hero-map.md`.
 
 ## Hints
 
 ### Hint 1
 
-Start with `ls ~/.claude/`. The directory names are descriptive -- they tell you most of what you need to know.
+Start with `ls ~/.claude/`. The directory names are descriptive -- they tell you most of what you need to know. Create your map file with `## ` headings for each area you explore.
 
 ### Hint 2
 
-Commands are Markdown files with YAML between `---` markers at the top. Read one. The frontmatter fields control how the command appears and behaves. The body is the prompt that runs when you invoke it.
+Commands are Markdown files with YAML between `---` markers at the top. Read one. The frontmatter fields control how the command appears and behaves. The body is the prompt that runs when you invoke it. That's worth a section in your map.
 
 ### Hint 3
 
-`settings.json` holds permissions, hooks, and preferences. Look for the `permissions` key and the `allow`/`deny` arrays. Plugins live in a directory inside `~/.claude/` -- each one has its own folder with a manifest file called `plugin.json`.
+`settings.json` holds permissions, hooks, and preferences. Look for the `permissions` key and the `allow`/`deny` arrays. Plugins live in a directory inside `~/.claude/` -- each one has its own folder with a manifest file called `plugin.json`. Your map should have sections covering at least three of these areas.
 
 ## Verification
 
-### Knowledge Check
+Level 1 is verified by the verification script. The script checks:
 
-Level 1 is verified conversationally, not by artifact. The learner demonstrates understanding by answering the quest questions. Evaluate their responses against these criteria:
+- `~/.claude/hero-map.md` exists
+- The file contains at least 3 `## ` headings (sections documenting different parts of `~/.claude/`)
 
-- **settings.json**: Can name at least three real settings (permissions, hooks, model preferences, API configuration, etc.). Invented or vague answers do not count.
-- **Commands directory**: Correctly identifies `~/.claude/commands/` as the location for custom slash commands.
-- **Frontmatter fields**: Can name at least two real fields from a command's YAML frontmatter (e.g., `name`, `description`, `allowed-tools`, `model`).
-- **Plugins**: Can identify where plugins are stored and describe at least one plugin's contents at a basic level.
-- **Other directories**: Names at least one other directory or file in `~/.claude/` and offers a reasonable explanation of its purpose.
-
-The bar is understanding, not perfection. If they explored and can speak to what they found, they pass.
+Run: `bash ${CLAUDE_PLUGIN_ROOT}/scripts/verify.sh 1`
 
 ## Connection
 

@@ -9,9 +9,11 @@ Display the learner's quest log as a DM-narrated progress summary.
 
 ## Steps
 
-### 1. Read the Progress File
+### 1. Read the Progress File and Run Verification
 
 Read `~/.claude/claude-code-hero.json` and parse `current_level` and `completed`.
+
+Run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/verify.sh` to get the authoritative state of all levels. Use the script output (PASS/FAIL per level) as the source of truth for artifact status.
 
 If the file does not exist, respond:
 
