@@ -104,6 +104,8 @@ To test: invoke the agent by name with `/agent-name` or ask Claude something tha
 
 ## Verification
 
+When you're ready, run `/verify` to check your work.
+
 ### Filesystem Check
 
 - Path: `~/.claude/agents/hero-agent.md`

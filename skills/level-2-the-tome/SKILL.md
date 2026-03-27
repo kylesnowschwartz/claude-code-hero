@@ -53,6 +53,8 @@ Your version should reflect your actual preferences, not this example.
 
 ## Verification
 
+When you're ready, run `/verify` to check your work.
+
 ### Filesystem Check
 
 - Path: `~/.claude/CLAUDE.md`

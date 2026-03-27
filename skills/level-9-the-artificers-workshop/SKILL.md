@@ -114,6 +114,8 @@ Then try invoking `/hero-spell the dragon` or asking a question in your skill's 
 
 ## Verification
 
+When you're ready, run `/verify` to check your work.
+
 ### Filesystem Check
 
 - A directory exists containing `.claude-plugin/plugin.json`

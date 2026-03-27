@@ -19,7 +19,7 @@ Your weapon against this horde: a **slash command**.
 
 Every spell needs a name. Yours is `hero-spell` -- but not just any spell. You're forging `/fire-magic-missile`. Create `~/.claude/commands/hero-spell.md`. It must have:
 
-- **YAML frontmatter** between `---` markers containing at least a `description` field
+- **YAML frontmatter** between `---` markers containing a `description` field and an `argument-hint` field
 - A **prompt body** below the frontmatter -- the actual instruction that runs when the command is invoked
 - **`$ARGUMENTS`** in the prompt body to accept a target
 
@@ -39,15 +39,16 @@ The file goes at `~/.claude/commands/hero-spell.md`. If the directory doesn't ex
 
 ### Hint 2
 
-The frontmatter needs at least `description`. Here's the skeleton:
+The frontmatter needs `description` and `argument-hint`. Here's the skeleton:
 
 ```
 ---
 description: What this command does (shows up in the command list)
+argument-hint: [target]
 ---
 ```
 
-Other useful frontmatter fields: `allowed-tools` to restrict which tools the command can use, `model` to specify a particular model.
+The `argument-hint` shows up as placeholder text after the command name -- so `/hero-spell [target]` appears in the command list, telling the caster what to type. Other useful frontmatter fields: `allowed-tools` to restrict which tools the command can use, `model` to specify a particular model.
 
 ### Hint 3
 
@@ -56,6 +57,7 @@ Here's a complete example:
 ```markdown
 ---
 description: Fire a magic missile at a target with dramatic flair
+argument-hint: [target]
 ---
 
 A magic missile streaks toward its target. Describe the casting and impact of a magic missile spell aimed at $ARGUMENTS.
@@ -67,6 +69,8 @@ The `$ARGUMENTS` placeholder gets replaced with whatever follows the command nam
 
 ## Verification
 
+When you're ready, run `/verify` to check your work.
+
 ### Filesystem Check
 
 - Path: `~/.claude/commands/hero-spell.md`
@@ -75,7 +79,8 @@ The `$ARGUMENTS` placeholder gets replaced with whatever follows the command nam
 ### Content Check
 
 - The file has valid YAML frontmatter (content between `---` delimiters at the top)
-- Frontmatter contains at least a `description` field with a real description (not empty, not "test")
+- Frontmatter contains a `description` field with a real description (not empty, not "test")
+- Frontmatter contains an `argument-hint` field (e.g., `[target]`)
 - The body below the frontmatter contains a meaningful prompt
 - The body uses `$ARGUMENTS` for dynamic input (the spell needs a target)
 

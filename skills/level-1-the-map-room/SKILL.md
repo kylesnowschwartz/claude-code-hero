@@ -45,12 +45,10 @@ Commands are Markdown files with YAML between `---` markers at the top. Read one
 
 ## Verification
 
-Level 1 is verified by the verification script. The script checks:
+When you're ready, run `/verify` to check your work. The script checks:
 
 - `~/.claude/hero-map.md` exists
 - The file contains at least 3 `## ` headings (sections documenting different parts of `~/.claude/`)
-
-Run: `bash scripts/verify.sh 1`
 
 ## Connection
 

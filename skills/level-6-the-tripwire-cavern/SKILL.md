@@ -19,116 +19,169 @@ You descend into a cavern. The floor is wrong. Pressure plates everywhere, conne
 
 This is the hook system.
 
-Hooks live in `~/.claude/settings.json` under the `hooks` key. They're organized by **event** -- the moment they fire. Each event maps to an array of hook objects that execute when that event occurs.
+Hooks live in `~/.claude/settings.json` under the `hooks` key. Here's the structure:
 
-Three events to start with:
+```json
+{
+  "hooks": {
+    "EventName": [
+      {
+        "type": "command",
+        "command": "shell command to execute"
+      }
+    ]
+  }
+}
+```
 
-- **`PreToolUse`** -- fires before Claude uses a tool. You can validate, block, or modify.
-- **`PostToolUse`** -- fires after a tool completes. You can inspect results or trigger follow-ups.
-- **`Stop`** -- fires when Claude finishes a response. Good for linting, formatting, or cleanup.
+The top-level `hooks` object maps **event names** to arrays of hook objects. Each hook object has two required fields:
 
-There are others: `UserPromptSubmit`, `SessionStart`, `SessionEnd`, `Notification`. But start with the three above.
+- **`type`** -- always `"command"` for now. This tells Claude Code to run a shell command.
+- **`command`** -- the shell command to execute when the hook fires. Anything you'd type in a terminal.
+
+Some events also support a **`matcher`** field that filters *which* occurrences trigger the hook (e.g., `PreToolUse` can match on tool names like `"Bash"` or `"Write"`). But not all events support matchers -- `UserPromptSubmit` doesn't. When an event has no matcher support, the hook fires on every occurrence, and your script decides whether to act.
+
+The events are the moments hooks fire:
+
+- **`UserPromptSubmit`** -- when a prompt is submitted, including slash commands. No matcher support.
+- **`PreToolUse`** -- before Claude uses a tool. Matcher filters by tool name (e.g., `"Bash"`, `"Edit"`).
+- **`PostToolUse`** -- after a tool completes. Same matcher support as PreToolUse.
+- **`Stop`** -- when Claude finishes a response. No matcher support.
+
+There are others (`SessionStart`, `SessionEnd`, `Notification`), but these four cover most use cases.
 
 Remember the spell you forged in the Goblin Lair? `/hero-spell` -- your magic missile command. It's been sitting quietly in `~/.claude/commands/`, waiting to be invoked. Time to give it a tripwire.
 
-Your task:
+### The script
 
-- Open `~/.claude/settings.json`
-- Add a `hooks` section
-- Create a **`UserPromptSubmit`** hook that detects when your spell is cast and triggers a notification
-- The hook must have a `type` (start with `"command"`) and a `command` that contains the word "hero" -- this is how the dungeon knows your tripwire from one that was already here
-- Test that the hook fires by invoking `/hero-spell` with a target
+This plugin ships a hook script that does the plumbing for you: `scripts/hero-hook.sh`. Open it and read it. It:
 
-The hook should react to your Level 3 spell. A `UserPromptSubmit` hook fires when the user submits a prompt -- including slash commands. Use a `matcher` to filter for prompts containing "hero-spell", then trigger a notification.
+1. Reads JSON from stdin (Claude Code passes event data this way)
+2. Checks if the prompt starts with `/hero-spell`
+3. Exits silently if it doesn't match -- other prompts pass through untouched
+4. Runs **your command** if it matches
 
-On macOS: `osascript -e 'display notification "Magic Missile fired!" with title "Claude Code Hero"'`
+There's a `REPLACE_ME` line in the middle. That's your edit. Replace it with a command that fires when your spell is cast:
 
-Cross-platform fallback: `echo "hero: Magic Missile fired at $(date)" >> /tmp/hero-hook-log.txt`
+macOS notification: `osascript -e "display notification \"Magic Missile fired at $TARGET\" with title \"Claude Code Hero\""`
 
-Either approach works. The mechanism is the same -- an event fires, your hook reacts, and something happens in the world outside Claude's conversation.
+Cross-platform log: `echo "hero: Magic Missile fired at $TARGET ($(date))" >> /tmp/hero-hook-log.txt`
+
+The `$TARGET` variable is already set for you -- it's whatever the caster aimed at (e.g., `/hero-spell the goblin king` sets TARGET to `the goblin king`).
+
+### The config
+
+Once you've edited the script, wire it into `~/.claude/settings.json`:
+
+- Add a `hooks` object if one doesn't exist
+- Inside it, add a **`UserPromptSubmit`** key with an array containing one hook object
+- Set `type` to `"command"`
+- Set `command` to run the script: `bash <path-to-plugin>/scripts/hero-hook.sh`
+
+The path to the script depends on where this plugin is installed. Ask Claude to help you find it, or use `find` to locate `hero-hook.sh`.
+
+Since `UserPromptSubmit` hooks fire on every prompt, the script handles filtering. When the prompt isn't `/hero-spell`, the script exits 0 and Claude Code continues normally. When it matches, the script runs your command and blocks the prompt from reaching Claude -- no API call wasted on a side effect.
+
+### Fire the spell
+
+Hooks are hot-reloaded -- no restart needed. Cast the spell. Type:
+
+```
+/hero-spell the goblin king
+```
+
+If you used the macOS notification, a system notification should pop up. If you used the log file, check it: `cat /tmp/hero-hook-log.txt`. Either way, notice what *didn't* happen -- no API call. The hook intercepted the prompt, ran your command, and blocked it from reaching Claude. The message "Magic Missile strikes the goblin king!" appears directly in the UI, zero tokens spent.
+
+That's the tripwire pattern. Event fires, script reacts, side effect happens, prompt never reaches the model.
 
 ## Hints
 
 ### Hint 1
 
-Hooks live in `settings.json` under the `hooks` key. Each event name is a key that maps to an array of hook objects. For this quest, the event is `UserPromptSubmit` -- it fires when a prompt is submitted, including slash commands.
+The placeholder in `scripts/hero-hook.sh` is the line that reads:
 
-```json
-{
-  "hooks": {
-    "UserPromptSubmit": [
-      ...
-    ]
-  }
-}
+```bash
+echo "hero: REPLACE_ME - edit hero-hook.sh with your command" >> /tmp/hero-hook-log.txt
+```
+
+Replace it with one of these (or anything that contains "hero"):
+
+```bash
+echo "hero: Magic Missile fired at $TARGET ($(date))" >> /tmp/hero-hook-log.txt
+```
+
+```bash
+osascript -e "display notification \"Magic Missile fired at $TARGET\" with title \"Claude Code Hero\""
 ```
 
 ### Hint 2
 
-Each hook object needs at least `type` and `command`. The `type` tells Claude Code what kind of hook it is. Start with `"command"` -- it runs a shell command. Add a `matcher` to filter which prompts trigger it. For `UserPromptSubmit`, the matcher tests against the prompt text. Remember: the `command` string must contain the word "hero" so the dungeon can verify it's yours.
+Your `settings.json` already has `permissions` from Level 4. The `hooks` key sits alongside it at the top level. You're merging into an existing file, not replacing it:
 
 ```json
 {
+  "permissions": { ... },
   "hooks": {
     "UserPromptSubmit": [
       {
         "type": "command",
-        "matcher": "hero-spell",
-        "command": "echo 'hero: Magic Missile fired!' >> /tmp/hero-hook-log.txt"
+        "command": "bash /path/to/scripts/hero-hook.sh"
       }
     ]
   }
 }
 ```
+
+To find the script's path, run: `find / -name "hero-hook.sh" -path "*/claude-code-hero/*" 2>/dev/null`
 
 ### Hint 3
 
-Here's a complete, working configuration that reacts to your Level 3 spell:
+Here's how your full `settings.json` should look with permissions from Level 4 and the new hook:
 
 ```json
 {
+  "permissions": {
+    "allow": [
+      "Bash(git:*)"
+    ],
+    "deny": [
+      "Bash(git push --force:*)"
+    ],
+    "ask": [
+      "Bash(git push:*)"
+    ]
+  },
   "hooks": {
     "UserPromptSubmit": [
       {
         "type": "command",
-        "matcher": "hero-spell",
-        "command": "echo \"hero: Magic Missile fired at $(date)\" >> /tmp/hero-hook-log.txt"
+        "command": "bash /path/to/claude-code-hero/scripts/hero-hook.sh"
       }
     ]
   }
 }
 ```
 
-On macOS, you can swap the echo for a system notification:
+Replace `/path/to/claude-code-hero` with the actual path where this plugin is installed.
 
-```json
-{
-  "type": "command",
-  "matcher": "hero-spell",
-  "command": "osascript -e 'display notification \"hero: Magic Missile fired!\" with title \"Claude Code Hero\"'"
-}
-```
-
-To test: invoke `/hero-spell the goblin king` in Claude Code, then check `/tmp/hero-hook-log.txt` or watch for the notification. If the hook fired, you've wired an event to an action.
+To test: type `/hero-spell the goblin king`, then `cat /tmp/hero-hook-log.txt` or watch for the notification. The hook should block the prompt (no API call) and show "Magic Missile strikes the goblin king!" in the UI.
 
 ## Verification
 
-### Filesystem Check
+When you're ready, run `/verify` to check your work.
 
-- Path: `~/.claude/settings.json`
-- Command: `test -f ~/.claude/settings.json && echo "exists" || echo "missing"`
-- The file must exist
+### Config Check
 
-### Content Check
-
-- Command: `grep -q "hero" ~/.claude/settings.json && echo "found" || echo "missing"` (checks that "hero" appears in the hooks section)
-- The file contains valid JSON
+- `~/.claude/settings.json` must exist
 - A `hooks` object exists at the top level
-- At least one event key exists inside `hooks` (e.g., `UserPromptSubmit`, `Stop`, `PreToolUse`, `PostToolUse`)
-- That event key maps to an array containing at least one hook object
-- The hook object contains both `type` and `command` fields
-- The `type` field is `"command"`
-- The `command` field contains "hero" in the string (e.g., a log path like `/tmp/hero-hook-log.txt`)
+- `hooks.UserPromptSubmit` contains at least one hook object
+- The hook object has `type` set to `"command"`
+- The `command` field references `hero-hook.sh`
+
+### Script Check
+
+- `scripts/hero-hook.sh` in the plugin directory must NOT contain `REPLACE_ME`
+- The script must contain the word `hero` (your replacement command)
 
 ## Connection
 

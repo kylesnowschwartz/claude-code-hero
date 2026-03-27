@@ -26,7 +26,7 @@ Now forge your own. Every mask needs a name. Yours is `hero-voice`.
 - Create `~/.claude/output-styles/hero-voice.md`
 - Add **YAML frontmatter** with `name` and `description` fields between `---` markers
 - Write **style instructions** in the body -- tell Claude how to communicate
-- Activate your style in `~/.claude/settings.json` by setting the `outputStyle` field
+- Activate your style using the `/config` menu
 
 This is where you get creative. Pick a voice. Any voice. Pirate captain. Noir detective. Shakespearean scholar. Terse military briefing. A patient librarian who speaks only in well-organized lists. The point isn't realism -- it's understanding the format by building something memorable.
 
@@ -38,6 +38,12 @@ Or go practical. Some real possibilities:
 - Opinionated -- take strong positions, recommend best practices, push back on bad ideas
 
 The body of your output style is a system prompt. Write it like you're briefing someone on how to talk to you. And remember: the voice guiding you through these quests right now? That's this exact mechanism. Same frontmatter. Same directory pattern. The DM's mask is an output style too.
+
+Once the file exists, you need to put it on. Type `/config` in your Claude Code prompt. An interactive menu appears. Use the **arrow keys** to navigate to **Output style**, press **Enter**, and select `hero-voice` from the list. That's how you wear a new mask.
+
+But putting the mask on isn't enough. Config changes like output styles take effect on the *next* session, not the current one. You need to restart Claude Code. Here's the trick: type `/exit` to end the session, then run `claude --continue` in your terminal. That restarts Claude and picks up right where you left off -- same conversation, fresh config. Your new voice will be speaking by the time you get back.
+
+`--continue` is worth remembering. Any time you change settings, install a plugin, or modify CLAUDE.md, a quick `/exit` + `claude --continue` reloads everything without losing context.
 
 ## Hints
 
@@ -79,17 +85,15 @@ Use bullet points for multi-part answers. One sentence per point.
 When explaining, explain once. Don't rephrase the same idea.
 ```
 
-To activate it, add this to `~/.claude/settings.json`:
+To activate it, type `/config` in your Claude Code prompt. This opens an interactive settings menu. Use the **arrow keys** to navigate to **Output style**, press **Enter**, then select your custom style from the list. Your `hero-voice` style will appear alongside any built-in styles once the file exists in `~/.claude/output-styles/`.
 
-```json
-{
-  "outputStyle": "concise"
-}
-```
+After selecting it, restart to apply: type `/exit`, then run `claude --continue` in your terminal. Same conversation, fresh config.
 
-The value matches the `name` field in the frontmatter.
+The `/config` menu is how you change most Claude Code settings -- model, output style, theme, and more. Worth poking around.
 
 ## Verification
+
+When you're ready, run `/verify` to check your work.
 
 ### Filesystem Check
 

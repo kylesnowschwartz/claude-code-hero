@@ -90,6 +90,8 @@ To test: start a new Claude session and ask a question in the skill's domain. If
 
 ## Verification
 
+When you're ready, run `/verify` to check your work.
+
 ### Filesystem Check
 
 - Path: `~/.claude/skills/hero-knowledge/SKILL.md`

@@ -27,88 +27,92 @@ Three columns in the ledger. Three tiers of control:
 
 Your task:
 
-- Open `~/.claude/settings.json` (create it if it doesn't exist)
-- Locate or create the `permissions` object with `allow`, `deny`, and `ask` arrays
-- Add `Bash(git:*)` to the `allow` array -- this lets Claude run all git commands without asking
-- Understand the **tool name syntax** and **glob patterns** used in permission rules so you can add more rules later
+Open `~/.claude/settings.json` (create it if it doesn't exist) and configure three rules that demonstrate all three tiers working together:
+
+1. **Allow** `Bash(git:*)` -- let Claude run git commands freely. This is the most common allow rule.
+2. **Ask** `Bash(git push:*)` -- pushes affect the remote. Claude should ask before pushing, even though git is broadly allowed. More specific rules override broader ones.
+3. **Deny** `Bash(git push --force:*)` -- force-pushing rewrites remote history. No one should do this casually, not even you. Deny it outright.
+
+These three rules form a layered policy: git flows freely, pushes require approval, force-pushes are blocked. That's a real permission model, not a checkbox exercise.
 
 Permission rules use the format `ToolName(pattern)` where the pattern supports globs:
 
-- `Bash(git:*)` -- allow all git commands without asking
-- `Bash(npm test:*)` -- allow npm test and its variations
+- `Bash(git:*)` -- matches `git status`, `git commit`, `git log`, everything starting with `git`
+- `Bash(npm test:*)` -- matches `npm test`, `npm test -- --watch`, etc.
 - `Write` -- allow all file writes (use with caution)
-- `Bash(ls:*)` -- allow ls commands
+- `Edit` -- allow all edits. `WebFetch` allows all fetches.
 
-Some rules need no pattern at all. `Edit` allows all edits. `WebFetch` allows all fetches.
-
-Start with `Bash(git:*)`. It's the most universally useful allow rule -- nearly every developer trusts Claude to run git commands. Once that's in place, add more rules if you want. But `Bash(git:*)` is the one the warden expects to see in the ledger.
+**Specificity matters.** When multiple rules match a command, the most specific one wins. `Bash(git push --force:*)` in deny beats `Bash(git push:*)` in ask, which beats `Bash(git:*)` in allow. This is how you build nuanced policies instead of all-or-nothing toggles.
 
 ## Hints
 
 ### Hint 1
 
-The file lives at `~/.claude/settings.json`. If it doesn't exist yet, create it. The structure you need is:
+The file lives at `~/.claude/settings.json`. If it doesn't exist yet, create it. The structure has three arrays:
 
 ```json
 {
   "permissions": {
     "allow": [],
-    "deny": []
+    "deny": [],
+    "ask": []
   }
 }
 ```
 
-The `ask` tier is implicit -- anything not in `allow` or `deny` falls through to `ask`.
+Anything not in any list falls through to `ask` behavior by default. But explicit `ask` entries are useful when a broader `allow` rule exists and you want a specific subset to still prompt.
 
 ### Hint 2
 
 Rules follow the pattern `ToolName(command_prefix:*)`. The colon-star is a glob. For Bash commands, the prefix is the command name:
 
 - `Bash(git:*)` matches `git status`, `git commit`, `git push`, everything starting with `git`
-- `Bash(npm test:*)` matches `npm test`, `npm test -- --watch`, etc.
-- `Bash(cargo:*)` matches all cargo commands
+- `Bash(git push:*)` matches `git push`, `git push origin main`, etc.
+- `Bash(git push --force:*)` matches force-push variants specifically
 
-Tools without arguments just use the bare name: `Edit`, `Write`, `WebFetch`.
+More specific rules override broader ones. So you can allow `git` broadly, then carve out exceptions with `ask` and `deny`.
 
 ### Hint 3
 
-Here's a working example with several rules:
+Here's what the warden expects to see in your ledger:
 
 ```json
 {
   "permissions": {
     "allow": [
-      "Bash(git:*)",
-      "Bash(npm test:*)",
-      "Bash(ls:*)",
-      "Bash(cat:*)"
+      "Bash(git:*)"
     ],
     "deny": [
-      "Bash(rm -rf:*)"
+      "Bash(git push --force:*)"
+    ],
+    "ask": [
+      "Bash(git push:*)"
     ]
   }
 }
 ```
 
-Pick rules that match your workflow. If you run `git` commands constantly, allow them. If there's something Claude should never touch, deny it.
+The layering: git commands run freely, pushes ask first, force-pushes are blocked. Add more rules if you want, but these three are required.
 
 ## Verification
+
+When you're ready, run `/verify` to check your work.
 
 ### Filesystem Check
 
 - Path: `~/.claude/settings.json`
-- Command: `test -f ~/.claude/settings.json && echo "exists" || echo "missing"`
 - The file must exist
 
-### Content Check
+### Content Checks
 
-- Command: `grep -q "Bash(git:" ~/.claude/settings.json && echo "found" || echo "missing"`
-- The file contains valid JSON
-- A `permissions` object exists at the top level
-- The `permissions.allow` array contains `Bash(git:*)` (the specific rule this quest teaches)
+Three rules, three tiers:
+
+1. `Bash(git:*)` appears in `permissions.allow`
+2. `Bash(git push:*)` appears in `permissions.ask`
+3. `Bash(git push --force:*)` appears in `permissions.deny`
 
 ## Connection
 
 The keys are yours. Every door in this chamber answers to your ledger now. You decide what flows freely and what waits for your word.
 
-But there's more than permission in this realm. There's presentation. You've controlled what Claude does. What if you could change how Claude speaks?
+But there's more than permission in this realm. There's presentation. You've controlled what Claude *does*. What if you could change how Claude *speaks*?
