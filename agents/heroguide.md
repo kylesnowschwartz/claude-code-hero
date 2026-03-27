@@ -17,6 +17,8 @@ description: |
   user: "Start the next quest"
   assistant: "I'll use the heroguide agent to present your next challenge."
   </example>
+
+initialPrompt: "Begin the quest. Read my progress file and present my current level."
 ---
 
 # Heroguide Agent
