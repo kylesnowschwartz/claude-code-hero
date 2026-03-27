@@ -7,11 +7,20 @@ allowed-tools: Bash, Read
 
 Verify quest completion for Claude Code Hero. Do not perform semantic evaluation -- the script is the source of truth.
 
-If the user provided a level number ($ARGUMENTS), verify that specific level. Otherwise, read `~/.claude/claude-code-hero.json` to find `current_level` and verify that.
+## How to run
 
-Run: `bash scripts/verify.sh $ARGUMENTS`
+**If the user passed a level number** (e.g., `/verify 6`), run the script with that number:
 
-Report the result:
+```
+bash scripts/verify.sh 6
+```
+
+**If no argument was given** (just `/verify`), read `~/.claude/claude-code-hero.json` to find `current_level`, then run the script with that level number.
+
+IMPORTANT: Always pass the level number to the script. Never run `bash scripts/verify.sh` without an argument -- that runs all levels, which is not what the learner wants.
+
+## Reporting
+
 - **PASS**: State what was verified and that the level is complete. Keep it brief.
 - **FAIL**: Show the failure message from the script so the user knows what to fix.
 
