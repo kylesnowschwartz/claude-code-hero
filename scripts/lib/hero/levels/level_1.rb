@@ -4,8 +4,8 @@ module Hero
   class Level1 < Level
     number   1
     name     'The Map Room'
-    feature  '~/.claude/ exploration'
-    artifact '~/.claude/hero-map.md'
+    feature  '.claude/ exploration'
+    artifact '.claude/hero-map.md'
 
     verify do
       file_exists artifact

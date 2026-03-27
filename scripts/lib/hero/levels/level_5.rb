@@ -5,9 +5,9 @@ module Hero
     number   5
     name     "The Shapeshifter's Mask"
     feature  'Output styles'
-    artifact '~/.claude/output-styles/hero-voice.md'
+    artifact '.claude/output-styles/hero-voice.md'
 
-    VOICE = '~/.claude/output-styles/hero-voice.md'
+    VOICE = '.claude/output-styles/hero-voice.md'
 
     verify do
       file_exists VOICE

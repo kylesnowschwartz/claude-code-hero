@@ -5,9 +5,9 @@ module Hero
     number   3
     name     'The Goblin Lair of Commands'
     feature  'Slash commands'
-    artifact '~/.claude/commands/hero-spell.md'
+    artifact '.claude/commands/hero-spell.md'
 
-    SPELL = '~/.claude/commands/hero-spell.md'
+    SPELL = '.claude/commands/hero-spell.md'
 
     verify do
       file_exists SPELL

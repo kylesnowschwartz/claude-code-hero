@@ -5,9 +5,9 @@ module Hero
     number   2
     name     'The Tome of First Instructions'
     feature  'CLAUDE.md'
-    artifact '~/.claude/CLAUDE.md'
+    artifact '.claude/CLAUDE.md'
 
-    CLAUDE_MD = '~/.claude/CLAUDE.md'
+    CLAUDE_MD = '.claude/CLAUDE.md'
     HEADING = "## Hero's Decree"
 
     verify do

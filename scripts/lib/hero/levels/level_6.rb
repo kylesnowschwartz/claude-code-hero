@@ -5,16 +5,9 @@ module Hero
     number   6
     name     'The Tripwire Cavern'
     feature  'Hooks'
-    artifact '~/.claude/settings.json (hooks)'
+    artifact '.claude/settings.json (hooks)'
 
-    SETTINGS = '~/.claude/settings.json'
-    HOOK_SEARCH_DIRS = %w[
-      ~/Code
-      ~/Projects
-      ~/Developer
-      ~/src
-      ~/.claude/plugins/cache
-    ].freeze
+    SETTINGS = '.claude/settings.json'
     PLACEHOLDER_LINE = 'echo "hero: REPLACE_ME - edit hero-hook.sh with your command" >>/tmp/hero-hook-log.txt'
 
     verify do
@@ -37,12 +30,22 @@ module Hero
 
     private
 
-    def find_hero_hook
-      HOOK_SEARCH_DIRS.each do |dir|
-        expanded = expand(dir)
-        next unless File.directory?(expanded)
+    def hook_search_dirs
+      [
+        Hero::PROJECT_ROOT,
+        expand('~/Code'),
+        expand('~/Projects'),
+        expand('~/Developer'),
+        expand('~/src'),
+        expand('~/.claude/plugins/cache')
+      ]
+    end
 
-        result = Dir.glob(File.join(expanded, '**', 'hero-hook.sh')).find do |path|
+    def find_hero_hook
+      hook_search_dirs.each do |dir|
+        next unless File.directory?(dir)
+
+        result = Dir.glob(File.join(dir, '**', 'hero-hook.sh')).find do |path|
           path.include?('claude-code-hero')
         end
         return result if result
@@ -51,11 +54,10 @@ module Hero
     end
 
     def reset_hero_hook
-      HOOK_SEARCH_DIRS.each do |dir|
-        expanded = expand(dir)
-        next unless File.directory?(expanded)
+      hook_search_dirs.each do |dir|
+        next unless File.directory?(dir)
 
-        Dir.glob(File.join(expanded, '**', 'hero-hook.sh')).each do |path|
+        Dir.glob(File.join(dir, '**', 'hero-hook.sh')).each do |path|
           next unless path.include?('claude-code-hero')
 
           reset_file_region path,

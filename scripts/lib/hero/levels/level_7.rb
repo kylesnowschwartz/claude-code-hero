@@ -5,10 +5,10 @@ module Hero
     number   7
     name     'The Skill Quest of Doom'
     feature  'Skills'
-    artifact '~/.claude/skills/hero-knowledge/SKILL.md'
+    artifact '.claude/skills/hero-knowledge/SKILL.md'
 
-    SKILL_FILE = '~/.claude/skills/hero-knowledge/SKILL.md'
-    SKILL_DIR = '~/.claude/skills/hero-knowledge'
+    SKILL_FILE = '.claude/skills/hero-knowledge/SKILL.md'
+    SKILL_DIR = '.claude/skills/hero-knowledge'
 
     verify do
       file_exists SKILL_FILE

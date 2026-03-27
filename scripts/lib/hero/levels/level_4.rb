@@ -5,9 +5,9 @@ module Hero
     number   4
     name     "The Warden's Keys"
     feature  'Settings & permissions'
-    artifact '~/.claude/settings.json'
+    artifact '.claude/settings.json'
 
-    SETTINGS = '~/.claude/settings.json'
+    SETTINGS = '.claude/settings.json'
 
     RULES = {
       %w[permissions allow] => 'Bash\(git:',

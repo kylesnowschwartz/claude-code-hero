@@ -39,7 +39,7 @@ class Level8Test < HeroTestCase
   def test_verify_fails_when_file_missing
     passed, msg = Hero::Level8.new.verify
     refute passed
-    assert_match(/not found/, msg)
+    assert_match(/Missing file/, msg)
   end
 
   def test_verify_fails_without_description

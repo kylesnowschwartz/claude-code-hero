@@ -8,7 +8,6 @@ module Hero
     artifact 'plugin.json'
 
     CANDIDATES = %w[hero-toolkit hero-plugin claude-code-hero-plugin].freeze
-    BASES = %w[. ~].freeze
     COMPONENT_DIRS = %w[commands skills agents hooks].freeze
 
     verify do
@@ -26,13 +25,11 @@ module Hero
 
     def find_hero_plugin
       CANDIDATES.each do |candidate|
-        BASES.each do |base|
-          manifest = File.join(expand(base), candidate, '.claude-plugin', 'plugin.json')
-          next unless File.file?(manifest)
+        manifest = File.join(Hero::PROJECT_ROOT, candidate, '.claude-plugin', 'plugin.json')
+        next unless File.file?(manifest)
 
-          plugin_dir = File.dirname(manifest, 2)
-          return [manifest, plugin_dir]
-        end
+        plugin_dir = File.dirname(manifest, 2)
+        return [manifest, plugin_dir]
       end
       raise CheckFailed, "No plugin with 'hero' in name found"
     end
@@ -47,18 +44,16 @@ module Hero
 
     def remove_hero_plugins
       CANDIDATES.each do |candidate|
-        BASES.each do |base|
-          manifest = File.join(expand(base), candidate, '.claude-plugin', 'plugin.json')
-          next unless File.file?(manifest)
-          next unless File.read(manifest).match?(/hero/i)
+        manifest = File.join(Hero::PROJECT_ROOT, candidate, '.claude-plugin', 'plugin.json')
+        next unless File.file?(manifest)
+        next unless File.read(manifest).match?(/hero/i)
 
-          unless dry_run?
-            File.delete(manifest)
-            plugin_meta_dir = File.dirname(manifest)
-            Dir.rmdir(plugin_meta_dir) if (Dir.entries(plugin_meta_dir) - %w[. ..]).empty?
-          end
-          record_action("remove plugin #{candidate}")
+        unless dry_run?
+          File.delete(manifest)
+          plugin_meta_dir = File.dirname(manifest)
+          Dir.rmdir(plugin_meta_dir) if (Dir.entries(plugin_meta_dir) - %w[. ..]).empty?
         end
+        record_action("remove plugin #{candidate}")
       end
     end
   end
