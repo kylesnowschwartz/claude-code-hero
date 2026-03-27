@@ -30,7 +30,7 @@ claude --plugin-dir . --agent heroguide
 
 ## How It Works
 
-- Progress saves to `~/.claude/claude-code-hero.json`
+- Progress saves to `.claude/claude-code-hero.json`
 - Each quest produces a real artifact on your filesystem
 - Already have a `CLAUDE.md` or existing config? The system recognizes prior work
 - Resume anytime: `claude --plugin-dir . --agent heroguide`

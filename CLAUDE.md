@@ -17,7 +17,7 @@ Prior art: Block's "Repo Quest" validated gamified learning for developer tools 
 - **Primary interface**: `heroguide` agent (`agents/heroguide.md`, symlinked to `.claude/agents/`)
 - **Level content**: One skill per level (`skills/level-N-<name>/SKILL.md`)
 - **Game engine**: `scripts/cli.rb` -- Ruby CLI with declarative level DSL. Each level is a class in `scripts/lib/hero/levels/`. Verification and cleanup logic live alongside metadata.
-- **Progress**: `~/.claude/claude-code-hero.json` -- JSON with `current_level` and `completed` timestamps. Agent reads/writes directly.
+- **Progress**: `.claude/claude-code-hero.json` -- JSON with `current_level` and `completed` timestamps. Agent reads/writes directly.
 - **Voice**: `output-styles/heroguide.md` -- D&D dungeon master. Second person, dry wit, drops character for precision.
 
 ## Design Decisions
@@ -32,7 +32,7 @@ Each level requires a specifically named artifact (`hero-spell.md`, `hero-voice.
 Artifacts from earlier levels feed into later ones. Level 3's `/fire-magic-missile` command gets a `UserPromptSubmit` hook in Level 6. Level 9's capstone packages all hero-* artifacts into a plugin. The interconnection makes the progression memorable.
 
 ### Filesystem-as-state
-Progress lives in `~/.claude/claude-code-hero.json` (user-scoped, survives plugin reinstalls). `userConfig` in plugin.json was tested and found unreliable -- prompting doesn't fire consistently in v2.1.85.
+Progress lives in `.claude/claude-code-hero.json` (project-scoped, lives alongside the plugin). `userConfig` in plugin.json was tested and found unreliable -- prompting doesn't fire consistently in v2.1.85.
 
 ### No ${CLAUDE_PLUGIN_ROOT} in agent/skill markdown
 Agent and skill markdown is read by Claude, not expanded as a subprocess. `${CLAUDE_PLUGIN_ROOT}` doesn't expand. Use relative paths (`scripts/cli.rb`, `skills/*/SKILL.md`). The agent can Glob to find files if cwd doesn't match.
