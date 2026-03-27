@@ -5,7 +5,7 @@ require 'date'
 
 module Hero
   class Progress
-    DEFAULT_PATH = File.join(Dir.home, '.claude', 'claude-code-hero.json')
+    DEFAULT_PATH = File.join(Hero::PROJECT_ROOT, '.claude', 'claude-code-hero.json')
 
     attr_reader :path, :data
 

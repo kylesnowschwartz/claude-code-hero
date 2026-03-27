@@ -7,7 +7,7 @@ require 'open3'
 class CLITest < HeroTestCase
   def cli(args)
     cmd = "ruby -Iscripts/lib scripts/cli.rb #{args}"
-    stdout, stderr, status = Open3.capture3({ 'HOME' => @tmpdir }, cmd)
+    stdout, stderr, status = Open3.capture3({ 'HOME' => @tmpdir, 'HERO_PROJECT_ROOT' => @tmpdir }, cmd)
     [stdout, stderr, status]
   end
 

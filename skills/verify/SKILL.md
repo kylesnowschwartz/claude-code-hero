@@ -2,7 +2,7 @@
 name: verify
 description: "Verify your current Claude Code Hero quest level. Use when the learner types /verify, asks to check their work, or wants to see quest progress."
 argument-hint: "[level-number]"
-allowed-tools: Bash("jq '.current_level' ~/.claude/claude-code-hero.json"), Read
+allowed-tools: Bash("jq '.current_level' .claude/claude-code-hero.json"), Read
 ---
 
 Verify quest completion for Claude Code Hero. The CLI is the source of truth -- do not perform semantic evaluation.
@@ -12,7 +12,7 @@ $ARGUMENTS
 ## How to run
 
 <current_level>
- !`jq '.current_level' ~/.claude/claude-code-hero.json`
+ !`jq '.current_level' .claude/claude-code-hero.json`
 </current_level>
 
 Always pass a level number to the CLI.
