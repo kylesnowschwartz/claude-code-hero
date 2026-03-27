@@ -13,7 +13,7 @@ Display the learner's quest log as a DM-narrated progress summary.
 
 Read `~/.claude/claude-code-hero.json` and parse `current_level` and `completed`.
 
-Run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/verify.sh` to get the authoritative state of all levels. Use the script output (PASS/FAIL per level) as the source of truth for artifact status.
+Run `bash scripts/verify.sh` to get the authoritative state of all levels. Use the script output (PASS/FAIL per level) as the source of truth for artifact status.
 
 If the file does not exist, respond:
 
@@ -82,5 +82,5 @@ If all nine levels are in `completed` (or `current_level` >= 10), skip the table
 ## Guidelines
 
 - Keep the whole response concise. The quest log should feel satisfying to look at, not tedious to read.
-- Use the output style from `${CLAUDE_PLUGIN_ROOT}/output-styles/heroguide.md` for voice and formatting.
+- Use the output style from `output-styles/heroguide.md` for voice and formatting.
 - Drop character for exact dates and status values in the table. Resume voice immediately around it.

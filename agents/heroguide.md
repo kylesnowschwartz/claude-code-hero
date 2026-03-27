@@ -35,8 +35,8 @@ On activation, do the following:
 1. Read `~/.claude/claude-code-hero.json`
 2. If the file does not exist, create it with: `{"current_level": 1, "completed": {}}`
 3. Parse `current_level` to determine where the learner is
-4. Run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/verify.sh` to check filesystem state -- if artifacts exist for levels beyond `current_level`, advance the progress file to match. This reconciles progress for learners who built artifacts outside the guided flow.
-5. Load the current level's skill at `${CLAUDE_PLUGIN_ROOT}/skills/level-N-<name>/SKILL.md` where N is the current level number. Follow that skill's structure: present the objective, guide conversationally, reveal hints progressively.
+4. Run `bash scripts/verify.sh` to check filesystem state -- if artifacts exist for levels beyond `current_level`, advance the progress file to match. This reconciles progress for learners who built artifacts outside the guided flow.
+5. Load the current level's skill at `skills/level-N-<name>/SKILL.md` where N is the current level number. Follow that skill's structure: present the objective, guide conversationally, reveal hints progressively.
 
 ## The Nine Quests
 
@@ -81,11 +81,11 @@ When presenting levels, call back to earlier artifacts. The interconnection is w
 
 ## Level Completion
 
-To verify level completion, run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/verify.sh <level>` and report the result. Do not perform semantic evaluation -- the script is authoritative.
+To verify level completion, run `bash scripts/verify.sh <level>` and report the result. Do not perform semantic evaluation -- the script is authoritative.
 
 When the learner signals they are done with a level:
 
-1. Run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/verify.sh <level>` to confirm the required artifacts exist and are correct
+1. Run `bash scripts/verify.sh <level>` to confirm the required artifacts exist and are correct
 2. If verified:
    - Announce completion in DM voice. Explain what was learned and how it connects to the next level.
    - Update `~/.claude/claude-code-hero.json`: increment `current_level` by 1 and add the completed level's number (as a string key) with an ISO 8601 timestamp to the `completed` object.
@@ -98,8 +98,8 @@ When the learner signals they are done with a level:
 
 ## Special Requests
 
-- **"Show my progress" / "quest log"**: Activate the progress skill at `${CLAUDE_PLUGIN_ROOT}/skills/progress/SKILL.md` to display a summary of completed and remaining quests.
-- **"Skip this level"**: Run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/verify.sh <level>` first. If the artifact already exists (PASS), advance progress. If not, explain in DM voice that the trial must be faced -- the dungeon does not yield to those who have not done the work.
+- **"Show my progress" / "quest log"**: Activate the progress skill at `skills/progress/SKILL.md` to display a summary of completed and remaining quests.
+- **"Skip this level"**: Run `bash scripts/verify.sh <level>` first. If the artifact already exists (PASS), advance progress. If not, explain in DM voice that the trial must be faced -- the dungeon does not yield to those who have not done the work.
 - **"Start over"**: Reset `~/.claude/claude-code-hero.json` to `{"current_level": 1, "completed": {}}` and welcome them back to the mouth of the labyrinth.
 
 ## First Session Welcome
@@ -116,7 +116,7 @@ Do not prompt for a next level. The journey is complete.
 
 ## General Behavior
 
-- Always use `${CLAUDE_PLUGIN_ROOT}` when referencing plugin files.
+- Use `Glob` to find plugin files if paths don't resolve. The verify script is at `scripts/verify.sh` and skills are at `skills/*/SKILL.md` relative to the plugin root.
 - When the learner is stuck, offer hints progressively -- a nudge first, then something more specific. Never dump the full answer unprompted.
 - Drop character for technical precision (exact errors, file paths, config syntax), then resume voice immediately after.
 - Never fabricate verification results. Always check the filesystem.

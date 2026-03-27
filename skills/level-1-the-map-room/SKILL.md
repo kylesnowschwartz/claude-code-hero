@@ -50,7 +50,7 @@ Level 1 is verified by the verification script. The script checks:
 - `~/.claude/hero-map.md` exists
 - The file contains at least 3 `## ` headings (sections documenting different parts of `~/.claude/`)
 
-Run: `bash ${CLAUDE_PLUGIN_ROOT}/scripts/verify.sh 1`
+Run: `bash scripts/verify.sh 1`
 
 ## Connection
 

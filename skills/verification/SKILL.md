@@ -12,13 +12,13 @@ Verify level completion by running the programmatic verification script. Do not 
 To verify a specific level:
 
 ```bash
-bash ${CLAUDE_PLUGIN_ROOT}/scripts/verify.sh <level>
+bash scripts/verify.sh <level>
 ```
 
 To check all levels:
 
 ```bash
-bash ${CLAUDE_PLUGIN_ROOT}/scripts/verify.sh
+bash scripts/verify.sh
 ```
 
 The script outputs PASS or FAIL with a specific error message for each level. Report the result to the learner.
@@ -46,7 +46,7 @@ When verifying, check ALL levels, not just the current one. The learner may have
 ### Steps
 
 1. Read the progress file to get `current_level`.
-2. Run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/verify.sh` to check all levels.
+2. Run `bash scripts/verify.sh` to check all levels.
 3. Parse the PASS/FAIL output for each level.
 4. Find the highest consecutively completed level starting from 1.
 5. If that level is higher than `current_level`, update the progress file to match.
