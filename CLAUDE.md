@@ -16,7 +16,7 @@ Prior art: Block's "Repo Quest" validated gamified learning for developer tools 
 
 - **Primary interface**: `heroguide` agent (`agents/heroguide.md`, symlinked to `.claude/agents/`)
 - **Level content**: One skill per level (`skills/level-N-<name>/SKILL.md`)
-- **Verification**: `scripts/verify.sh` -- pure bash, no semantic checks. Every level has a concrete filesystem check (file exists, contains specific strings, has N headings).
+- **Game engine**: `scripts/cli.rb` -- Ruby CLI with declarative level DSL. Each level is a class in `scripts/lib/hero/levels/`. Verification and cleanup logic live alongside metadata.
 - **Progress**: `~/.claude/claude-code-hero.json` -- JSON with `current_level` and `completed` timestamps. Agent reads/writes directly.
 - **Voice**: `output-styles/heroguide.md` -- D&D dungeon master. Second person, dry wit, drops character for precision.
 
@@ -26,7 +26,7 @@ Prior art: Block's "Repo Quest" validated gamified learning for developer tools 
 Each level requires a specifically named artifact (`hero-spell.md`, `hero-voice.md`, etc.) rather than checking for generic files. Power users already have commands, skills, and hooks -- generic checks would false-positive on day one.
 
 ### Programmatic verification, not semantic
-`scripts/verify.sh` runs `test -f`, `grep -q`, and line counts. The agent runs the script and reports PASS/FAIL. No "does this CLAUDE.md contain real instructions?" judgment calls. Like a learn-to-code tool: run the tests, check the output.
+`scripts/cli.rb verify` runs file-existence checks, grep matches, and JSON field inspections. The agent runs the CLI and reports PASS/FAIL. No "does this CLAUDE.md contain real instructions?" judgment calls. Like a learn-to-code tool: run the tests, check the output.
 
 ### Interconnected quest arc
 Artifacts from earlier levels feed into later ones. Level 3's `/fire-magic-missile` command gets a `UserPromptSubmit` hook in Level 6. Level 9's capstone packages all hero-* artifacts into a plugin. The interconnection makes the progression memorable.
@@ -35,7 +35,7 @@ Artifacts from earlier levels feed into later ones. Level 3's `/fire-magic-missi
 Progress lives in `~/.claude/claude-code-hero.json` (user-scoped, survives plugin reinstalls). `userConfig` in plugin.json was tested and found unreliable -- prompting doesn't fire consistently in v2.1.85.
 
 ### No ${CLAUDE_PLUGIN_ROOT} in agent/skill markdown
-Agent and skill markdown is read by Claude, not expanded as a subprocess. `${CLAUDE_PLUGIN_ROOT}` doesn't expand. Use relative paths (`scripts/verify.sh`, `skills/*/SKILL.md`). The agent can Glob to find files if cwd doesn't match.
+Agent and skill markdown is read by Claude, not expanded as a subprocess. `${CLAUDE_PLUGIN_ROOT}` doesn't expand. Use relative paths (`scripts/cli.rb`, `skills/*/SKILL.md`). The agent can Glob to find files if cwd doesn't match.
 
 ## Useful Commands
 
@@ -47,10 +47,22 @@ claude --plugin-dir . --agent heroguide
 claude --agent heroguide
 
 # Run verification for all levels
-bash scripts/verify.sh
+ruby scripts/cli.rb verify
 
 # Run verification for a specific level
-bash scripts/verify.sh 3
+ruby scripts/cli.rb verify 3
+
+# Show quest metadata
+ruby scripts/cli.rb levels
+
+# Show player progress
+ruby scripts/cli.rb status
+
+# Clean all hero artifacts (dry run)
+ruby scripts/cli.rb clean --dry-run
+
+# Run tests
+ruby -Iscripts/lib -Iscripts/test -e 'Dir["scripts/test/*_test.rb"].each { |f| require File.expand_path(f) }'
 
 # Check what the plugin looks like to Claude Code
 claude --plugin-dir . --verbose

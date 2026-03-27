@@ -9,33 +9,19 @@ Display the learner's quest log as a DM-narrated progress summary.
 
 ## Steps
 
-### 1. Read the Progress File and Run Verification
+### 1. Read Progress and Quest Metadata
 
-Read `~/.claude/claude-code-hero.json` and parse `current_level` and `completed`.
+Run `ruby scripts/cli.rb status` to get the authoritative state: `{ current_level, completed, highest_passing, status }`.
 
-Run `bash scripts/verify.sh` to get the authoritative state of all levels. Use the script output (PASS/FAIL per level) as the source of truth for artifact status.
+Run `ruby scripts/cli.rb levels` to get quest metadata (names, features, artifacts).
 
-If the file does not exist, respond:
+If the progress file does not exist, respond:
 
 > No quest log found. You haven't begun your journey. Run the heroguide to start.
 
 Then stop.
 
 ### 2. Build the Quest Log
-
-The nine quests, in order:
-
-| Level | Quest Name | Feature |
-|-------|-----------|---------|
-| 1 | The Map Room | `~/.claude/` exploration |
-| 2 | The Tome of First Instructions | CLAUDE.md |
-| 3 | The Goblin Lair of Commands | Slash commands |
-| 4 | The Warden's Keys | Settings & permissions |
-| 5 | The Shapeshifter's Mask | Output styles |
-| 6 | The Tripwire Cavern | Hooks |
-| 7 | The Skill Quest of Doom | Skills |
-| 8 | The Summoner's Circle | Agents |
-| 9 | The Artificer's Workshop | Plugins (capstone) |
 
 For each quest, determine its status:
 
@@ -57,11 +43,7 @@ Then render a table:
 | 2 | The Tome of First Instructions | COMPLETE | 2026-03-27 |
 | 3 | The Goblin Lair of Commands | CURRENT | -- |
 | 4 | The Warden's Keys | LOCKED | -- |
-| 5 | The Shapeshifter's Mask | LOCKED | -- |
-| 6 | The Tripwire Cavern | LOCKED | -- |
-| 7 | The Skill Quest of Doom | LOCKED | -- |
-| 8 | The Summoner's Circle | LOCKED | -- |
-| 9 | The Artificer's Workshop | LOCKED | -- |
+| ... | ... | ... | ... |
 
 ### 4. Add Context Around the Table
 

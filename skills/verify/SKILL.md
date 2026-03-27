@@ -5,7 +5,7 @@ argument-hint: "[level-number]"
 allowed-tools: Bash("jq '.current_level' ~/.claude/claude-code-hero.json"), Read
 ---
 
-Verify quest completion for Claude Code Hero. The script is the source of truth -- do not perform semantic evaluation.
+Verify quest completion for Claude Code Hero. The CLI is the source of truth -- do not perform semantic evaluation.
 
 $ARGUMENTS
 
@@ -15,12 +15,12 @@ $ARGUMENTS
  !`jq '.current_level' ~/.claude/claude-code-hero.json`
 </current_level>
 
-Always pass a level number to the script.
+Always pass a level number to the CLI.
 
-1. **`/verify 5`** -- user gave a level number. Run `bash scripts/verify.sh 5`. Report PASS or FAIL. Done.
-2. **`/verify`** -- no argument. Run `bash scripts/verify.sh <current_level>`. Report PASS or FAIL. Done.
+1. **`/verify 5`** -- user gave a level number. Run `ruby scripts/cli.rb verify 5`. Report PASS or FAIL. Done.
+2. **`/verify`** -- no argument. Run `ruby scripts/cli.rb verify <current_level>`. Report PASS or FAIL. Done.
 
 ## Reporting
 
 - **PASS**: State what was verified and that the level is complete. Brief.
-- **FAIL**: Show the script's failure message so the learner knows what to fix.
+- **FAIL**: Show the CLI's failure message so the learner knows what to fix.
