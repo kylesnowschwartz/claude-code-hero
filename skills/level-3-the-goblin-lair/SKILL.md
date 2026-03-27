@@ -29,6 +29,10 @@ Your command should generate a dramatic battle message when invoked. Something l
 
 The content is fun, but the mechanism is real. `$ARGUMENTS` is how every serious slash command accepts dynamic input. You'll use this pattern for code review targets, file paths, branch names -- anything you'd pass as an argument.
 
+### Try it
+
+Before you verify, cast the spell. Type `/hero-spell the goblin king` in Claude Code. You should see Claude generate a dramatic battle scene targeting "the goblin king." That's `$ARGUMENTS` at work -- your prompt body with the target swapped in. If the command doesn't appear when you type `/`, the file isn't in the right place or the frontmatter is malformed.
+
 Hold onto this spell. You'll see it again.
 
 ## Hints
@@ -39,33 +43,18 @@ The file goes at `~/.claude/commands/hero-spell.md`. If the directory doesn't ex
 
 ### Hint 2
 
-The frontmatter needs `description` and `argument-hint`. Here's the skeleton:
+The frontmatter needs `description` and `argument-hint`:
 
 ```
 ---
 description: What this command does (shows up in the command list)
 argument-hint: [target]
 ---
+
+Your prompt body here. Use $ARGUMENTS where the target goes.
 ```
 
-The `argument-hint` shows up as placeholder text after the command name -- so `/hero-spell [target]` appears in the command list, telling the caster what to type. Other useful frontmatter fields: `allowed-tools` to restrict which tools the command can use, `model` to specify a particular model.
-
-### Hint 3
-
-Here's a complete example:
-
-```markdown
----
-description: Fire a magic missile at a target with dramatic flair
-argument-hint: [target]
----
-
-A magic missile streaks toward its target. Describe the casting and impact of a magic missile spell aimed at $ARGUMENTS.
-
-Be dramatic but brief -- three to four sentences. Include the sound it makes and what happens on impact. End with a one-line damage report.
-```
-
-The `$ARGUMENTS` placeholder gets replaced with whatever follows the command name. `/hero-spell the goblin king` becomes "the goblin king" in the prompt body.
+The `argument-hint` shows up as placeholder text after the command name -- `/hero-spell [target]` in the command list. `$ARGUMENTS` gets replaced with whatever follows the command name: `/hero-spell the goblin king` becomes "the goblin king" in the prompt body.
 
 ## Verification
 

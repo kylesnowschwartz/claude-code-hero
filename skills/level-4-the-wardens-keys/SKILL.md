@@ -30,7 +30,7 @@ Your task:
 Open `~/.claude/settings.json` (create it if it doesn't exist) and configure three rules that demonstrate all three tiers working together:
 
 1. **Allow** `Bash(git:*)` -- let Claude run git commands freely. This is the most common allow rule.
-2. **Ask** `Bash(git push:*)` -- pushes affect the remote. Claude should ask before pushing, even though git is broadly allowed. More specific rules override broader ones.
+2. **Ask** `Bash(git push:*)` -- pushes affect the remote. Claude should ask before pushing, even though git is broadly allowed.
 3. **Deny** `Bash(git push --force:*)` -- force-pushing rewrites remote history. No one should do this casually, not even you. Deny it outright.
 
 These three rules form a layered policy: git flows freely, pushes require approval, force-pushes are blocked. That's a real permission model, not a checkbox exercise.
@@ -42,7 +42,11 @@ Permission rules use the format `ToolName(pattern)` where the pattern supports g
 - `Write` -- allow all file writes (use with caution)
 - `Edit` -- allow all edits. `WebFetch` allows all fetches.
 
-**Specificity matters.** When multiple rules match a command, the most specific one wins. `Bash(git push --force:*)` in deny beats `Bash(git push:*)` in ask, which beats `Bash(git:*)` in allow. This is how you build nuanced policies instead of all-or-nothing toggles.
+**Tier order matters.** Rules evaluate in a fixed order: **deny first, then ask, then allow**. The first matching rule wins. So `Bash(git push --force:*)` in deny gets checked before `Bash(git push:*)` in ask, which gets checked before `Bash(git:*)` in allow. Deny beats ask beats allow -- always. This is how you build layered policies: broad allow rules at the bottom, carve-outs in ask and deny above them.
+
+### Try it
+
+Before you verify, test the layering. Ask Claude to run `git status` -- it should execute without asking permission. Then ask Claude to run `git push` -- it should prompt you for approval first. That's two tiers working: allow lets git flow, ask gates pushes.
 
 ## Hints
 
@@ -74,25 +78,7 @@ More specific rules override broader ones. So you can allow `git` broadly, then 
 
 ### Hint 3
 
-Here's what the warden expects to see in your ledger:
-
-```json
-{
-  "permissions": {
-    "allow": [
-      "Bash(git:*)"
-    ],
-    "deny": [
-      "Bash(git push --force:*)"
-    ],
-    "ask": [
-      "Bash(git push:*)"
-    ]
-  }
-}
-```
-
-The layering: git commands run freely, pushes ask first, force-pushes are blocked. Add more rules if you want, but these three are required.
+Put the three required rules in the right tiers: `Bash(git:*)` in `allow`, `Bash(git push:*)` in `ask`, `Bash(git push --force:*)` in `deny`. Add more rules if you want, but these three are required.
 
 ## Verification
 

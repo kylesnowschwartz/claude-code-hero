@@ -28,11 +28,19 @@ Pick a domain you know well. It could be a language, a framework, a workflow, an
 Then forge it:
 
 - Create `~/.claude/skills/hero-knowledge/SKILL.md`
-- Add **YAML frontmatter** with `name` and `description` fields -- the `description` is what Claude reads to decide when this skill is relevant, so write it like a trigger condition
+- Add **YAML frontmatter** with `name` and `description` fields. The `name` should match the directory name (`hero-knowledge`), and the `description` is what Claude reads to decide when this skill is relevant, so write it like a trigger condition
 - Write the skill body: the knowledge, patterns, conventions, or instructions Claude should follow when this domain comes up
-- Test it by asking Claude a question that should activate the skill
-
 The `description` field does the heavy lifting. It tells Claude when to reach for this knowledge. "Use when writing Ruby test files" is specific. "Ruby stuff" is not. Write it like you're telling a colleague when to open a particular reference doc.
+
+### Try it
+
+Two ways to test your skill, and you should try both:
+
+1. **Invoke it directly.** Type `/hero-knowledge` in Claude Code. The skill content loads into the conversation, just like `/hero-spell` fired your command. You should see your knowledge reflected in Claude's response.
+
+2. **Let Claude find it.** Ask a question in your skill's domain -- something the `description` should match. Watch for Claude to invoke the Skill tool automatically. If it doesn't activate, sharpen the `description` to be more specific about when to trigger.
+
+Skills have two invocation paths: explicit (`/skill-name`) and auto-activation (Claude reads the `description` and invokes it when the context matches). Both use the same Skill tool under the hood.
 
 **Optional**: Create a `references/` or `examples/` subdirectory with deeper material the skill can draw from.
 
@@ -40,7 +48,7 @@ The `description` field does the heavy lifting. It tells Claude when to reach fo
 
 ### Hint 1
 
-The directory structure is what matters. A skill is a folder inside `~/.claude/skills/` containing a `SKILL.md` file. Yours goes in `hero-knowledge/`.
+A skill is a folder inside `~/.claude/skills/` containing a `SKILL.md` file:
 
 ```
 ~/.claude/skills/
@@ -50,43 +58,18 @@ The directory structure is what matters. A skill is a folder inside `~/.claude/s
 
 ### Hint 2
 
-The frontmatter needs `name` and `description`. The description drives auto-activation -- Claude reads it and decides whether to load the skill based on context.
+The frontmatter needs `name` and `description`. The `name` should match the directory name (`hero-knowledge`). The description drives auto-activation.
 
 ```markdown
 ---
-name: rails-testing
-description: "Use when writing or reviewing Rails test files. Covers RSpec conventions, factory patterns, and test organization for our Rails monolith."
+name: hero-knowledge
+description: "Use when [specific trigger condition]. Covers [what knowledge this provides]."
 ---
 
 Your skill content here.
 ```
 
-### Hint 3
-
-Here's a complete, minimal example:
-
-```markdown
----
-name: go-error-handling
-description: "Use when writing Go code that handles errors. Covers error wrapping, sentinel errors, and the team's convention of using fmt.Errorf with %w."
----
-
-# Go Error Handling Conventions
-
-Always wrap errors with context using `fmt.Errorf`:
-
-    return fmt.Errorf("fetching user %d: %w", id, err)
-
-Never discard errors silently. If you intentionally ignore one, assign to `_` with a comment explaining why.
-
-Use sentinel errors for conditions callers need to check:
-
-    var ErrNotFound = errors.New("not found")
-
-Check with `errors.Is`, not string comparison.
-```
-
-To test: start a new Claude session and ask a question in the skill's domain. If the skill activates, you'll see its knowledge reflected in the response. If it doesn't, sharpen the `description` -- make it more specific about when to trigger.
+If auto-activation doesn't fire, sharpen the `description` -- make it more specific about when to trigger.
 
 ## Verification
 

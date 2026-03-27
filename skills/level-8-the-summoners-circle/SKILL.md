@@ -33,6 +33,12 @@ The `description` with `<example>` blocks is how Claude decides when to dispatch
 
 Optionally, add a `disallowedTools` field to the frontmatter to restrict what the agent can do. An agent that only reviews code doesn't need write access. An agent that generates docs doesn't need to run shell commands. Constraints make agents safer and more predictable.
 
+### Try it
+
+Launch your agent directly: `claude --agent hero-agent`. This starts a new Claude session with your agent's system prompt loaded. Give it a task in its domain and watch it work as an autonomous subprocess. Type `/exit` when you're done, then `claude --continue` to come back here.
+
+You can also test auto-dispatch: in a normal session, ask Claude something that matches one of your `<example>` prompts. If Claude spawns the agent, your description and examples are working.
+
 ## Hints
 
 ### Hint 1
@@ -46,61 +52,23 @@ An agent is a `.md` file in an `agents/` directory. Create yours at `~/.claude/a
 
 ### Hint 2
 
-The frontmatter needs `name` and `description`. The description should include `<example>` blocks so Claude knows when to activate the agent.
+The frontmatter needs `name` and `description`. The description should include `<example>` blocks so Claude knows when to dispatch the agent:
 
 ```markdown
 ---
-name: test-writer
+name: hero-agent
 description: |
-  Generates tests for code changes.
+  What your agent does, in one or two lines.
 
   <example>
-  write tests for the new auth module
-  </example>
-
-  <example>
-  add test coverage for the payment service
+  a user prompt that should trigger this agent
   </example>
 ---
+
+Your system prompt here -- the agent's personality, purpose, and instructions.
 ```
 
-### Hint 3
-
-Here's a complete agent definition:
-
-```markdown
----
-name: code-reviewer
-description: |
-  Reviews code for bugs, style issues, and potential improvements.
-
-  <example>
-  review the changes in this PR
-  </example>
-
-  <example>
-  check this function for edge cases
-  </example>
-disallowedTools:
-  - Edit
-  - Write
-  - Bash
----
-
-You are a code reviewer. Your job is to read code and provide feedback. You do not modify files.
-
-When reviewing, focus on:
-- Logic errors and edge cases
-- Naming clarity
-- Unnecessary complexity
-- Missing error handling
-
-Be specific. Reference line numbers. Suggest improvements but do not implement them.
-```
-
-The `disallowedTools` field prevents the agent from using tools it shouldn't need. A reviewer that can't edit files is a reviewer you can trust to only review.
-
-To test: invoke the agent by name with `/agent-name` or ask Claude something that matches the example prompts.
+Optional: add `disallowedTools` to restrict what the agent can do. A reviewer that can't edit files is a reviewer you can trust to only review.
 
 ## Verification
 

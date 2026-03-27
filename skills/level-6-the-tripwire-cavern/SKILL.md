@@ -82,15 +82,13 @@ The path to the script depends on where this plugin is installed. Ask Claude to 
 
 Since `UserPromptSubmit` hooks fire on every prompt, the script handles filtering. When the prompt isn't `/hero-spell`, the script exits 0 and Claude Code continues normally. When it matches, the script runs your command and blocks the prompt from reaching Claude -- no API call wasted on a side effect.
 
-### Fire the spell
+### Try it
 
-Hooks are hot-reloaded -- no restart needed. Cast the spell. Type:
+Hooks are hot-reloaded -- no restart needed. Type `/hero-spell the goblin king` right now.
 
-```
-/hero-spell the goblin king
-```
+If you used the macOS notification, a system notification pops up. If you used the log file, check it: `cat /tmp/hero-hook-log.txt`. Either way, notice what *didn't* happen -- no API call. The hook intercepted the prompt, ran your command, and blocked it from reaching Claude. Zero tokens spent.
 
-If you used the macOS notification, a system notification should pop up. If you used the log file, check it: `cat /tmp/hero-hook-log.txt`. Either way, notice what *didn't* happen -- no API call. The hook intercepted the prompt, ran your command, and blocked it from reaching Claude. The message "Magic Missile strikes the goblin king!" appears directly in the UI, zero tokens spent.
+If nothing happened, check two things: does `~/.claude/settings.json` have the `hooks.UserPromptSubmit` entry? Does the `command` path point to the actual location of `hero-hook.sh`?
 
 That's the tripwire pattern. Event fires, script reacts, side effect happens, prompt never reaches the model.
 
@@ -136,35 +134,7 @@ To find the script's path, run: `find / -name "hero-hook.sh" -path "*/claude-cod
 
 ### Hint 3
 
-Here's how your full `settings.json` should look with permissions from Level 4 and the new hook:
-
-```json
-{
-  "permissions": {
-    "allow": [
-      "Bash(git:*)"
-    ],
-    "deny": [
-      "Bash(git push --force:*)"
-    ],
-    "ask": [
-      "Bash(git push:*)"
-    ]
-  },
-  "hooks": {
-    "UserPromptSubmit": [
-      {
-        "type": "command",
-        "command": "bash /path/to/claude-code-hero/scripts/hero-hook.sh"
-      }
-    ]
-  }
-}
-```
-
-Replace `/path/to/claude-code-hero` with the actual path where this plugin is installed.
-
-To test: type `/hero-spell the goblin king`, then `cat /tmp/hero-hook-log.txt` or watch for the notification. The hook should block the prompt (no API call) and show "Magic Missile strikes the goblin king!" in the UI.
+The `hooks` key sits alongside `permissions` at the top level of `settings.json`. You're merging into an existing file, not replacing it. Replace `/path/to/claude-code-hero` in the `command` field with the actual path where this plugin is installed.
 
 ## Verification
 

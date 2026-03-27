@@ -27,6 +27,10 @@ Write what you mean. Claude will follow it.
 
 A few lines that matter are worth more than a page of filler. But don't hold back if you have strong opinions -- the tome has room.
 
+### Try it
+
+Before you verify, test your decree. Type `/exit` to end this session, then run `claude` to start a fresh one. Ask Claude about one of your preferences -- coding style, communication, whatever you wrote. It should follow your instructions. That's the CLAUDE.md working. Then run `claude --continue` to pick up where you left off here.
+
 ## Hints
 
 ### Hint 1

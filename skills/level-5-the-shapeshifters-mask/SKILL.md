@@ -45,6 +45,10 @@ But putting the mask on isn't enough. Config changes like output styles take eff
 
 `--continue` is worth remembering. Any time you change settings, install a plugin, or modify CLAUDE.md, a quick `/exit` + `claude --continue` reloads everything without losing context.
 
+### Try it
+
+Once you're back in the session, ask Claude anything. The response should sound different -- your voice, your rules. If you chose pirate captain, you should hear "arr." If you chose terse, you should get short answers. If it sounds the same as before, check that you selected `hero-voice` in `/config` and restarted.
+
 ## Hints
 
 ### Hint 1
@@ -53,43 +57,17 @@ The file goes at `~/.claude/output-styles/hero-voice.md`. If the directory doesn
 
 ### Hint 2
 
-The frontmatter needs `name` and `description`. Here's the skeleton:
+The frontmatter needs `name` and `description`. Same `---` pattern from your slash command in Level 3:
 
 ```markdown
 ---
-name: my-style
+name: hero-voice
 description: Short description of what this style does
 ---
 
 Your style instructions go here. Tell Claude how to format responses,
 what tone to use, what to include or leave out.
 ```
-
-This is the same `---` frontmatter pattern from your slash command in Level 3. Same incantation, different spell.
-
-### Hint 3
-
-Here's a complete example:
-
-```markdown
----
-name: concise
-description: Minimal responses -- code over prose, skip the preamble
----
-
-Keep responses short. Lead with code when the question is about code.
-Skip introductory sentences. No "Sure!" or "Great question!".
-
-Use bullet points for multi-part answers. One sentence per point.
-
-When explaining, explain once. Don't rephrase the same idea.
-```
-
-To activate it, type `/config` in your Claude Code prompt. This opens an interactive settings menu. Use the **arrow keys** to navigate to **Output style**, press **Enter**, then select your custom style from the list. Your `hero-voice` style will appear alongside any built-in styles once the file exists in `~/.claude/output-styles/`.
-
-After selecting it, restart to apply: type `/exit`, then run `claude --continue` in your terminal. Same conversation, fresh config.
-
-The `/config` menu is how you change most Claude Code settings -- model, output style, theme, and more. Worth poking around.
 
 ## Verification
 

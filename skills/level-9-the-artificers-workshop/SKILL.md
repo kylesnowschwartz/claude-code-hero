@@ -39,8 +39,12 @@ Your task:
 - Inside it, create `.claude-plugin/plugin.json` with a `name` field containing "hero"
 - Copy (or recreate) your hero artifacts into the plugin's directory structure: `commands/hero-spell.md`, `output-styles/hero-voice.md`, `skills/hero-knowledge/SKILL.md`, `agents/hero-agent.md`
 - Add at least one component (copying all five is the full victory, but one is enough to pass)
-- Test it by running `claude --plugin-dir <path-to-your-plugin-directory>`
-- Verify Claude recognizes your components
+
+### Try it
+
+Launch Claude with your plugin loaded: `claude --plugin-dir <path-to-your-plugin-directory>`. Then test your components. Type `/hero-spell the dragon` -- if the command fires, your plugin is wired correctly. Ask a question in your skill's domain. Launch `claude --agent hero-agent`. Each component that works is proof the plugin structure is right.
+
+If a component doesn't appear, check that the directory names match exactly: `commands/`, `skills/`, `agents/`, `output-styles/`.
 
 You already know how to build every component type. You've done it across five quests. Now bind them together and watch them come alive as a distributable package.
 
@@ -62,7 +66,7 @@ The `.claude-plugin/plugin.json` file is the manifest. Everything else follows t
 
 ### Hint 2
 
-The `plugin.json` manifest can be minimal. At its simplest:
+The `plugin.json` manifest can be minimal:
 
 ```json
 {
@@ -72,45 +76,7 @@ The `plugin.json` manifest can be minimal. At its simplest:
 
 Other optional fields: `description`, `version`, `author`. But `name` (containing "hero") is all you need to start.
 
-Components go in their standard directories at the plugin root -- the same directories your hero artifacts already live in:
-- `commands/hero-spell.md` -- your magic missile from Level 3
-- `output-styles/hero-voice.md` -- your voice from Level 5
-- `skills/hero-knowledge/SKILL.md` -- your domain expertise from Level 7
-- `agents/hero-agent.md` -- your companion from Level 8
-
-### Hint 3
-
-Here's the full hero plugin structure with all your artifacts:
-
-```
-hero-toolkit/
-  .claude-plugin/
-    plugin.json
-  commands/
-    hero-spell.md
-  output-styles/
-    hero-voice.md
-  skills/
-    hero-knowledge/
-      SKILL.md
-  agents/
-    hero-agent.md
-```
-
-`plugin.json`:
-```json
-{
-  "name": "hero-toolkit",
-  "description": "My first Claude Code plugin -- assembled from quest artifacts",
-  "version": "0.1.0"
-}
-```
-
-You can copy your existing artifacts from `~/.claude/` into the plugin directory. They're the same files -- just organized under one roof.
-
-To test: `claude --plugin-dir /path/to/hero-toolkit`
-
-Then try invoking `/hero-spell the dragon` or asking a question in your skill's domain. If it works, you've built a plugin from the components you forged across nine quests.
+Copy your existing hero artifacts from `~/.claude/` into the plugin's component directories. They're the same files, same format -- just organized under one roof.
 
 ## Verification
 
