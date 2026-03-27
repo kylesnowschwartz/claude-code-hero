@@ -4,3 +4,4 @@
 
 # Force-include agent for --agent CLI discovery
 !.claude/
+!.claude
