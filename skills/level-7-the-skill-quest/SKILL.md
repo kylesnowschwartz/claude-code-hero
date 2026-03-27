@@ -5,7 +5,7 @@ description: "Claude Code Hero Level 7: The Skill Quest of Doom -- create a skil
 
 ## Objective
 
-Create a **skill** directory with a `SKILL.md` file in `~/.claude/skills/`.
+Create a **skill** at `~/.claude/skills/hero-knowledge/SKILL.md` with real domain knowledge inside it.
 
 ## Why This Matters
 
@@ -19,14 +19,13 @@ Skills also support **progressive disclosure**. A `SKILL.md` can reference deepe
 
 Beyond the cavern of tripwires, a library. Not the dusty kind. This one breathes. Scrolls drift from shelves when a question is asked, returning when the answer is given. Knowledge that serves the seeker without being summoned.
 
-You're going to build one of these scrolls.
+You're going to build one of these scrolls. Every scroll in this library bears a name. Yours is `hero-knowledge`.
 
 Pick a domain you know well. It could be a language, a framework, a workflow, an internal tool, a set of conventions your team follows. Something where you regularly explain the same patterns to Claude.
 
 Then forge it:
 
-- Create a directory in `~/.claude/skills/` named for your domain (e.g., `~/.claude/skills/rails-patterns/`)
-- Inside it, create a `SKILL.md` file
+- Create `~/.claude/skills/hero-knowledge/SKILL.md`
 - Add **YAML frontmatter** with `name` and `description` fields -- the `description` is what Claude reads to decide when this skill is relevant, so write it like a trigger condition
 - Write the skill body: the knowledge, patterns, conventions, or instructions Claude should follow when this domain comes up
 - Test it by asking Claude a question that should activate the skill
@@ -39,11 +38,11 @@ The `description` field does the heavy lifting. It tells Claude when to reach fo
 
 ### Hint 1
 
-The directory structure is what matters. A skill is a folder inside `~/.claude/skills/` containing a `SKILL.md` file. The folder name is up to you.
+The directory structure is what matters. A skill is a folder inside `~/.claude/skills/` containing a `SKILL.md` file. Yours goes in `hero-knowledge/`.
 
 ```
 ~/.claude/skills/
-  my-domain/
+  hero-knowledge/
     SKILL.md
 ```
 
@@ -91,9 +90,8 @@ To test: start a new Claude session and ask a question in the skill's domain. If
 
 ### Filesystem Check
 
-- Path: `~/.claude/skills/*/SKILL.md`
-- Command: `ls ~/.claude/skills/*/SKILL.md 2>/dev/null`
-- At least one `SKILL.md` must exist inside a subdirectory of `~/.claude/skills/`
+- Path: `~/.claude/skills/hero-knowledge/SKILL.md`
+- Command: `test -f ~/.claude/skills/hero-knowledge/SKILL.md && echo "exists" || echo "missing"`
 
 ### Content Check
 

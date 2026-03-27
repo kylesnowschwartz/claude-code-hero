@@ -29,8 +29,8 @@ Your task:
 
 - Open `~/.claude/settings.json` (create it if it doesn't exist)
 - Locate or create the `permissions` object with `allow`, `deny`, and `ask` arrays
-- Add at least one **allow rule** to stop Claude from asking about something you trust
-- Understand the **tool name syntax** and **glob patterns** used in permission rules
+- Add `Bash(git:*)` to the `allow` array -- this lets Claude run all git commands without asking
+- Understand the **tool name syntax** and **glob patterns** used in permission rules so you can add more rules later
 
 Permission rules use the format `ToolName(pattern)` where the pattern supports globs:
 
@@ -40,6 +40,8 @@ Permission rules use the format `ToolName(pattern)` where the pattern supports g
 - `Bash(ls:*)` -- allow ls commands
 
 Some rules need no pattern at all. `Edit` allows all edits. `WebFetch` allows all fetches.
+
+Start with `Bash(git:*)`. It's the most universally useful allow rule -- nearly every developer trusts Claude to run git commands. Once that's in place, add more rules if you want. But `Bash(git:*)` is the one the warden expects to see in the ledger.
 
 ## Hints
 
@@ -100,10 +102,10 @@ Pick rules that match your workflow. If you run `git` commands constantly, allow
 
 ### Content Check
 
+- Command: `grep -q "Bash(git:" ~/.claude/settings.json && echo "found" || echo "missing"`
 - The file contains valid JSON
 - A `permissions` object exists at the top level
-- The `permissions.allow` array contains at least one entry
-- The entry follows the tool name syntax (e.g., `Bash(git:*)`, `Edit`, etc.)
+- The `permissions.allow` array contains `Bash(git:*)` (the specific rule this quest teaches)
 
 ## Connection
 

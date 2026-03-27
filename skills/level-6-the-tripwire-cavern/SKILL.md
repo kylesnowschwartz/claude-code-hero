@@ -34,10 +34,12 @@ Your task:
 - Open `~/.claude/settings.json`
 - Add a `hooks` section
 - Create at least one hook under one event
-- The hook must have a `type` (start with `"command"`) and a `command` (the shell command to run)
+- The hook must have a `type` (start with `"command"`) and a `command` that contains the word "hero" -- this is how the dungeon knows your tripwire from one that was already here
 - Test that the hook actually fires by triggering the event
 
-Start simple. A `Stop` hook that runs a linter after Claude finishes. Or a `UserPromptSubmit` hook that logs each prompt to a file. You can get sophisticated later -- for now, prove the mechanism works.
+The simplest approach: a `Stop` hook that logs to a hero-specific path. Something like `echo "hero hook fired at $(date)" >> /tmp/hero-hook-log.txt`. The command is real and useful for debugging. The "hero" in the path marks it as yours.
+
+You can get sophisticated later -- for now, prove the mechanism works.
 
 ## Hints
 
@@ -57,7 +59,7 @@ Hooks live in `settings.json` under the `hooks` key. Each event name is a key th
 
 ### Hint 2
 
-Each hook object needs at least `type` and `command`. The `type` tells Claude Code what kind of hook it is. Start with `"command"` -- it runs a shell command.
+Each hook object needs at least `type` and `command`. The `type` tells Claude Code what kind of hook it is. Start with `"command"` -- it runs a shell command. Remember: the `command` string must contain the word "hero" so the dungeon can verify it's yours.
 
 ```json
 {
@@ -65,7 +67,7 @@ Each hook object needs at least `type` and `command`. The `type` tells Claude Co
     "Stop": [
       {
         "type": "command",
-        "command": "echo 'hook fired'"
+        "command": "echo 'hero hook fired' >> /tmp/hero-hook-log.txt"
       }
     ]
   }
@@ -84,23 +86,23 @@ Here's a complete, working configuration with two hooks:
     "Stop": [
       {
         "type": "command",
-        "command": "echo \"Claude stopped at $(date)\" >> /tmp/claude-hook-log.txt"
+        "command": "echo \"hero: Claude stopped at $(date)\" >> /tmp/hero-hook-log.txt"
       }
     ],
     "PreToolUse": [
       {
         "type": "command",
         "matcher": "Bash",
-        "command": "echo \"Bash tool invoked\" >> /tmp/claude-hook-log.txt"
+        "command": "echo \"hero: Bash tool invoked\" >> /tmp/hero-hook-log.txt"
       }
     ]
   }
 }
 ```
 
-After adding this, have Claude do something (ask it a question, run a command) and then check `/tmp/claude-hook-log.txt` to confirm the hooks fired.
+After adding this, have Claude do something (ask it a question, run a command) and then check `/tmp/hero-hook-log.txt` to confirm the hooks fired.
 
-To test: ask Claude a question, let it respond, then run `cat /tmp/claude-hook-log.txt`.
+To test: ask Claude a question, let it respond, then run `cat /tmp/hero-hook-log.txt`.
 
 ## Verification
 
@@ -112,13 +114,14 @@ To test: ask Claude a question, let it respond, then run `cat /tmp/claude-hook-l
 
 ### Content Check
 
+- Command: `grep -q "hero" ~/.claude/settings.json && echo "found" || echo "missing"` (checks that "hero" appears in the hooks section)
 - The file contains valid JSON
 - A `hooks` object exists at the top level
 - At least one event key exists inside `hooks` (e.g., `Stop`, `PreToolUse`, `PostToolUse`)
 - That event key maps to an array containing at least one hook object
 - The hook object contains both `type` and `command` fields
 - The `type` field is `"command"`
-- The `command` field contains a non-empty string
+- The `command` field contains "hero" in the string (e.g., a log path like `/tmp/hero-hook-log.txt`)
 
 ## Connection
 

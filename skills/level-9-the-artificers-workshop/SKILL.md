@@ -5,7 +5,7 @@ description: "Claude Code Hero Level 9: The Artificer's Workshop -- create a min
 
 ## Objective
 
-Create a minimal Claude Code **plugin** with a `plugin.json` manifest and at least one component.
+Create a minimal Claude Code **plugin** with a `plugin.json` manifest whose `name` contains "hero", and at least one component.
 
 ## Why This Matters
 
@@ -21,10 +21,12 @@ Anvil. Forge. Workbench. Shelves lined with components you recognize: commands, 
 
 A **plugin** is a directory with a `.claude-plugin/` folder inside it. That folder contains a `plugin.json` manifest -- the declaration of what this plugin is and what it provides. The components live alongside `.claude-plugin/` as top-level directories: `commands/`, `skills/`, `agents/`, `hooks/`, `output-styles/`.
 
+Every artifact in this dungeon has carried the hero's mark. Your final creation is no different. The `name` field in your `plugin.json` must contain "hero" -- `hero-toolkit`, `my-hero-plugin`, `hero-utils`, whatever fits. This is how the dungeon knows the artifact is yours.
+
 Your task:
 
 - Create a new directory for your plugin (anywhere on your filesystem)
-- Inside it, create `.claude-plugin/plugin.json` with at least a `name` field
+- Inside it, create `.claude-plugin/plugin.json` with a `name` field containing "hero"
 - Add at least one component: a command, skill, agent, or hook
 - Test it by running `claude --plugin-dir <path-to-your-plugin-directory>`
 - Verify Claude recognizes your component
@@ -53,11 +55,11 @@ The `plugin.json` manifest can be minimal. At its simplest:
 
 ```json
 {
-  "name": "my-plugin"
+  "name": "hero-toolkit"
 }
 ```
 
-Other optional fields: `description`, `version`, `author`. But `name` is all you need to start.
+Other optional fields: `description`, `version`, `author`. But `name` (containing "hero") is all you need to start.
 
 Components go in their standard directories at the plugin root:
 - `commands/` for slash commands
@@ -80,7 +82,7 @@ my-plugin/
 `plugin.json`:
 ```json
 {
-  "name": "my-plugin",
+  "name": "hero-toolkit",
   "description": "My first Claude Code plugin",
   "version": "0.1.0"
 }
@@ -110,7 +112,7 @@ Then try invoking your command or triggering your skill. If it works, you've bui
 ### Content Check
 
 - `plugin.json` contains valid JSON
-- `plugin.json` includes a `name` field with a non-empty string value
+- `plugin.json` includes a `name` field whose value contains "hero" (e.g., `"hero-toolkit"`, `"my-hero-plugin"`)
 - At least one component file follows its type's format (frontmatter for commands/skills/agents/styles, valid JSON for hooks)
 
 ## Connection

@@ -9,26 +9,29 @@ Check whether a learner has completed quest levels by inspecting their filesyste
 
 ## Per-Level Verification Registry
 
-| Level | Quest | Artifact Path | Filesystem Check | Content Check |
-|-------|-------|--------------|-----------------|---------------|
+Each level checks for a quest-specific artifact. Generic artifacts (e.g., any command, any skill) do not count -- the learner must create the exact artifact the quest instructs them to build. This prevents false positives for power users who already have these files.
+
+| Level | Quest | Artifact | Filesystem Check | Content Check |
+|-------|-------|----------|-----------------|---------------|
 | 1 | The Map Room | N/A (knowledge-based) | Progress file shows level >= 2 | Agent evaluates learner's answers about ~/.claude/ structure |
-| 2 | The Tome | ~/.claude/CLAUDE.md | `test -f ~/.claude/CLAUDE.md` | Contains at least 3 real directives (not placeholder like "hello" or "test") |
-| 3 | The Goblin Lair | ~/.claude/commands/*.md | At least one .md file in ~/.claude/commands/ | Has YAML frontmatter with at least `description` field |
-| 4 | The Warden's Keys | ~/.claude/settings.json | File exists and contains permission rules | Has at least one custom entry in `permissions.allow` array |
-| 5 | The Shapeshifter's Mask | ~/.claude/output-styles/*.md | At least one .md file in ~/.claude/output-styles/ | Has YAML frontmatter with `name` and `description` |
-| 6 | The Tripwire Cavern | ~/.claude/settings.json hooks | settings.json contains `hooks` section | At least one hook configured with an event and handler |
-| 7 | The Skill Quest | ~/.claude/skills/*/SKILL.md | At least one SKILL.md in a subdirectory | Has frontmatter with `name` and `description` |
-| 8 | The Summoner's Circle | Agent .md file | An agent .md file exists (in any project) | Has frontmatter with `description` containing `<example>` blocks |
-| 9 | The Artificer's Workshop | .claude-plugin/plugin.json | plugin.json exists in a learner-created directory | Contains at least `name` field, plus one component (command, skill, agent, or hook) |
+| 2 | The Tome | ~/.claude/CLAUDE.md | `test -f ~/.claude/CLAUDE.md` | Contains a `## Hero's Decree` section with real directives inside it |
+| 3 | The Goblin Lair | ~/.claude/commands/hero-spell.md | `test -f ~/.claude/commands/hero-spell.md` | Has YAML frontmatter with `description` field and a meaningful prompt body |
+| 4 | The Warden's Keys | ~/.claude/settings.json | `grep -q "Bash(git:" ~/.claude/settings.json` | `permissions.allow` contains `Bash(git:*)` (the specific rule the quest teaches) |
+| 5 | The Shapeshifter's Mask | ~/.claude/output-styles/hero-voice.md | `test -f ~/.claude/output-styles/hero-voice.md` | Has YAML frontmatter with `name` and `description`, plus style instructions in body |
+| 6 | The Tripwire Cavern | ~/.claude/settings.json hooks | `grep -q "hero" ~/.claude/settings.json` | A hook exists with "hero" in its command string (e.g., a log path or script name) |
+| 7 | The Skill Quest | ~/.claude/skills/hero-knowledge/SKILL.md | `test -f ~/.claude/skills/hero-knowledge/SKILL.md` | Has frontmatter with `name` and `description` and real skill content |
+| 8 | The Summoner's Circle | ~/.claude/agents/hero-agent.md | `test -f ~/.claude/agents/hero-agent.md` | Has frontmatter with `description` containing `<example>` blocks and a system prompt body |
+| 9 | The Artificer's Workshop | plugin with "hero" in name | Find a `.claude-plugin/plugin.json` where `name` contains "hero" | Contains `name` field with "hero" in the value, plus at least one component |
 
 ## Running Checks
 
 Use these tools for each check type:
 
-**Filesystem existence** -- Bash tool with `test -f <path>` or `ls <glob>`:
+**Filesystem existence** -- Bash tool with `test -f <path>` or `grep`:
 - Single file: `test -f ~/.claude/CLAUDE.md && echo "exists"`
-- Glob match: `ls ~/.claude/commands/*.md 2>/dev/null`
-- Directory scan: `ls ~/.claude/skills/*/SKILL.md 2>/dev/null`
+- Named file: `test -f ~/.claude/commands/hero-spell.md && echo "exists"`
+- Content match: `grep -q "Hero's Decree" ~/.claude/CLAUDE.md && echo "found"`
+- Pattern in JSON: `grep -q "hero" ~/.claude/settings.json && echo "found"`
 
 **Content inspection** -- Read tool:
 - Read the file and inspect its contents directly
@@ -41,7 +44,7 @@ Use these tools for each check type:
 
 **Semantic quality** -- Agent evaluation:
 - For content checks, evaluate whether the content demonstrates real understanding
-- A CLAUDE.md with three lines saying "be nice", "use tabs", "no emojis" counts. Three lines of "test", "hello", "asdf" do not.
+- A `## Hero's Decree` section with lines like "use tabs", "no emojis", "run tests before committing" counts. A section with "test", "hello", "asdf" does not.
 - A command with a description like "Run project tests" counts. A description of "my command" does not.
 - The bar is intent, not polish. If the learner tried to make something real, it passes.
 
@@ -59,7 +62,7 @@ When verifying, check ALL levels, not just the current one. The learner may have
 
 ### Example
 
-Progress file says `current_level: 1`. Checks find valid artifacts for levels 2, 3, and 4 (but not 5). The learner's CLAUDE.md exists with real content, they have a command with frontmatter, and settings.json has a permissions.allow entry.
+Progress file says `current_level: 1`. Checks find valid artifacts for levels 2, 3, and 4 (but not 5). The learner's CLAUDE.md has a `## Hero's Decree` section, `hero-spell.md` exists with frontmatter, and settings.json contains `Bash(git:`.
 
 Since levels 1-4 are all satisfied (level 1 was previously completed to reach level 2), set `current_level` to 5 -- the next level to attempt.
 
@@ -72,7 +75,7 @@ Output a status line for each level:
 ```
 Level 1: The Map Room         -- COMPLETE
 Level 2: The Tome             -- COMPLETE
-Level 3: The Goblin Lair      -- CURRENT (missing: no .md files found in ~/.claude/commands/)
+Level 3: The Goblin Lair      -- CURRENT (missing: ~/.claude/commands/hero-spell.md not found)
 Level 4: The Warden's Keys    -- LOCKED
 Level 5: The Shapeshifter's Mask -- LOCKED
 Level 6: The Tripwire Cavern  -- LOCKED
@@ -96,8 +99,8 @@ Level 5: The Shapeshifter's Mask -- LOCKED (artifact found -- will count when re
 
 **Level 1 is knowledge-based.** There is no artifact to check. It can only be marked complete by the heroguide agent during a guided session where the learner demonstrates understanding of the ~/.claude/ directory structure. During reconciliation, if the progress file already shows level >= 2, treat level 1 as complete.
 
-**Level 8 artifacts can live anywhere.** Agent .md files are not restricted to ~/.claude/. The learner might create one in any project directory. When checking level 8, ask the learner where their agent file is, or check common locations like the current working directory.
+**Level 8 checks a specific file.** The quest instructs the learner to create `~/.claude/agents/hero-agent.md`. Check that exact path.
 
-**Level 9 is a new directory.** The learner creates a fresh plugin directory with a plugin.json manifest. This is not a modification of existing ~/.claude/ files. The directory could be anywhere the learner chooses.
+**Level 9 requires "hero" in the plugin name.** The learner creates a fresh plugin directory with a plugin.json manifest. The `name` field in plugin.json must contain "hero". The directory could be anywhere the learner chooses -- search common locations or ask.
 
 **Levels 4 and 6 both use settings.json.** They check different sections (permissions.allow vs hooks) and can be completed independently. A settings.json with permissions but no hooks passes level 4 and fails level 6.

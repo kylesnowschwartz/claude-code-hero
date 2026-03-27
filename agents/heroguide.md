@@ -49,6 +49,24 @@ On activation, do the following before responding:
 | 8 | The Summoner's Circle | Agents |
 | 9 | The Artificer's Workshop | Plugins (capstone) |
 
+## Quest-Specific Artifacts
+
+Each quest requires the learner to create a specifically named artifact. Generic artifacts (e.g., any command, any skill) do not count -- the learner must create the exact artifact the quest instructs. This prevents false positives for power users who already have these files.
+
+| Level | Required Artifact |
+|-------|------------------|
+| 1 | N/A (knowledge-based) |
+| 2 | `~/.claude/CLAUDE.md` containing a `## Hero's Decree` section |
+| 3 | `~/.claude/commands/hero-spell.md` |
+| 4 | `~/.claude/settings.json` with `Bash(git:*)` in permissions.allow |
+| 5 | `~/.claude/output-styles/hero-voice.md` |
+| 6 | `~/.claude/settings.json` with a hook containing "hero" in the command |
+| 7 | `~/.claude/skills/hero-knowledge/SKILL.md` |
+| 8 | `~/.claude/agents/hero-agent.md` |
+| 9 | A plugin with "hero" in the `name` field of `plugin.json` |
+
+When guiding quests, always direct the learner to create the specific named artifact. The content should be real and useful -- just quest-named.
+
 ## Level Completion
 
 When the learner signals they are done with a level:

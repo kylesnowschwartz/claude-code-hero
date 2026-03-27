@@ -5,7 +5,7 @@ description: "Claude Code Hero Level 5: The Shapeshifter's Mask -- create a cust
 
 ## Objective
 
-Create a custom **output style** in `~/.claude/output-styles/` and activate it in your settings.
+Create a custom **output style** at `~/.claude/output-styles/hero-voice.md` and activate it in your settings.
 
 ## Why This Matters
 
@@ -21,9 +21,9 @@ You've been hearing a voice since you entered this dungeon. Steady. Second perso
 
 Look at it: `output-styles/heroguide.md` in this plugin's directory. Open it. Read it. That's the mask you've been listening to. An `.md` file with **YAML frontmatter** and a body of instructions. The same pattern you used to build a slash command in Level 3.
 
-Now forge your own.
+Now forge your own. Every mask needs a name. Yours is `hero-voice`.
 
-- Create a `.md` file in `~/.claude/output-styles/`
+- Create `~/.claude/output-styles/hero-voice.md`
 - Add **YAML frontmatter** with `name` and `description` fields between `---` markers
 - Write **style instructions** in the body -- tell Claude how to communicate
 - Activate your style in `~/.claude/settings.json` by setting the `outputStyle` field
@@ -41,7 +41,7 @@ The body of your output style is a system prompt. Write it like you're briefing 
 
 ### Hint 1
 
-The file goes in `~/.claude/output-styles/`. If the directory doesn't exist, create it. The filename doesn't matter much -- `my-style.md`, `concise.md`, `verbose.md`, whatever fits.
+The file goes at `~/.claude/output-styles/hero-voice.md`. If the directory doesn't exist, create it.
 
 ### Hint 2
 
@@ -91,9 +91,8 @@ The value matches the `name` field in the frontmatter.
 
 ### Filesystem Check
 
-- Path: `~/.claude/output-styles/*.md`
-- Command: `ls ~/.claude/output-styles/*.md 2>/dev/null`
-- At least one `.md` file must exist in the directory
+- Path: `~/.claude/output-styles/hero-voice.md`
+- Command: `test -f ~/.claude/output-styles/hero-voice.md && echo "exists" || echo "missing"`
 
 ### Content Check
 

@@ -5,7 +5,7 @@ description: "Claude Code Hero Level 8: The Summoner's Circle -- create an agent
 
 ## Objective
 
-Create an **agent** definition -- a `.md` file with agent frontmatter and a system prompt body.
+Create an **agent** at `~/.claude/agents/hero-agent.md` with agent frontmatter and a system prompt body.
 
 ## Why This Matters
 
@@ -15,13 +15,13 @@ Agents are how Claude Code scales. Instead of one conversation doing everything,
 
 ## The Quest
 
-A circular chamber. Runes etched into the floor in concentric rings. At the center, an empty space. This is a summoning circle. Whatever you inscribe here will have a life of its own.
+A circular chamber. Runes etched into the floor in concentric rings. At the center, an empty space. This is a summoning circle. Whatever you inscribe here will have a life of its own. Every summoned being needs a true name. Yours is `hero-agent`.
 
 Agents live as `.md` files. They can go in a project's `.claude/agents/` directory, in `~/.claude/agents/` for global access, or in a plugin's `agents/` directory. Each one follows the pattern you've seen before: YAML frontmatter on top, content below. But the frontmatter carries more weight here.
 
 Your task:
 
-- Create an agent `.md` file in a location that makes sense for your use case
+- Create `~/.claude/agents/hero-agent.md`
 - Add **YAML frontmatter** with at least `name` and `description`
 - In the `description`, include at least one `<example>` block showing a user prompt that should trigger this agent
 - Write a **system prompt** in the body -- this is the agent's personality, purpose, and instructions
@@ -35,11 +35,11 @@ Optionally, add a `disallowedTools` field to the frontmatter to restrict what th
 
 ### Hint 1
 
-An agent is a `.md` file in an `agents/` directory. The simplest location for experimenting is `~/.claude/agents/`. The filename (minus `.md`) becomes how you reference the agent.
+An agent is a `.md` file in an `agents/` directory. Create yours at `~/.claude/agents/hero-agent.md`. The filename (minus `.md`) becomes how you reference the agent -- so this becomes `hero-agent`.
 
 ```
 ~/.claude/agents/
-  my-reviewer.md
+  hero-agent.md
 ```
 
 ### Hint 2
@@ -104,10 +104,8 @@ To test: invoke the agent by name with `/agent-name` or ask Claude something tha
 
 ### Filesystem Check
 
-- Look for `.md` files in common agent locations:
-  - `~/.claude/agents/*.md`
-  - `.claude/agents/*.md` (in any project)
-- At least one agent `.md` file must exist
+- Path: `~/.claude/agents/hero-agent.md`
+- Command: `test -f ~/.claude/agents/hero-agent.md && echo "exists" || echo "missing"`
 
 ### Content Check
 

@@ -5,7 +5,7 @@ description: "Claude Code Hero Level 3: The Goblin Lair of Commands -- create a 
 
 ## Objective
 
-Create a custom **slash command** in `~/.claude/commands/` with valid YAML frontmatter and a useful prompt body.
+Create a custom **slash command** at `~/.claude/commands/hero-spell.md` with valid YAML frontmatter and a useful prompt body.
 
 ## Why This Matters
 
@@ -17,26 +17,25 @@ You descend a narrow staircase. The air thickens. Somewhere below, you hear them
 
 Your weapon against this horde: a **slash command**.
 
-Create a `.md` file in `~/.claude/commands/`. It must have:
+Every spell needs a name. Yours is `hero-spell`. Create `~/.claude/commands/hero-spell.md`. It must have:
 
 - **YAML frontmatter** between `---` markers containing at least a `description` field
 - A **prompt body** below the frontmatter -- the actual instruction that runs when the command is invoked
-- A name that reflects what it does (the filename becomes the command name: `review.md` becomes `/review`)
 
-The command should do something you'd actually use. Some ideas:
+The filename becomes the command name: `hero-spell.md` becomes `/hero-spell`. The content should do something you'd actually use. Some ideas:
 
 - A code review command that checks for specific patterns
 - A commit message generator that follows your conventions
 - A test writer that matches your project's style
 - A refactoring assistant with your preferred approach
 
-**Bonus objective**: Use `$ARGUMENTS` in your prompt body to accept dynamic input. This placeholder gets replaced with whatever the user types after the command name. `/review the auth module` would replace `$ARGUMENTS` with "the auth module".
+**Bonus objective**: Use `$ARGUMENTS` in your prompt body to accept dynamic input. This placeholder gets replaced with whatever the user types after the command name. `/hero-spell the auth module` would replace `$ARGUMENTS` with "the auth module".
 
 ## Hints
 
 ### Hint 1
 
-The file goes in `~/.claude/commands/`. If the directory doesn't exist, create it. The filename (minus `.md`) becomes the command name.
+The file goes at `~/.claude/commands/hero-spell.md`. If the directory doesn't exist, create it. The filename (minus `.md`) becomes the command name -- so this becomes `/hero-spell`.
 
 ### Hint 2
 
@@ -72,9 +71,8 @@ Your command should reflect something you'd genuinely use -- not this example ve
 
 ### Filesystem Check
 
-- Path: `~/.claude/commands/*.md`
-- Command: `ls ~/.claude/commands/*.md 2>/dev/null`
-- At least one `.md` file must exist in the directory
+- Path: `~/.claude/commands/hero-spell.md`
+- Command: `test -f ~/.claude/commands/hero-spell.md && echo "exists" || echo "missing"`
 
 ### Content Check
 
