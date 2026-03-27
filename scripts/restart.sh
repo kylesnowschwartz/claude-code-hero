@@ -7,6 +7,12 @@
 
 set -euo pipefail
 
+# --- Prerequisites ---
+if ! command -v jq &>/dev/null; then
+  echo "Error: jq is required but not installed. Install with: brew install jq" >&2
+  exit 1
+fi
+
 DRY_RUN=false
 [[ "${1:-}" == "--dry-run" ]] && DRY_RUN=true
 
@@ -75,16 +81,11 @@ CLAUDE_MD="$CLAUDE_DIR/CLAUDE.md"
 if [[ -f "$CLAUDE_MD" ]] && grep -q "## Hero's Decree" "$CLAUDE_MD"; then
   action "Remove '## Hero's Decree' section from CLAUDE.md"
   if ! $DRY_RUN; then
-    # Remove from "## Hero's Decree" to the next "## " heading or end of file
-    python3 -c "
-import re, pathlib
-p = pathlib.Path('$CLAUDE_MD')
-text = p.read_text()
-# Match the heading, its content, and any trailing blank lines before the next section
-text = re.sub(r'\n*## Hero.s Decree\n.*?(?=\n## |\Z)', '', text, flags=re.DOTALL)
-text = text.strip() + '\n'
-p.write_text(text)
-"
+    # Remove from "## Hero's Decree" to the next "## " heading or end of file.
+    # Uses sed to delete the range, then trims trailing blank lines.
+    sed -i '' '/^## Hero.s Decree$/,/^## /{/^## Hero.s Decree$/d;/^## /!d;}' "$CLAUDE_MD"
+    # Clean up any trailing blank lines left behind
+    sed -i '' -e :a -e '/^\n*$/{$d;N;ba' -e '}' "$CLAUDE_MD"
   fi
   removed=$((removed + 1))
 else
@@ -98,50 +99,28 @@ remove_file "$CLAUDE_DIR/commands/hero-spell.md" "hero-spell.md"
 # --- Level 4: hero permission rules in settings.json ---
 echo "Level 4 - The Warden's Keys:"
 SETTINGS="$CLAUDE_DIR/settings.json"
-if [[ -f "$SETTINGS" ]] && command -v jq &>/dev/null; then
-  # Check if any hero-specific permission rules exist
-  has_hero_perms=$(python3 -c "
-import json
-with open('$SETTINGS') as f:
-    s = json.load(f)
-perms = s.get('permissions', {})
-hero_rules = [
-    'Bash(git:*)',
-    'Bash(git push:*)',
-    'Bash(git push --force:*)',
-]
-found = any(
-    rule in perms.get(tier, [])
-    for tier in ('allow', 'ask', 'deny')
-    for rule in hero_rules
-)
-print('yes' if found else 'no')
-")
-  if [[ "$has_hero_perms" == "yes" ]]; then
+if [[ -f "$SETTINGS" ]]; then
+  hero_rules='["Bash(git:*)", "Bash(git push:*)", "Bash(git push --force:*)"]'
+  has_hero_perms=$(jq --argjson rules "$hero_rules" '
+    .permissions // {} |
+    [.allow // [], .ask // [], .deny // []] | add |
+    any(. as $r | $rules | any(. == $r))
+  ' "$SETTINGS")
+
+  if [[ "$has_hero_perms" == "true" ]]; then
     action "Remove hero permission rules from settings.json"
     if ! $DRY_RUN; then
-      python3 -c "
-import json
-with open('$SETTINGS') as f:
-    s = json.load(f)
-hero_rules = {
-    'allow': ['Bash(git:*)'],
-    'ask': ['Bash(git push:*)'],
-    'deny': ['Bash(git push --force:*)'],
-}
-for tier, rules in hero_rules.items():
-    if tier in s.get('permissions', {}):
-        s['permissions'][tier] = [r for r in s['permissions'][tier] if r not in rules]
+      jq '
+        .permissions.allow |= (if . then [.[] | select(. != "Bash(git:*)")] else . end) |
+        .permissions.ask |= (if . then [.[] | select(. != "Bash(git push:*)")] else . end) |
+        .permissions.deny |= (if . then [.[] | select(. != "Bash(git push --force:*)")] else . end) |
         # Clean up empty arrays
-        if not s['permissions'][tier]:
-            del s['permissions'][tier]
-# Clean up empty permissions object
-if 'permissions' in s and not s['permissions']:
-    del s['permissions']
-with open('$SETTINGS', 'w') as f:
-    json.dump(s, f, indent=2)
-    f.write('\n')
-"
+        if .permissions.allow == [] then del(.permissions.allow) else . end |
+        if .permissions.ask == [] then del(.permissions.ask) else . end |
+        if .permissions.deny == [] then del(.permissions.deny) else . end |
+        # Clean up empty permissions object
+        if .permissions == {} then del(.permissions) else . end
+      ' "$SETTINGS" >"$SETTINGS.tmp" && mv "$SETTINGS.tmp" "$SETTINGS"
     fi
     removed=$((removed + 1))
   else
@@ -158,34 +137,19 @@ remove_file "$CLAUDE_DIR/output-styles/hero-voice.md" "hero-voice.md"
 # --- Level 6: hero hook in settings.json + reset hero-hook.sh ---
 echo "Level 6 - The Tripwire Cavern:"
 if [[ -f "$SETTINGS" ]]; then
-  has_hero_hook=$(python3 -c "
-import json
-with open('$SETTINGS') as f:
-    s = json.load(f)
-hooks = s.get('hooks', {}).get('UserPromptSubmit', [])
-found = any('hero-hook' in str(h) for h in hooks)
-print('yes' if found else 'no')
-")
-  if [[ "$has_hero_hook" == "yes" ]]; then
+  has_hero_hook=$(jq '
+    .hooks.UserPromptSubmit // [] |
+    any(tostring | test("hero-hook"))
+  ' "$SETTINGS")
+
+  if [[ "$has_hero_hook" == "true" ]]; then
     action "Remove hero-hook entry from settings.json hooks"
     if ! $DRY_RUN; then
-      python3 -c "
-import json
-with open('$SETTINGS') as f:
-    s = json.load(f)
-if 'hooks' in s and 'UserPromptSubmit' in s['hooks']:
-    s['hooks']['UserPromptSubmit'] = [
-        h for h in s['hooks']['UserPromptSubmit']
-        if 'hero-hook' not in json.dumps(h)
-    ]
-    if not s['hooks']['UserPromptSubmit']:
-        del s['hooks']['UserPromptSubmit']
-    if not s['hooks']:
-        del s['hooks']
-with open('$SETTINGS', 'w') as f:
-    json.dump(s, f, indent=2)
-    f.write('\n')
-"
+      jq '
+        .hooks.UserPromptSubmit |= [.[] | select(tostring | test("hero-hook") | not)] |
+        if .hooks.UserPromptSubmit == [] then del(.hooks.UserPromptSubmit) else . end |
+        if .hooks == {} then del(.hooks) else . end
+      ' "$SETTINGS" >"$SETTINGS.tmp" && mv "$SETTINGS.tmp" "$SETTINGS"
     fi
     removed=$((removed + 1))
   else
@@ -198,21 +162,12 @@ HOOK_SCRIPT="$SCRIPT_DIR/hero-hook.sh"
 if [[ -f "$HOOK_SCRIPT" ]] && ! grep -q 'REPLACE_ME' "$HOOK_SCRIPT"; then
   action "Reset hero-hook.sh to placeholder"
   if ! $DRY_RUN; then
-    # Replace the user's custom command line with the original placeholder
-    python3 -c "
-import re, pathlib
-p = pathlib.Path('$HOOK_SCRIPT')
-text = p.read_text()
-# The user's command sits between the two comment blocks.
-# Match from 'YOUR COMMAND' comment block to the closing '===' line, preserving structure.
-text = re.sub(
-    r'(# YOUR COMMAND:.*?\n#\n)(.*?)(\n# =)',
-    r'\1echo \"hero: REPLACE_ME - edit hero-hook.sh with your command\" >>/tmp/hero-hook-log.txt\3',
-    text,
-    flags=re.DOTALL,
-)
-p.write_text(text)
-"
+    # Replace the user's custom command with the original placeholder.
+    # The line sits between "# YOUR COMMAND:" block and the closing "# ===" line.
+    sed -i '' '/^# YOUR COMMAND:/,/^# ===/{
+      /^# /!c\
+echo "hero: REPLACE_ME - edit hero-hook.sh with your command" >>/tmp/hero-hook-log.txt
+    }' "$HOOK_SCRIPT"
   fi
   removed=$((removed + 1))
 else

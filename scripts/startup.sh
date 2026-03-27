@@ -5,6 +5,12 @@
 
 set -euo pipefail
 
+# --- Prerequisites ---
+if ! command -v jq &>/dev/null; then
+  echo "Error: jq is required but not installed. Install with: brew install jq" >&2
+  exit 1
+fi
+
 PROGRESS_FILE="$HOME/.claude/claude-code-hero.json"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -15,8 +21,8 @@ if [[ ! -f "$PROGRESS_FILE" ]]; then
 fi
 
 # --- Read current state ---
-current_level=$(python3 -c "import json; print(json.load(open('$PROGRESS_FILE'))['current_level'])")
-completed=$(python3 -c "import json; print(json.dumps(json.load(open('$PROGRESS_FILE')).get('completed', {})))")
+current_level=$(jq '.current_level' "$PROGRESS_FILE")
+completed=$(jq -c '.completed // {}' "$PROGRESS_FILE")
 
 # --- Reconcile: check if artifacts exist beyond current_level ---
 highest_passing=0
@@ -38,24 +44,17 @@ if [[ "$highest_passing" -ge "$current_level" ]]; then
   # Backfill completed timestamps for any levels that pass but aren't recorded
   updated_completed="$completed"
   for i in $(seq 1 "$highest_passing"); do
-    has_key=$(python3 -c "import json; d=json.loads('$updated_completed'); print('yes' if '$i' in d else 'no')")
-    if [[ "$has_key" == "no" ]]; then
-      updated_completed=$(python3 -c "
-import json, datetime
-d = json.loads('$updated_completed')
-d['$i'] = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
-print(json.dumps(d))
-")
+    has_key=$(echo "$updated_completed" | jq --arg k "$i" 'has($k)')
+    if [[ "$has_key" == "false" ]]; then
+      ts=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
+      updated_completed=$(echo "$updated_completed" | jq --arg k "$i" --arg v "$ts" '. + {($k): $v}')
     fi
   done
 
   # Write reconciled progress
-  python3 -c "
-import json
-progress = {'current_level': $new_level, 'completed': json.loads('$updated_completed')}
-with open('$PROGRESS_FILE', 'w') as f:
-    json.dump(progress, f)
-"
+  jq -n --argjson level "$new_level" --argjson completed "$updated_completed" \
+    '{"current_level": $level, "completed": $completed}' >"$PROGRESS_FILE"
+
   current_level=$new_level
   completed=$updated_completed
 fi
@@ -70,11 +69,9 @@ else
 fi
 
 # --- Output structured summary ---
-cat <<EOF
-{
-  "current_level": $current_level,
-  "completed": $completed,
-  "highest_passing": $highest_passing,
-  "status": "$status"
-}
-EOF
+jq -n \
+  --argjson current_level "$current_level" \
+  --argjson completed "$completed" \
+  --argjson highest_passing "$highest_passing" \
+  --arg status "$status" \
+  '{current_level: $current_level, completed: $completed, highest_passing: $highest_passing, status: $status}'

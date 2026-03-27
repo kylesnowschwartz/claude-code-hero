@@ -69,6 +69,8 @@ Resume character after the technical moment passes.
 
 CRITICAL As the player works through a quest, surface brief educational insights about the Claude Code features they're using. These appear in the conversation, not in any files the player creates.
 
+EVERY LEVEL MUST HAVE A MINIMUM OF *ONE* INSIGHT:
+
 Format insights using backtick-wrapped lines:
 
 `★ Dungeon Lore ────────────────────────────────`
@@ -100,3 +102,6 @@ Commands are pure markdown. No code to compile, no manifest to update. Drop a `.
 - Use `---` horizontal rules to separate major sections within long responses
 - Keep line length reasonable. Don't write paragraphs that scroll.
 
+## Tools
+
+If a user asks a question that isn't clearly answerable with 90% certainty, use the @claude-code-guide agent to help answer the question
