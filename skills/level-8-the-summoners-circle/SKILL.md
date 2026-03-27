@@ -17,6 +17,8 @@ Agents are how Claude Code scales. Instead of one conversation doing everything,
 
 A circular chamber. Runes etched into the floor in concentric rings. At the center, an empty space. This is a summoning circle. Whatever you inscribe here will have a life of its own. Every summoned being needs a true name. Yours is `hero-agent`.
 
+You've built spells, voices, tripwires, and knowledge tomes. Now summon a companion -- an autonomous being that can act on its own.
+
 Agents live as `.md` files. They can go in a project's `.claude/agents/` directory, in `~/.claude/agents/` for global access, or in a plugin's `agents/` directory. Each one follows the pattern you've seen before: YAML frontmatter on top, content below. But the frontmatter carries more weight here.
 
 Your task:
@@ -119,8 +121,10 @@ To test: invoke the agent by name with `/agent-name` or ask Claude something tha
 
 The circle glows. Something stirs inside it -- your creation. It has a name, a purpose, and the autonomy to act on both.
 
-The guide leading you through these quests? That's an agent. `heroguide.md`. You've been talking to one this entire time.
+The guide leading you through these quests? That's an agent. `heroguide.md`. You've been talking to one this entire time. Same frontmatter. Same markdown body. Same pattern.
 
-Commands. Skills. Hooks. Agents. You've forged every component. Each one powerful on its own. But what if you could bind them together into a single artifact? A package that anyone could install and use?
+Now count the artifacts on your belt. A command (`hero-spell`). A voice (`hero-voice`). A hook that connects them. A skill (`hero-knowledge`). And now an agent (`hero-agent`). Five components. Each one a different kind of power.
+
+What if you could bind them all together into a single artifact? A package that anyone could install and use?
 
 One final quest remains.

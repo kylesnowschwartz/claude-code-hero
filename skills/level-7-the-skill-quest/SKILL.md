@@ -21,7 +21,9 @@ Beyond the cavern of tripwires, a library. Not the dusty kind. This one breathes
 
 You're going to build one of these scrolls. Every scroll in this library bears a name. Yours is `hero-knowledge`.
 
-Pick a domain you know well. It could be a language, a framework, a workflow, an internal tool, a set of conventions your team follows. Something where you regularly explain the same patterns to Claude.
+You've built a spell, a voice, and a tripwire. Now bind your actual expertise into a tome that Claude can summon when the moment is right.
+
+Pick a domain you know well. It could be a language, a framework, a workflow, an internal tool, a set of conventions your team follows. Something where you regularly explain the same patterns to Claude. Frame it as your hero's domain knowledge -- the thing you're the expert on.
 
 Then forge it:
 
@@ -108,4 +110,6 @@ Stop for a moment. Look at what you just built. A directory. A `SKILL.md`. Front
 
 The quest you're reading right now? It's a `SKILL.md`. The verification that checks your work? Also a `SKILL.md`. You just forged the same thing that's been guiding you through this dungeon. The sage builds with the same tools the sage was built from.
 
-Knowledge that awakens on its own. Powerful. But what if you could create something with more... autonomy? Not knowledge that waits to be summoned, but a being that acts independently. One that can be dispatched with a purpose.
+Count the artifacts on your belt. A command (`hero-spell`). A voice (`hero-voice`). A hook that connects them. And now a skill (`hero-knowledge`). Four components. Each one built with the same frontmatter pattern. Each one a different kind of power.
+
+One more companion to summon before the final forge.

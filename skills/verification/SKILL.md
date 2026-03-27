@@ -15,7 +15,7 @@ Each level checks for a quest-specific artifact. Generic artifacts (e.g., any co
 |-------|-------|----------|-----------------|---------------|
 | 1 | The Map Room | N/A (knowledge-based) | Progress file shows level >= 2 | Agent evaluates learner's answers about ~/.claude/ structure |
 | 2 | The Tome | ~/.claude/CLAUDE.md | `test -f ~/.claude/CLAUDE.md` | Contains a `## Hero's Decree` section with real directives inside it |
-| 3 | The Goblin Lair | ~/.claude/commands/hero-spell.md | `test -f ~/.claude/commands/hero-spell.md` | Has YAML frontmatter with `description` field and a meaningful prompt body |
+| 3 | The Goblin Lair | ~/.claude/commands/hero-spell.md | `test -f ~/.claude/commands/hero-spell.md` | Has YAML frontmatter with `description` field, a meaningful prompt body, and uses `$ARGUMENTS` |
 | 4 | The Warden's Keys | ~/.claude/settings.json | `grep -q "Bash(git:" ~/.claude/settings.json` | `permissions.allow` contains `Bash(git:*)` (the specific rule the quest teaches) |
 | 5 | The Shapeshifter's Mask | ~/.claude/output-styles/hero-voice.md | `test -f ~/.claude/output-styles/hero-voice.md` | Has YAML frontmatter with `name` and `description`, plus style instructions in body |
 | 6 | The Tripwire Cavern | ~/.claude/settings.json hooks | `grep -q "hero" ~/.claude/settings.json` | A hook exists with "hero" in its command string (e.g., a log path or script name) |

@@ -28,14 +28,16 @@ Now forge your own. Every mask needs a name. Yours is `hero-voice`.
 - Write **style instructions** in the body -- tell Claude how to communicate
 - Activate your style in `~/.claude/settings.json` by setting the `outputStyle` field
 
-Your style should reflect how you actually want Claude to talk to you. Some possibilities:
+This is where you get creative. Pick a voice. Any voice. Pirate captain. Noir detective. Shakespearean scholar. Terse military briefing. A patient librarian who speaks only in well-organized lists. The point isn't realism -- it's understanding the format by building something memorable.
+
+Or go practical. Some real possibilities:
 
 - Concise and direct -- short answers, no filler, code over prose
 - Explanatory -- teach as you go, explain the why behind decisions
 - Structured -- headers, bullet points, clear sections for every response
 - Opinionated -- take strong positions, recommend best practices, push back on bad ideas
 
-The body of your output style is a system prompt. Write it like you're briefing someone on how to talk to you.
+The body of your output style is a system prompt. Write it like you're briefing someone on how to talk to you. And remember: the voice guiding you through these quests right now? That's this exact mechanism. Same frontmatter. Same directory pattern. The DM's mask is an output style too.
 
 ## Hints
 
@@ -109,4 +111,4 @@ Three spells now. A slash command in Level 3. An output style here. And before a
 
 The `---` frontmatter. The markdown body. The file in the right place. Same incantation each time. This pattern is the grammar of the realm. Every extension point Claude Code offers speaks this language. Learn it once, use it everywhere.
 
-Next, you'll learn to set traps that trigger without your hand on the wire.
+Next, you'll learn to set traps that trigger without your hand on the wire. And that spell you forged back in the Goblin Lair? It's about to get a tripwire.

@@ -29,28 +29,34 @@ Three events to start with:
 
 There are others: `UserPromptSubmit`, `SessionStart`, `SessionEnd`, `Notification`. But start with the three above.
 
+Remember the spell you forged in the Goblin Lair? `/hero-spell` -- your magic missile command. It's been sitting quietly in `~/.claude/commands/`, waiting to be invoked. Time to give it a tripwire.
+
 Your task:
 
 - Open `~/.claude/settings.json`
 - Add a `hooks` section
-- Create at least one hook under one event
+- Create a **`UserPromptSubmit`** hook that detects when your spell is cast and triggers a notification
 - The hook must have a `type` (start with `"command"`) and a `command` that contains the word "hero" -- this is how the dungeon knows your tripwire from one that was already here
-- Test that the hook actually fires by triggering the event
+- Test that the hook fires by invoking `/hero-spell` with a target
 
-The simplest approach: a `Stop` hook that logs to a hero-specific path. Something like `echo "hero hook fired at $(date)" >> /tmp/hero-hook-log.txt`. The command is real and useful for debugging. The "hero" in the path marks it as yours.
+The hook should react to your Level 3 spell. A `UserPromptSubmit` hook fires when the user submits a prompt -- including slash commands. Use a `matcher` to filter for prompts containing "hero-spell", then trigger a notification.
 
-You can get sophisticated later -- for now, prove the mechanism works.
+On macOS: `osascript -e 'display notification "Magic Missile fired!" with title "Claude Code Hero"'`
+
+Cross-platform fallback: `echo "hero: Magic Missile fired at $(date)" >> /tmp/hero-hook-log.txt`
+
+Either approach works. The mechanism is the same -- an event fires, your hook reacts, and something happens in the world outside Claude's conversation.
 
 ## Hints
 
 ### Hint 1
 
-Hooks live in `settings.json` under the `hooks` key. Each event name is a key that maps to an array of hook objects.
+Hooks live in `settings.json` under the `hooks` key. Each event name is a key that maps to an array of hook objects. For this quest, the event is `UserPromptSubmit` -- it fires when a prompt is submitted, including slash commands.
 
 ```json
 {
   "hooks": {
-    "Stop": [
+    "UserPromptSubmit": [
       ...
     ]
   }
@@ -59,50 +65,51 @@ Hooks live in `settings.json` under the `hooks` key. Each event name is a key th
 
 ### Hint 2
 
-Each hook object needs at least `type` and `command`. The `type` tells Claude Code what kind of hook it is. Start with `"command"` -- it runs a shell command. Remember: the `command` string must contain the word "hero" so the dungeon can verify it's yours.
+Each hook object needs at least `type` and `command`. The `type` tells Claude Code what kind of hook it is. Start with `"command"` -- it runs a shell command. Add a `matcher` to filter which prompts trigger it. For `UserPromptSubmit`, the matcher tests against the prompt text. Remember: the `command` string must contain the word "hero" so the dungeon can verify it's yours.
 
 ```json
 {
   "hooks": {
-    "Stop": [
+    "UserPromptSubmit": [
       {
         "type": "command",
-        "command": "echo 'hero hook fired' >> /tmp/hero-hook-log.txt"
+        "matcher": "hero-spell",
+        "command": "echo 'hero: Magic Missile fired!' >> /tmp/hero-hook-log.txt"
       }
     ]
   }
 }
 ```
-
-You can also add a `matcher` field for `PreToolUse` and `PostToolUse` hooks to filter which tool triggers them (e.g., `"Bash"` to only match Bash tool use).
 
 ### Hint 3
 
-Here's a complete, working configuration with two hooks:
+Here's a complete, working configuration that reacts to your Level 3 spell:
 
 ```json
 {
   "hooks": {
-    "Stop": [
+    "UserPromptSubmit": [
       {
         "type": "command",
-        "command": "echo \"hero: Claude stopped at $(date)\" >> /tmp/hero-hook-log.txt"
-      }
-    ],
-    "PreToolUse": [
-      {
-        "type": "command",
-        "matcher": "Bash",
-        "command": "echo \"hero: Bash tool invoked\" >> /tmp/hero-hook-log.txt"
+        "matcher": "hero-spell",
+        "command": "echo \"hero: Magic Missile fired at $(date)\" >> /tmp/hero-hook-log.txt"
       }
     ]
   }
 }
 ```
 
-After adding this, have Claude do something (ask it a question, run a command) and then check `/tmp/hero-hook-log.txt` to confirm the hooks fired.
+On macOS, you can swap the echo for a system notification:
 
-To test: ask Claude a question, let it respond, then run `cat /tmp/hero-hook-log.txt`.
+```json
+{
+  "type": "command",
+  "matcher": "hero-spell",
+  "command": "osascript -e 'display notification \"hero: Magic Missile fired!\" with title \"Claude Code Hero\"'"
+}
+```
+
+To test: invoke `/hero-spell the goblin king` in Claude Code, then check `/tmp/hero-hook-log.txt` or watch for the notification. If the hook fired, you've wired an event to an action.
 
 ## Verification
 
@@ -117,7 +124,7 @@ To test: ask Claude a question, let it respond, then run `cat /tmp/hero-hook-log
 - Command: `grep -q "hero" ~/.claude/settings.json && echo "found" || echo "missing"` (checks that "hero" appears in the hooks section)
 - The file contains valid JSON
 - A `hooks` object exists at the top level
-- At least one event key exists inside `hooks` (e.g., `Stop`, `PreToolUse`, `PostToolUse`)
+- At least one event key exists inside `hooks` (e.g., `UserPromptSubmit`, `Stop`, `PreToolUse`, `PostToolUse`)
 - That event key maps to an array containing at least one hook object
 - The hook object contains both `type` and `command` fields
 - The `type` field is `"command"`
@@ -125,6 +132,8 @@ To test: ask Claude a question, let it respond, then run `cat /tmp/hero-hook-log
 
 ## Connection
 
-Your traps are set. Events trigger. Responses fire. The cavern hums with mechanisms that activate on their own, responding to moments you defined.
+Your traps are set. Events trigger. Responses fire. A spell from Level 3 now has a tripwire from Level 6. The cavern hums with mechanisms that activate on their own, responding to moments you defined.
 
-But look at what you've built so far. Commands. Styles. Permissions. Hooks. Individual pieces, each powerful alone. What if you could bundle them into something that activates on its own, without being asked? Not a trap. Not a spell. A living thing -- with knowledge, voice, and purpose that Claude summons when the moment is right.
+Look at what you've built so far. A command with `$ARGUMENTS`. An output style with a voice. A hook that reacts to the command. Each piece connects to the others. And the pattern keeps repeating.
+
+Next: knowledge that awakens on its own. Not a trap. Not a spell. Something that surfaces when the situation demands it, without being asked.

@@ -17,7 +17,17 @@ Plugins are how Claude Code's ecosystem grows. Someone else's workflow, packaged
 
 The final chamber. Not a dungeon. A workshop.
 
-Anvil. Forge. Workbench. Shelves lined with components you recognize: commands, skills, hooks, agents. You've built each one separately. Here, they become one thing.
+Anvil. Forge. Workbench. Shelves lined with components you recognize: commands, skills, hooks, agents, output styles. You've built each one separately. Here, they become one thing.
+
+Look at what's on the shelves. You already have:
+
+- A **command**: `hero-spell` -- your magic missile, with `$ARGUMENTS` for targeting
+- An **output style**: `hero-voice` -- the mask you forged in the Shapeshifter's chamber
+- A **hook**: the tripwire that reacts when your spell is cast
+- A **skill**: `hero-knowledge` -- your domain expertise, bound into a tome
+- An **agent**: `hero-agent` -- the companion you summoned
+
+Every one of those is a plugin component. You just didn't know it yet.
 
 A **plugin** is a directory with a `.claude-plugin/` folder inside it. That folder contains a `plugin.json` manifest -- the declaration of what this plugin is and what it provides. The components live alongside `.claude-plugin/` as top-level directories: `commands/`, `skills/`, `agents/`, `hooks/`, `output-styles/`.
 
@@ -27,11 +37,12 @@ Your task:
 
 - Create a new directory for your plugin (anywhere on your filesystem)
 - Inside it, create `.claude-plugin/plugin.json` with a `name` field containing "hero"
-- Add at least one component: a command, skill, agent, or hook
+- Copy (or recreate) your hero artifacts into the plugin's directory structure: `commands/hero-spell.md`, `output-styles/hero-voice.md`, `skills/hero-knowledge/SKILL.md`, `agents/hero-agent.md`
+- Add at least one component (copying all five is the full victory, but one is enough to pass)
 - Test it by running `claude --plugin-dir <path-to-your-plugin-directory>`
-- Verify Claude recognizes your component
+- Verify Claude recognizes your components
 
-You already know how to build every component type. You've done it. Now put one (or more) inside a plugin directory structure and watch it come alive as a distributable package.
+You already know how to build every component type. You've done it across five quests. Now bind them together and watch them come alive as a distributable package.
 
 ## Hints
 
@@ -61,45 +72,45 @@ The `plugin.json` manifest can be minimal. At its simplest:
 
 Other optional fields: `description`, `version`, `author`. But `name` (containing "hero") is all you need to start.
 
-Components go in their standard directories at the plugin root:
-- `commands/` for slash commands
-- `skills/` for skills (each in a subdirectory with `SKILL.md`)
-- `agents/` for agent definitions
-- `output-styles/` for output styles
+Components go in their standard directories at the plugin root -- the same directories your hero artifacts already live in:
+- `commands/hero-spell.md` -- your magic missile from Level 3
+- `output-styles/hero-voice.md` -- your voice from Level 5
+- `skills/hero-knowledge/SKILL.md` -- your domain expertise from Level 7
+- `agents/hero-agent.md` -- your companion from Level 8
 
 ### Hint 3
 
-Here's a complete minimal plugin with one command:
+Here's the full hero plugin structure with all your artifacts:
 
 ```
-my-plugin/
+hero-toolkit/
   .claude-plugin/
     plugin.json
   commands/
-    hello.md
+    hero-spell.md
+  output-styles/
+    hero-voice.md
+  skills/
+    hero-knowledge/
+      SKILL.md
+  agents/
+    hero-agent.md
 ```
 
 `plugin.json`:
 ```json
 {
   "name": "hero-toolkit",
-  "description": "My first Claude Code plugin",
+  "description": "My first Claude Code plugin -- assembled from quest artifacts",
   "version": "0.1.0"
 }
 ```
 
-`commands/hello.md`:
-```markdown
----
-description: A greeting from my first plugin
----
+You can copy your existing artifacts from `~/.claude/` into the plugin directory. They're the same files -- just organized under one roof.
 
-Say hello and introduce yourself as a component of the user's first plugin. Keep it brief.
-```
+To test: `claude --plugin-dir /path/to/hero-toolkit`
 
-To test: `claude --plugin-dir /path/to/my-plugin`
-
-Then try invoking your command or triggering your skill. If it works, you've built a plugin.
+Then try invoking `/hero-spell the dragon` or asking a question in your skill's domain. If it works, you've built a plugin from the components you forged across nine quests.
 
 ## Verification
 
@@ -119,7 +130,9 @@ Then try invoking your command or triggering your skill. If it works, you've bui
 
 The last rune locks into place. The artifact hums. It's whole.
 
-Look at what's on the workbench. Not just a plugin -- a pattern. The same pattern, repeated nine times in nine different forms. Frontmatter and content. Files in the right place. Structure as interface. You've been learning one idea from nine angles.
+Look at what's on the workbench. A command that fires magic missiles. A voice that shapes every response. A hook that reacts when the spell is cast. A skill that holds your expertise. An agent that acts on its own. And now a plugin that binds them all together.
+
+Everything you built across nine quests -- it was all plugin components. You just didn't know it yet.
 
 ---
 

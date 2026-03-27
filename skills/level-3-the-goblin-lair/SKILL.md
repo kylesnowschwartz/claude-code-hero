@@ -17,19 +17,19 @@ You descend a narrow staircase. The air thickens. Somewhere below, you hear them
 
 Your weapon against this horde: a **slash command**.
 
-Every spell needs a name. Yours is `hero-spell`. Create `~/.claude/commands/hero-spell.md`. It must have:
+Every spell needs a name. Yours is `hero-spell` -- but not just any spell. You're forging `/fire-magic-missile`. Create `~/.claude/commands/hero-spell.md`. It must have:
 
 - **YAML frontmatter** between `---` markers containing at least a `description` field
 - A **prompt body** below the frontmatter -- the actual instruction that runs when the command is invoked
+- **`$ARGUMENTS`** in the prompt body to accept a target
 
-The filename becomes the command name: `hero-spell.md` becomes `/hero-spell`. The content should do something you'd actually use. Some ideas:
+The filename becomes the command name: `hero-spell.md` becomes `/hero-spell`. But a spell without a target is just noise. Use `$ARGUMENTS` so the caster can aim. `/hero-spell the goblin king` should replace `$ARGUMENTS` with "the goblin king".
 
-- A code review command that checks for specific patterns
-- A commit message generator that follows your conventions
-- A test writer that matches your project's style
-- A refactoring assistant with your preferred approach
+Your command should generate a dramatic battle message when invoked. Something like: "Describe the casting and impact of a magic missile spell aimed at `$ARGUMENTS`. Be dramatic but brief -- three to four sentences. Include the sound it makes and what happens on impact."
 
-**Bonus objective**: Use `$ARGUMENTS` in your prompt body to accept dynamic input. This placeholder gets replaced with whatever the user types after the command name. `/hero-spell the auth module` would replace `$ARGUMENTS` with "the auth module".
+The content is fun, but the mechanism is real. `$ARGUMENTS` is how every serious slash command accepts dynamic input. You'll use this pattern for code review targets, file paths, branch names -- anything you'd pass as an argument.
+
+Hold onto this spell. You'll see it again.
 
 ## Hints
 
@@ -55,17 +55,15 @@ Here's a complete example:
 
 ```markdown
 ---
-description: Generate a conventional commit message for staged changes
+description: Fire a magic missile at a target with dramatic flair
 ---
 
-Look at the staged changes with `git diff --cached` and write a commit message following conventional commit format (feat:, fix:, refactor:, etc.).
+A magic missile streaks toward its target. Describe the casting and impact of a magic missile spell aimed at $ARGUMENTS.
 
-Keep the first line under 72 characters. Add a body only if the change needs explanation.
-
-$ARGUMENTS
+Be dramatic but brief -- three to four sentences. Include the sound it makes and what happens on impact. End with a one-line damage report.
 ```
 
-Your command should reflect something you'd genuinely use -- not this example verbatim.
+The `$ARGUMENTS` placeholder gets replaced with whatever follows the command name. `/hero-spell the goblin king` becomes "the goblin king" in the prompt body.
 
 ## Verification
 
@@ -79,11 +77,11 @@ Your command should reflect something you'd genuinely use -- not this example ve
 - The file has valid YAML frontmatter (content between `---` delimiters at the top)
 - Frontmatter contains at least a `description` field with a real description (not empty, not "test")
 - The body below the frontmatter contains a meaningful prompt
-- Bonus: uses `$ARGUMENTS` for dynamic input (noted but not required to pass)
+- The body uses `$ARGUMENTS` for dynamic input (the spell needs a target)
 
 ## Connection
 
-The goblins scatter. Where repetition once ruled, a single word now carries your intent.
+The goblins scatter. Where repetition once ruled, a single word now carries your intent. And that spell you just forged? Keep it close. It has a future you haven't seen yet.
 
 Notice the `---` markers at the top of your command? That incantation -- **YAML frontmatter** -- appears in every spell in this realm. Commands, output styles, skills, agents -- they all begin the same way. Remember this pattern. You'll see it again.
 
