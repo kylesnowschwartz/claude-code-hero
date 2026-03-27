@@ -1,3 +1,6 @@
 .agent-history/
 *.local.md
 *.local.json
+
+# Force-include agent for --agent CLI discovery
+!.claude/agents/
