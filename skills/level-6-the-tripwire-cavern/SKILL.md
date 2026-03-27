@@ -1,11 +1,11 @@
 ---
 name: level-6-the-tripwire-cavern
-description: "Claude Code Hero Level 6: The Tripwire Cavern -- add a working hook to settings.json"
+description: "Claude Code Hero Level 6: The Tripwire Cavern -- add a working hook to .claude/settings.json"
 ---
 
 ## Objective
 
-Add a working **hook** to `~/.claude/settings.json` that fires automatically on a Claude Code event.
+Add a working **hook** to `.claude/settings.json` that fires automatically on a Claude Code event.
 
 ## Why This Matters
 
@@ -19,7 +19,7 @@ You descend into a cavern. The floor is wrong. Pressure plates everywhere, conne
 
 This is the hook system.
 
-Hooks live in `~/.claude/settings.json` under the `hooks` key. Here's the structure:
+Hooks live in `.claude/settings.json` under the `hooks` key. Here's the structure:
 
 ```json
 {
@@ -50,7 +50,7 @@ The events are the moments hooks fire:
 
 There are others (`SessionStart`, `SessionEnd`, `Notification`), but these four cover most use cases.
 
-Remember the spell you forged in the Goblin Lair? `/hero-spell` -- your magic missile command. It's been sitting quietly in `~/.claude/commands/`, waiting to be invoked. Time to give it a tripwire.
+Remember the spell you forged in the Goblin Lair? `/hero-spell` -- your magic missile command. It's been sitting quietly in `.claude/commands/`, waiting to be invoked. Time to give it a tripwire.
 
 ### The script
 
@@ -71,7 +71,7 @@ The `$TARGET` variable is already set for you -- it's whatever the caster aimed 
 
 ### The config
 
-Once you've edited the script, wire it into `~/.claude/settings.json`:
+Once you've edited the script, wire it into `.claude/settings.json`:
 
 - Add a `hooks` object if one doesn't exist
 - Inside it, add a **`UserPromptSubmit`** key with an array containing one hook object
@@ -88,7 +88,7 @@ Hooks are hot-reloaded -- no restart needed. Type `/hero-spell the goblin king` 
 
 If you used the macOS notification, a system notification pops up. If you used the log file, check it: `cat /tmp/hero-hook-log.txt`. Either way, notice what *didn't* happen -- no API call. The hook intercepted the prompt, ran your command, and blocked it from reaching Claude. Zero tokens spent.
 
-If nothing happened, check two things: does `~/.claude/settings.json` have the `hooks.UserPromptSubmit` entry? Does the `command` path point to the actual location of `hero-hook.sh`?
+If nothing happened, check two things: does `.claude/settings.json` have the `hooks.UserPromptSubmit` entry? Does the `command` path point to the actual location of `hero-hook.sh`?
 
 That's the tripwire pattern. Event fires, script reacts, side effect happens, prompt never reaches the model.
 
@@ -142,7 +142,7 @@ When you're ready, run `/verify` to check your work.
 
 ### Config Check
 
-- `~/.claude/settings.json` must exist
+- `.claude/settings.json` must exist
 - A `hooks` object exists at the top level
 - `hooks.UserPromptSubmit` contains at least one hook object
 - The hook object has `type` set to `"command"`

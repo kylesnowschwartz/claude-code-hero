@@ -1,11 +1,11 @@
 ---
 name: level-8-the-summoners-circle
-description: "Claude Code Hero Level 8: The Summoner's Circle -- create an agent definition with frontmatter and system prompt"
+description: "Claude Code Hero Level 8: The Summoner's Circle -- create an agent at .claude/agents/hero-agent.md"
 ---
 
 ## Objective
 
-Create an **agent** at `~/.claude/agents/hero-agent.md` with agent frontmatter and a system prompt body.
+Create an **agent** at `.claude/agents/hero-agent.md` with agent frontmatter and a system prompt body.
 
 ## Why This Matters
 
@@ -23,7 +23,7 @@ Agents live as `.md` files. They can go in a project's `.claude/agents/` directo
 
 Your task:
 
-- Create `~/.claude/agents/hero-agent.md`
+- Create `.claude/agents/hero-agent.md`
 - Add **YAML frontmatter** with at least `name` and `description`
 - In the `description`, include at least one `<example>` block showing a user prompt that should trigger this agent
 - Write a **system prompt** in the body -- this is the agent's personality, purpose, and instructions
@@ -43,10 +43,10 @@ You can also test auto-dispatch: in a normal session, ask Claude something that 
 
 ### Hint 1
 
-An agent is a `.md` file in an `agents/` directory. Create yours at `~/.claude/agents/hero-agent.md`. The filename (minus `.md`) becomes how you reference the agent -- so this becomes `hero-agent`.
+An agent is a `.md` file in an `agents/` directory. Create yours at `.claude/agents/hero-agent.md`. The filename (minus `.md`) becomes how you reference the agent -- so this becomes `hero-agent`.
 
 ```
-~/.claude/agents/
+.claude/agents/
   hero-agent.md
 ```
 
@@ -76,8 +76,8 @@ When you're ready, run `/verify` to check your work.
 
 ### Filesystem Check
 
-- Path: `~/.claude/agents/hero-agent.md`
-- Command: `test -f ~/.claude/agents/hero-agent.md && echo "exists" || echo "missing"`
+- Path: `.claude/agents/hero-agent.md`
+- Command: `test -f .claude/agents/hero-agent.md && echo "exists" || echo "missing"`
 
 ### Content Check
 

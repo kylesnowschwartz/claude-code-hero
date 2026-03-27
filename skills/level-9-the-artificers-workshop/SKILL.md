@@ -76,7 +76,7 @@ The `plugin.json` manifest can be minimal:
 
 Other optional fields: `description`, `version`, `author`. But `name` (containing "hero") is all you need to start.
 
-Copy your existing hero artifacts from `~/.claude/` into the plugin's component directories. They're the same files, same format -- just organized under one roof.
+Copy your existing hero artifacts from `.claude/` into the plugin's component directories. They're the same files, same format -- just organized under one roof.
 
 ## Verification
 

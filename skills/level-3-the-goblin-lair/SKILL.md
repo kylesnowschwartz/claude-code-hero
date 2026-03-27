@@ -1,11 +1,11 @@
 ---
 name: level-3-the-goblin-lair
-description: "Claude Code Hero Level 3: The Goblin Lair of Commands -- create a custom slash command in ~/.claude/commands/"
+description: "Claude Code Hero Level 3: The Goblin Lair of Commands -- create a custom slash command in .claude/commands/"
 ---
 
 ## Objective
 
-Create a custom **slash command** at `~/.claude/commands/hero-spell.md` with valid YAML frontmatter and a useful prompt body.
+Create a custom **slash command** at `.claude/commands/hero-spell.md` with valid YAML frontmatter and a useful prompt body.
 
 ## Why This Matters
 
@@ -17,7 +17,7 @@ You descend a narrow staircase. The air thickens. Somewhere below, you hear them
 
 Your weapon against this horde: a **slash command**.
 
-Every spell needs a name. Yours is `hero-spell` -- but not just any spell. You're forging `/fire-magic-missile`. Create `~/.claude/commands/hero-spell.md`. It must have:
+Every spell needs a name. Yours is `hero-spell` -- but not just any spell. You're forging `/fire-magic-missile`. Create `.claude/commands/hero-spell.md`. It must have:
 
 - **YAML frontmatter** between `---` markers containing a `description` field and an `argument-hint` field
 - A **prompt body** below the frontmatter -- the actual instruction that runs when the command is invoked
@@ -39,7 +39,7 @@ Hold onto this spell. You'll see it again.
 
 ### Hint 1
 
-The file goes at `~/.claude/commands/hero-spell.md`. If the directory doesn't exist, create it. The filename (minus `.md`) becomes the command name -- so this becomes `/hero-spell`.
+The file goes at `.claude/commands/hero-spell.md`. If the directory doesn't exist, create it. The filename (minus `.md`) becomes the command name -- so this becomes `/hero-spell`.
 
 ### Hint 2
 
@@ -62,8 +62,8 @@ When you're ready, run `/verify` to check your work.
 
 ### Filesystem Check
 
-- Path: `~/.claude/commands/hero-spell.md`
-- Command: `test -f ~/.claude/commands/hero-spell.md && echo "exists" || echo "missing"`
+- Path: `.claude/commands/hero-spell.md`
+- Command: `test -f .claude/commands/hero-spell.md && echo "exists" || echo "missing"`
 
 ### Content Check
 

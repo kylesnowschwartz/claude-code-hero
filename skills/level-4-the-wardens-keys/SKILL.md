@@ -1,11 +1,11 @@
 ---
 name: level-4-the-wardens-keys
-description: "Claude Code Hero Level 4: The Warden's Keys -- configure permission rules in ~/.claude/settings.json"
+description: "Claude Code Hero Level 4: The Warden's Keys -- configure permission rules in .claude/settings.json"
 ---
 
 ## Objective
 
-Configure **permission rules** in `~/.claude/settings.json` to control what Claude Code can and cannot do without asking.
+Configure **permission rules** in `.claude/settings.json` to control what Claude Code can and cannot do without asking.
 
 ## Why This Matters
 
@@ -17,7 +17,7 @@ This is also the safety foundation for everything ahead. Hooks and agents need p
 
 You enter a chamber of locked doors. Dozens of them, floor to ceiling, each one carved with a name: **Bash**, **Write**, **Edit**, **WebFetch**, **mcp**. Behind every door, a power. And in the center of the room, a warden's desk. On it: a ledger.
 
-The ledger is `~/.claude/settings.json`. Every door in this chamber answers to it.
+The ledger is `.claude/settings.json`. Every door in this chamber answers to it.
 
 Three columns in the ledger. Three tiers of control:
 
@@ -27,7 +27,7 @@ Three columns in the ledger. Three tiers of control:
 
 Your task:
 
-Open `~/.claude/settings.json` (create it if it doesn't exist) and configure three rules that demonstrate all three tiers working together:
+Open `.claude/settings.json` (create it if it doesn't exist) and configure three rules that demonstrate all three tiers working together:
 
 1. **Allow** `Bash(git:*)` -- let Claude run git commands freely. This is the most common allow rule.
 2. **Ask** `Bash(git push:*)` -- pushes affect the remote. Claude should ask before pushing, even though git is broadly allowed.
@@ -52,7 +52,7 @@ Before you verify, test the layering. Ask Claude to run `git status` -- it shoul
 
 ### Hint 1
 
-The file lives at `~/.claude/settings.json`. If it doesn't exist yet, create it. The structure has three arrays:
+The file lives at `.claude/settings.json`. If it doesn't exist yet, create it. The structure has three arrays:
 
 ```json
 {
@@ -86,7 +86,7 @@ When you're ready, run `/verify` to check your work.
 
 ### Filesystem Check
 
-- Path: `~/.claude/settings.json`
+- Path: `.claude/settings.json`
 - The file must exist
 
 ### Content Checks

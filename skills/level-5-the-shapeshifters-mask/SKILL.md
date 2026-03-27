@@ -1,11 +1,11 @@
 ---
 name: level-5-the-shapeshifters-mask
-description: "Claude Code Hero Level 5: The Shapeshifter's Mask -- create a custom output style in ~/.claude/output-styles/"
+description: "Claude Code Hero Level 5: The Shapeshifter's Mask -- create a custom output style in .claude/output-styles/"
 ---
 
 ## Objective
 
-Create a custom **output style** at `~/.claude/output-styles/hero-voice.md` and activate it in your settings.
+Create a custom **output style** at `.claude/output-styles/hero-voice.md` and activate it in your settings.
 
 ## Why This Matters
 
@@ -23,7 +23,7 @@ Look at it: `output-styles/heroguide.md` in this plugin's directory. Open it. Re
 
 Now forge your own. Every mask needs a name. Yours is `hero-voice`.
 
-- Create `~/.claude/output-styles/hero-voice.md`
+- Create `.claude/output-styles/hero-voice.md`
 - Add **YAML frontmatter** with `name` and `description` fields between `---` markers
 - Write **style instructions** in the body -- tell Claude how to communicate
 - Activate your style using the `/config` menu
@@ -53,7 +53,7 @@ Once you're back in the session, ask Claude anything. The response should sound 
 
 ### Hint 1
 
-The file goes at `~/.claude/output-styles/hero-voice.md`. If the directory doesn't exist, create it.
+The file goes at `.claude/output-styles/hero-voice.md`. If the directory doesn't exist, create it.
 
 ### Hint 2
 
@@ -75,8 +75,8 @@ When you're ready, run `/verify` to check your work.
 
 ### Filesystem Check
 
-- Path: `~/.claude/output-styles/hero-voice.md`
-- Command: `test -f ~/.claude/output-styles/hero-voice.md && echo "exists" || echo "missing"`
+- Path: `.claude/output-styles/hero-voice.md`
+- Command: `test -f .claude/output-styles/hero-voice.md && echo "exists" || echo "missing"`
 
 ### Content Check
 

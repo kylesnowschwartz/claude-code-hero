@@ -1,11 +1,11 @@
 ---
 name: level-2-the-tome
-description: "Claude Code Hero Level 2: The Tome of First Instructions -- create ~/.claude/CLAUDE.md with real personal instructions"
+description: "Claude Code Hero Level 2: The Tome of First Instructions -- create .claude/CLAUDE.md with real personal instructions"
 ---
 
 ## Objective
 
-Create or update `~/.claude/CLAUDE.md` with a `## Hero's Decree` section containing at least three real instructions you want Claude to follow in every session.
+Create or update `.claude/CLAUDE.md` with a `## Hero's Decree` section containing at least three real instructions you want Claude to follow in every session.
 
 ## Why This Matters
 
@@ -17,7 +17,7 @@ Deep in the Map Room, behind a case you overlooked the first time, you find an e
 
 This is your **CLAUDE.md** -- a file that Claude reads before every session. Your task: inscribe your first decree.
 
-Every ruler names their laws. Yours will live under a heading called `## Hero's Decree`. Create `~/.claude/CLAUDE.md` (or open it if it already exists) and add a section with that exact heading. Inside it, write at least three directives that reflect how you actually want Claude to behave. These should be real preferences, not placeholders.
+Every ruler names their laws. Yours will live under a heading called `## Hero's Decree`. Create `.claude/CLAUDE.md` (or open it if it already exists) and add a section with that exact heading. Inside it, write at least three directives that reflect how you actually want Claude to behave. These should be real preferences, not placeholders.
 
 - **Coding style**: tabs or spaces? Naming conventions? Framework preferences?
 - **Communication**: terse or detailed? Should Claude ask before making changes? How should it handle uncertainty?
@@ -35,7 +35,7 @@ Before you verify, test your decree. Type `/exit` to end this session, then run 
 
 ### Hint 1
 
-The file goes at `~/.claude/CLAUDE.md`. Plain Markdown. No special syntax required -- just write what you want Claude to do.
+The file goes at `.claude/CLAUDE.md`. Plain Markdown. No special syntax required -- just write what you want Claude to do.
 
 ### Hint 2
 
@@ -61,12 +61,12 @@ When you're ready, run `/verify` to check your work.
 
 ### Filesystem Check
 
-- Path: `~/.claude/CLAUDE.md`
-- Command: `test -f ~/.claude/CLAUDE.md && echo "exists" || echo "missing"`
+- Path: `.claude/CLAUDE.md`
+- Command: `test -f .claude/CLAUDE.md && echo "exists" || echo "missing"`
 
 ### Content Check
 
-- Command: `grep -q "Hero's Decree" ~/.claude/CLAUDE.md && echo "found" || echo "missing"`
+- Command: `grep -q "Hero's Decree" .claude/CLAUDE.md && echo "found" || echo "missing"`
 - The file contains a `## Hero's Decree` section (exact heading text)
 - The section contains at least three distinct directives (separate instructions, not one instruction spread across three lines)
 - Content reflects real preferences, not placeholder text like "hello", "test", or "asdf"

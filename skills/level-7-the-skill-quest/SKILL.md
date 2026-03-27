@@ -1,11 +1,11 @@
 ---
 name: level-7-the-skill-quest
-description: "Claude Code Hero Level 7: The Skill Quest of Doom -- create a skill directory with SKILL.md in ~/.claude/skills/"
+description: "Claude Code Hero Level 7: The Skill Quest of Doom -- create a skill directory with SKILL.md in .claude/skills/"
 ---
 
 ## Objective
 
-Create a **skill** at `~/.claude/skills/hero-knowledge/SKILL.md` with real domain knowledge inside it.
+Create a **skill** at `.claude/skills/hero-knowledge/SKILL.md` with real domain knowledge inside it.
 
 ## Why This Matters
 
@@ -27,7 +27,7 @@ Pick a domain you know well. It could be a language, a framework, a workflow, an
 
 Then forge it:
 
-- Create `~/.claude/skills/hero-knowledge/SKILL.md`
+- Create `.claude/skills/hero-knowledge/SKILL.md`
 - Add **YAML frontmatter** with `name` and `description` fields. The `name` should match the directory name (`hero-knowledge`), and the `description` is what Claude reads to decide when this skill is relevant, so write it like a trigger condition
 - Write the skill body: the knowledge, patterns, conventions, or instructions Claude should follow when this domain comes up
 The `description` field does the heavy lifting. It tells Claude when to reach for this knowledge. "Use when writing Ruby test files" is specific. "Ruby stuff" is not. Write it like you're telling a colleague when to open a particular reference doc.
@@ -48,10 +48,10 @@ Skills have two invocation paths: explicit (`/skill-name`) and auto-activation (
 
 ### Hint 1
 
-A skill is a folder inside `~/.claude/skills/` containing a `SKILL.md` file:
+A skill is a folder inside `.claude/skills/` containing a `SKILL.md` file:
 
 ```
-~/.claude/skills/
+.claude/skills/
   hero-knowledge/
     SKILL.md
 ```
@@ -77,8 +77,8 @@ When you're ready, run `/verify` to check your work.
 
 ### Filesystem Check
 
-- Path: `~/.claude/skills/hero-knowledge/SKILL.md`
-- Command: `test -f ~/.claude/skills/hero-knowledge/SKILL.md && echo "exists" || echo "missing"`
+- Path: `.claude/skills/hero-knowledge/SKILL.md`
+- Command: `test -f .claude/skills/hero-knowledge/SKILL.md && echo "exists" || echo "missing"`
 
 ### Content Check
 
