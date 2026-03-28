@@ -72,6 +72,10 @@ When you're ready, run `/verify` to check your work.
 - Content reflects real preferences, not placeholder text like "hello", "test", or "asdf"
 - The bar is intent: if the learner wrote instructions they actually plan to use, it passes
 
+## Further Reading
+
+- [Memory and CLAUDE.md](https://docs.anthropic.com/en/docs/claude-code/memory) -- official docs on CLAUDE.md files, instruction hierarchy, and auto memory
+
 ## Connection
 
 Your words are now law. Every session, Claude reads your decree first.

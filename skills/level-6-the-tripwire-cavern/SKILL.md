@@ -153,6 +153,10 @@ When you're ready, run `/verify` to check your work.
 - `scripts/hero-hook.sh` in the plugin directory must NOT contain `REPLACE_ME`
 - The script must contain the word `hero` (your replacement command)
 
+## Further Reading
+
+- [Hooks](https://docs.anthropic.com/en/docs/claude-code/hooks) -- official docs on hook events, configuration, input/output formats, and automation patterns
+
 ## Connection
 
 Your traps are set. Events trigger. Responses fire. A spell from Level 3 now has a tripwire from Level 6. The cavern hums with mechanisms that activate on their own, responding to moments you defined.

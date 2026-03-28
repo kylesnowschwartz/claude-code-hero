@@ -126,6 +126,10 @@ And in `settings.local.json`:
 
 4. A `permissions` key exists (with at least one rule of your choice)
 
+## Further Reading
+
+- [Permissions](https://docs.anthropic.com/en/docs/claude-code/permissions) -- official docs on the permission system, rule syntax, and permission modes
+
 ## Connection
 
 The keys are yours. The shared ledger sets the party's rules; your personal journal overrides them where you need to. Two files, one cascade -- team policy flows through `settings.json`, personal amendments through `settings.local.json`.

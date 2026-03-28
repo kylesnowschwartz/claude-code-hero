@@ -102,6 +102,10 @@ Look at what's on the workbench. A command that fires magic missiles. A rule tha
 
 Everything you built across nine quests -- it was all plugin components. You just didn't know it yet.
 
+## Further Reading
+
+- [Plugins](https://docs.anthropic.com/en/docs/claude-code/plugins) -- official docs on plugin structure, development, and distribution
+
 ---
 
 Nine chambers. Nine trials. Each one a power claimed, a pattern learned, a tool forged.

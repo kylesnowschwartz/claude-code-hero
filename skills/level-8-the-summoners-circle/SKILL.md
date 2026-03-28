@@ -89,6 +89,10 @@ When you're ready, run `/verify` to check your work.
 - Frontmatter contains `name`, `description`, `color`, `model`, and `tools` fields
 - The `description` includes at least one `<example>` block
 
+## Further Reading
+
+- [Subagents](https://docs.anthropic.com/en/docs/claude-code/sub-agents) -- official docs on creating agents, frontmatter fields, tool restrictions, and permission modes
+
 ## Connection
 
 The circle glows. Something stirs inside it -- your creation. It has a name, a purpose, and the autonomy to act on both.

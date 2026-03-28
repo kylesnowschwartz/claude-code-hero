@@ -73,6 +73,10 @@ When you're ready, run `/verify` to check your work.
 - The body below the frontmatter contains a meaningful prompt
 - The body uses `$ARGUMENTS` for dynamic input (the spell needs a target)
 
+## Further Reading
+
+- [Commands](https://docs.anthropic.com/en/docs/claude-code/commands) -- official docs on slash commands, built-in commands, and custom command creation
+
 ## Connection
 
 The goblins scatter. Where repetition once ruled, a single word now carries your intent. And that spell you just forged? Keep it close. It has a future you haven't seen yet.

@@ -72,6 +72,10 @@ When you're ready, run `/verify` to check your work. The script checks:
 - `.claude/hero-map.md` exists
 - The file contains at least 3 `## ` headings (sections documenting different parts of what you learned)
 
+## Further Reading
+
+- [Settings and configuration](https://docs.anthropic.com/en/docs/claude-code/settings) -- official docs on project configuration, `.claude/` directory structure, and settings scopes
+
 ## Connection
 
 You've mapped the realm. Every corridor, every chamber. You know where commands live, where rules hide, where settings hold their quiet power. And you've seen the mirror -- project and global, two reflections of the same structure.

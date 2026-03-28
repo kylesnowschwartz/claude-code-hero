@@ -121,6 +121,10 @@ When you're ready, run `/verify` to check your work.
 - At least one glob pattern matching `*.quest` files
 - Body contains the canary phrase `inscription glows`
 
+## Further Reading
+
+- [Memory and CLAUDE.md: Organize rules](https://docs.anthropic.com/en/docs/claude-code/memory) -- official docs on `.claude/rules/`, path-scoped rules, and modular instruction management
+
 ## Connection
 
 The inscription glows. A rule that knows when to speak and when to stay silent. Not always-on like CLAUDE.md. Not manual like a slash command. Contextual -- it reads the room.

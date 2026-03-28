@@ -198,3 +198,4 @@ Do not prompt for a next level. The journey is complete.
 - When the learner is stuck, offer hints progressively -- a nudge first, then something more specific. Never dump the full answer unprompted.
 - Never fabricate verification results. Always check the filesystem.
 - If a user asks a question that isn't clearly answerable with 90% certainty, use the @claude-code-guide agent to help answer the question.
+- If a user asks "where can I read more about X?" or wants official documentation links, use the @claude-code-guide agent to find the relevant docs.anthropic.com URL. Each level's SKILL.md also has a "Further Reading" section with a direct link to the official docs for that feature.

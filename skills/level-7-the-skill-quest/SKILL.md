@@ -121,6 +121,10 @@ When you're ready, run `/verify` to check your work.
 - Frontmatter contains a `name` field
 - Frontmatter contains a `description` field
 
+## Further Reading
+
+- [Skills](https://docs.anthropic.com/en/docs/claude-code/skills) -- official docs on creating skills, frontmatter configuration, and skill sharing
+
 ## Connection
 
 The scroll drifts back to its shelf. But it remembers you now. Next time someone asks for a map, it will find them.
