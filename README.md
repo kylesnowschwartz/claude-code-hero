@@ -1,14 +1,20 @@
 # Claude Code Hero
 
-Learn Claude Code by playing a dungeon crawler. Nine quests, nine real artifacts you keep.
+![A pixel art dungeon with Clawd, the Claude Code mascot, standing next to a treasure chest](docs/banner.jpg)
+
+You know the basics. Chat, CLAUDE.md, maybe a prompt or two. But there are deeper chambers -- commands, hooks, agents, skills, plugins -- and most who wield Claude Code never find them.
+
+This is the dungeon that teaches you how.
+
+Nine quests. Each one builds a real artifact on your machine. The artifacts connect -- the spell you forge in Level 3 gets a tripwire in Level 6, and everything binds together in Level 9. You start by mapping the filesystem. You end by building your own plugin.
+
+The medium is the message: you learn about plugins by using one.
 
 <!-- TODO: Record demo gif and uncomment: ![Demo](docs/demo.gif) -->
 
-## Why
+## Before You Enter
 
-I built this for colleagues who wanted to learn Claude Code but kept bouncing off the docs. Most people plateau at basic chat and CLAUDE.md -- commands, hooks, agents, and plugins go untouched. So I made a D&D-themed quest system that teaches each feature by having you build something real with it. Turns out a dungeon master is a good format for guided learning.
-
-## Install
+You'll need three things. The install script checks for all of them and offers to fetch what's missing.
 
 ```bash
 git clone https://github.com/kylesnowschwartz/claude-code-hero.git
@@ -16,26 +22,26 @@ cd claude-code-hero
 bash scripts/install.sh
 ```
 
-The install script checks for dependencies and offers to install anything missing:
-
-| Dependency | What it does | Install source |
+| Dependency | Purpose | Install source |
 |---|---|---|
 | [Ruby](https://www.ruby-lang.org/en/documentation/installation/) | Runs the game engine | Homebrew / apt |
 | [jq](https://jqlang.org/download/) | Parses JSON in hook scripts | Homebrew / apt |
-| [Claude Code](https://docs.anthropic.com/en/docs/claude-code/getting-started) | The CLI you're learning | Official installer |
+| [Claude Code](https://docs.anthropic.com/en/docs/claude-code/getting-started) | The CLI you're here to master | Official installer |
 
-macOS and Linux supported. Windows users: use WSL.
+macOS and Linux. Windows users: WSL.
 
-## Play
+## Enter the Dungeon
 
 ```bash
 $ claude --plugin-dir . --agent dungeon-master
 ```
 
-## The Nine Quests
+A guide will meet you at the entrance.
 
-| Quest | Name | You Learn |
-|-------|------|-----------|
+## The Nine Chambers
+
+| Quest | Chamber | What You Learn |
+|-------|---------|----------------|
 | 1 | The Map Room | The `.claude/` directory |
 | 2 | The Tome of First Instructions | `CLAUDE.md` |
 | 3 | The Goblin Lair of Commands | Slash commands |
@@ -46,21 +52,19 @@ $ claude --plugin-dir . --agent dungeon-master
 | 8 | The Summoner's Circle | Agents |
 | 9 | The Artificer's Workshop | Plugins |
 
-Each quest produces a real artifact on your filesystem. Artifacts from earlier quests feed into later ones -- the spell you build in Level 3 gets a hook in Level 6, and everything bundles into a plugin in Level 9.
-
-## Commands
+## Commands at Your Belt
 
 | Command | What it does |
 |---|---|
-| `/hero-status` | Show quest progress |
-| `/restart` | Wipe all artifacts and start over |
-| `/verify` | Check if your current quest is complete |
+| `/hero-status` | Unroll the quest log |
+| `/restart` | Wipe all artifacts and return to the entrance |
+| `/verify` | Test whether your current quest is complete |
 
-## How It Works
+## How Progress Works
 
-Progress saves to `.claude/claude-code-hero.json`. The plugin loads a dungeon master agent that guides you through each quest, verifies your work programmatically, and advances you to the next level. Already have a `CLAUDE.md` or existing hooks? The system recognizes prior work.
+Your journey saves to `.claude/claude-code-hero.json`. The dungeon master verifies your work programmatically and advances you when you pass. Already have a `CLAUDE.md` or existing hooks? Never fear, only the local .claude/ directory is touched.
 
-Resume anytime: `claude --plugin-dir . --agent dungeon-master`
+Left mid-quest? Walk back in anytime and resume your quest: `claude --plugin-dir . --agent dungeon-master`
 
 ## License
 
