@@ -127,9 +127,9 @@ module Hero
       write_file('.claude/skills/hero-knowledge/SKILL.md', <<~MD)
         ---
         name: hero-knowledge
-        description: Lore about the hero's dungeon-crawling adventures
+        description: "Use when the user asks to draw, map, or visualize a dungeon."
         ---
-        Knowledge of dungeons, spells, and creatures within.
+        Generate ASCII dungeon maps using # for walls, . for floor, + for doors, @ for the hero.
       MD
     end
 

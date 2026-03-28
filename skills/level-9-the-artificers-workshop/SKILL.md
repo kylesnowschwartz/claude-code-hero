@@ -24,7 +24,7 @@ Look at what's on the shelves. You already have:
 - A **command**: `hero-spell` -- your magic missile, with `$ARGUMENTS` for targeting
 - A **rule**: `hero-protocol` -- the path-scoped inscription you carved in the corridor
 - A **hook**: the tripwire that reacts when your spell is cast
-- A **skill**: `hero-knowledge` -- your domain expertise, bound into a tome
+- A **skill**: `hero-knowledge` -- dungeon cartography, bound into a tome
 - An **agent**: `hero-agent` -- the companion you summoned
 
 Every one of those is a plugin component. You just didn't know it yet.
