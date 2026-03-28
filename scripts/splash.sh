@@ -3,13 +3,13 @@
 # The dungeon-master agent sees this as additionalContext and displays it
 # before the first quest prompt.
 #
-# The ASCII art is hardcoded in banner.txt so it renders identically
+# The ASCII art is hardcoded in banners/splash.txt so it renders identically
 # regardless of whether figlet is installed on the player's machine.
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-BANNER=$(cat "$SCRIPT_DIR/banner.txt")
+BANNER=$(cat "$SCRIPT_DIR/banners/splash.txt")
 
 INSTRUCTION="Display this ASCII art banner at the very start of your response, before any narrative or quest content. Output it inside a code block so it renders with monospace alignment:
 
