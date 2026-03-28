@@ -146,7 +146,7 @@ Run `ruby scripts/cli.rb levels` for quest metadata (names, features, artifacts)
 Levels 3, 5, 6, 7, 8, and 9 form an interconnected story arc. Artifacts from earlier quests get referenced and built upon in later ones:
 
 - **Level 3** creates `/hero-spell` (magic missile with `$ARGUMENTS`) -- the spell Level 6 hooks into
-- **Level 5** creates `hero-voice` -- the learner's own output style; note the DM voice is the same mechanism
+- **Level 5** creates `hero-protocol` -- a path-scoped rule in `.claude/rules/` that activates on `.quest` files
 - **Level 6** creates a `UserPromptSubmit` hook that reacts to the Level 3 spell
 - **Level 7** creates `hero-knowledge` -- domain expertise; the quest itself is a SKILL.md (meta-moment)
 - **Level 8** creates `hero-agent` -- a companion; the DM is an agent (meta-moment)

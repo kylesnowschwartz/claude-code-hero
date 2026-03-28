@@ -4,21 +4,23 @@ require_relative 'test_helper'
 require 'hero'
 
 class Level5Test < HeroTestCase
-  VOICE = '.claude/output-styles/hero-voice.md'
+  PROTOCOL = '.claude/rules/hero-protocol.md'
 
-  def valid_voice
+  def valid_protocol
     <<~MD
       ---
-      name: Hero Voice
-      description: Speak like a dungeon master
+      paths:
+        - "*.quest"
       ---
 
-      You speak in the voice of an ancient sage.
+      Quest log files (.quest) are in-world artifacts written by the hero.
+      When summarizing or discussing quest log content, stay in the D&D voice
+      and open with "HERO PROTOCOL ACTIVE" before the summary.
     MD
   end
 
   def test_verify_passes_with_valid_artifact
-    write_file(VOICE, valid_voice)
+    write_file(PROTOCOL, valid_protocol)
     passed, = Hero::Level5.new.verify
     assert passed
   end
@@ -29,28 +31,35 @@ class Level5Test < HeroTestCase
     assert_match(/Missing file/, msg)
   end
 
-  def test_verify_fails_without_name
-    write_file(VOICE, "---\ndescription: a voice\n---\n")
+  def test_verify_fails_without_paths
+    write_file(PROTOCOL, "---\nfoo: bar\n---\n[HERO PROTOCOL ACTIVE]\n")
     passed, msg = Hero::Level5.new.verify
     refute passed
-    assert_match(/name/, msg)
+    assert_match(/paths/, msg)
   end
 
-  def test_verify_fails_without_description
-    write_file(VOICE, "---\nname: Hero Voice\n---\n")
+  def test_verify_fails_without_quest_glob
+    write_file(PROTOCOL, "---\npaths:\n  - \"*.rb\"\n---\n[HERO PROTOCOL ACTIVE]\n")
     passed, msg = Hero::Level5.new.verify
     refute passed
-    assert_match(/description/, msg)
+    assert_match(/quest/, msg)
+  end
+
+  def test_verify_fails_without_canary
+    write_file(PROTOCOL, "---\npaths:\n  - \"*.quest\"\n---\nSome instructions.\n")
+    passed, msg = Hero::Level5.new.verify
+    refute passed
+    assert_match(/HERO PROTOCOL ACTIVE/, msg)
   end
 
   def test_clean_removes_file
-    path = write_file(VOICE, valid_voice)
+    path = write_file(PROTOCOL, valid_protocol)
     Hero::Level5.new.clean
     refute File.exist?(path)
   end
 
   def test_clean_dry_run_preserves_file
-    path = write_file(VOICE, valid_voice)
+    path = write_file(PROTOCOL, valid_protocol)
     Hero::Level5.new(dry_run: true).clean
     assert File.exist?(path)
   end

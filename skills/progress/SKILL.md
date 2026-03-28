@@ -64,5 +64,5 @@ If all nine levels are in `completed` (or `current_level` >= 10), skip the table
 ## Guidelines
 
 - Keep the whole response concise. The quest log should feel satisfying to look at, not tedious to read.
-- Use the output style from `output-styles/heroguide.md` for voice and formatting.
+- Use the heroguide voice for formatting and tone.
 - Drop character for exact dates and status values in the table. Resume voice immediately around it.

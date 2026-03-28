@@ -1,0 +1,13 @@
+# Quest Log
+
+## Entry 1: The Map Room
+Mapped the .claude/ directory. Found settings, commands, agents.
+
+## Entry 2: The Tome
+Wrote a Hero's Decree in CLAUDE.md. Three directives, clear and sharp.
+
+## Entry 3: The Goblin Lair
+Forged /hero-spell. YAML frontmatter, $ARGUMENTS, the works.
+
+## Entry 4: The Warden's Keys
+Configured allow/ask/deny permission tiers in settings.json.

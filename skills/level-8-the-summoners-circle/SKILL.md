@@ -93,7 +93,7 @@ The circle glows. Something stirs inside it -- your creation. It has a name, a p
 
 The guide leading you through these quests? That's an agent. `heroguide.md`. You've been talking to one this entire time. Same frontmatter. Same markdown body. Same pattern.
 
-Now count the artifacts on your belt. A command (`hero-spell`). A voice (`hero-voice`). A hook that connects them. A skill (`hero-knowledge`). And now an agent (`hero-agent`). Five components. Each one a different kind of power.
+Now count the artifacts on your belt. A command (`hero-spell`). A rule (`hero-protocol`). A hook that connects them. A skill (`hero-knowledge`). And now an agent (`hero-agent`). Five components. Each one a different kind of power.
 
 What if you could bind them all together into a single artifact? A package that anyone could install and use?
 

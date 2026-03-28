@@ -157,6 +157,6 @@ When you're ready, run `/verify` to check your work.
 
 Your traps are set. Events trigger. Responses fire. A spell from Level 3 now has a tripwire from Level 6. The cavern hums with mechanisms that activate on their own, responding to moments you defined.
 
-Look at what you've built so far. A command with `$ARGUMENTS`. An output style with a voice. A hook that reacts to the command. Each piece connects to the others. And the pattern keeps repeating.
+Look at what you've built so far. A command with `$ARGUMENTS`. A rule that activates by path. A hook that reacts to the command. Each piece connects to the others. And the pattern keeps repeating.
 
 Next: knowledge that awakens on its own. Not a trap. Not a spell. Something that surfaces when the situation demands it, without being asked.

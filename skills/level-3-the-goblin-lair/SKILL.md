@@ -77,6 +77,6 @@ When you're ready, run `/verify` to check your work.
 
 The goblins scatter. Where repetition once ruled, a single word now carries your intent. And that spell you just forged? Keep it close. It has a future you haven't seen yet.
 
-Notice the `---` markers at the top of your command? That incantation -- **YAML frontmatter** -- appears in every spell in this realm. Commands, output styles, skills, agents -- they all begin the same way. Remember this pattern. You'll see it again.
+Notice the `---` markers at the top of your command? That incantation -- **YAML frontmatter** -- appears in every spell in this realm. Commands, rules, skills, agents -- they all begin the same way. Remember this pattern. You'll see it again.
 
 Next, you'll learn who holds the keys to what powers flow through this realm.

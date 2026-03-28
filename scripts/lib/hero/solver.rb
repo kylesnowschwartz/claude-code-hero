@@ -12,7 +12,7 @@ module Hero
       2 => :solve_2_tome,
       3 => :solve_3_commands,
       4 => :solve_4_permissions,
-      5 => :solve_5_output_style,
+      5 => :solve_5_rules,
       6 => :solve_6_hooks,
       7 => :solve_7_skills,
       8 => :solve_8_agents,
@@ -79,13 +79,16 @@ module Hero
       append_unique(data['permissions']['deny'], 'Bash(git push --force:*)')
     end
 
-    def self.solve_5_output_style
-      write_file('.claude/output-styles/hero-voice.md', <<~MD)
+    def self.solve_5_rules
+      write_file('.claude/rules/hero-protocol.md', <<~MD)
         ---
-        name: Hero Voice
-        description: Speaks like a battle-worn adventurer with dry wit
+        paths:
+          - "*.quest"
         ---
-        Respond as a seasoned dungeon crawler. Direct and practical.
+
+        Quest log files (.quest) are in-world artifacts written by the hero.
+        When summarizing or discussing quest log content, stay in the D&D voice
+        and open with "HERO PROTOCOL ACTIVE" before the summary.
       MD
     end
 

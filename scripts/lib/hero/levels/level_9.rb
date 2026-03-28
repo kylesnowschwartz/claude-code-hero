@@ -8,7 +8,7 @@ module Hero
     artifact 'plugin.json'
 
     CANDIDATES = %w[hero-toolkit hero-plugin claude-code-hero-plugin].freeze
-    COMPONENT_DIRS = %w[commands skills agents hooks].freeze
+    COMPONENT_DIRS = %w[commands skills agents hooks rules].freeze
 
     verify do
       manifest, plugin_dir = find_hero_plugin

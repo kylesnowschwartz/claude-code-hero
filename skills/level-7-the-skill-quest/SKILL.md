@@ -9,7 +9,7 @@ Create a **skill** at `.claude/skills/hero-knowledge/SKILL.md` with real domain 
 
 ## Why This Matters
 
-Commands wait to be called by name. Output styles shape every word. But skills are something different. They're knowledge that activates on its own. Claude reads the description, recognizes the moment, and summons the skill without being asked.
+Commands wait to be called by name. Rules activate by file path. But skills are something different. They're knowledge that activates on its own. Claude reads the description, recognizes the moment, and summons the skill without being asked.
 
 Think of it this way: a slash command is a spell you cast. A skill is instinct -- expertise that surfaces when the situation demands it. You don't invoke a skill. You create the conditions, and it appears.
 
@@ -95,6 +95,6 @@ Stop for a moment. Look at what you just built. A directory. A `SKILL.md`. Front
 
 The quest you're reading right now? It's a `SKILL.md`. The verification that checks your work? Also a `SKILL.md`. You just forged the same thing that's been guiding you through this dungeon. The sage builds with the same tools the sage was built from.
 
-Count the artifacts on your belt. A command (`hero-spell`). A voice (`hero-voice`). A hook that connects them. And now a skill (`hero-knowledge`). Four components. Each one built with the same frontmatter pattern. Each one a different kind of power.
+Count the artifacts on your belt. A command (`hero-spell`). A rule (`hero-protocol`). A hook that connects them. And now a skill (`hero-knowledge`). Four components. Each one a different kind of power.
 
 One more companion to summon before the final forge.

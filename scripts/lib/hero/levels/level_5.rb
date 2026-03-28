@@ -3,20 +3,21 @@
 module Hero
   class Level5 < Level
     number   5
-    name     "The Shapeshifter's Mask"
-    feature  'Output styles'
-    artifact '.claude/output-styles/hero-voice.md'
+    name     'The Enchanted Inscription'
+    feature  'Rules'
+    artifact '.claude/rules/hero-protocol.md'
 
-    VOICE = '.claude/output-styles/hero-voice.md'
+    PROTOCOL = '.claude/rules/hero-protocol.md'
 
     verify do
-      file_exists VOICE
-      grep_match VOICE, 'name:'
-      grep_match VOICE, 'description:'
+      file_exists PROTOCOL
+      grep_match PROTOCOL, 'paths:'
+      grep_match PROTOCOL, '\*\.quest'
+      grep_match PROTOCOL, 'HERO PROTOCOL ACTIVE'
     end
 
     clean do
-      remove_file VOICE
+      remove_file PROTOCOL
     end
   end
 end
