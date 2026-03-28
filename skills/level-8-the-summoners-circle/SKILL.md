@@ -35,9 +35,11 @@ Optionally, add a `disallowedTools` field to the frontmatter to restrict what th
 
 ### Try it
 
-Launch your agent directly: `claude --agent hero-agent`. This starts a new Claude session with your agent's system prompt loaded. Give it a task in its domain and watch it work as an autonomous subprocess. Type `/exit` when you're done, then `claude --continue` to come back here.
+Summon your agent right here in this session: type `@hero-agent` followed by a task in its domain. The `@agent-name` syntax dispatches the agent as a subprocess -- it works with its own system prompt, completes the task, and returns the result to you.
 
-You can also test auto-dispatch: in a normal session, ask Claude something that matches one of your `<example>` prompts. If Claude spawns the agent, your description and examples are working.
+You can also launch it as a standalone session: `claude --agent hero-agent`. That starts a fresh Claude session with your agent's system prompt loaded.
+
+To test auto-dispatch: ask Claude something that matches one of your `<example>` prompts without using `@`. If Claude spawns the agent on its own, your description and examples are working.
 
 ## Hints
 
