@@ -13,6 +13,9 @@ class Level8Test < HeroTestCase
       name: hero-agent
       description: A brave hero agent
       color: green
+      model: haiku
+      allowedTools:
+        - Read
       ---
 
       You are a hero.
@@ -22,6 +25,23 @@ class Level8Test < HeroTestCase
       assistant: I shall guide you.
       </example>
     MD
+  end
+
+  def agent_without(field)
+    fields = {
+      'name' => 'name: hero-agent',
+      'description' => 'description: A hero',
+      'color' => 'color: green',
+      'model' => 'model: haiku',
+      'allowedTools' => "allowedTools:\n  - Read"
+    }
+    fields.delete(field)
+    "---\n#{fields.values.join("\n")}\n---\n<example>\nfoo\n</example>\n"
+  end
+
+  def agent_without_example
+    "---\nname: hero-agent\ndescription: A hero\ncolor: green\n" \
+      "model: haiku\nallowedTools:\n  - Read\n---\nNo examples.\n"
   end
 
   def test_verify_passes_with_user_agent
@@ -45,28 +65,42 @@ class Level8Test < HeroTestCase
   end
 
   def test_verify_fails_without_name
-    write_file(USER_AGENT, "---\ndescription: A hero\ncolor: green\n---\n<example>\nfoo\n</example>\n")
+    write_file(USER_AGENT, agent_without('name'))
     passed, msg = Hero::Level8.new.verify
     refute passed
     assert_match(/name/, msg)
   end
 
   def test_verify_fails_without_description
-    write_file(USER_AGENT, "---\nname: hero-agent\ncolor: green\n---\n<example>\nfoo\n</example>\n")
+    write_file(USER_AGENT, agent_without('description'))
     passed, msg = Hero::Level8.new.verify
     refute passed
     assert_match(/description/, msg)
   end
 
   def test_verify_fails_without_color
-    write_file(USER_AGENT, "---\nname: hero-agent\ndescription: A hero\n---\n<example>\nfoo\n</example>\n")
+    write_file(USER_AGENT, agent_without('color'))
     passed, msg = Hero::Level8.new.verify
     refute passed
     assert_match(/color/, msg)
   end
 
+  def test_verify_fails_without_model
+    write_file(USER_AGENT, agent_without('model'))
+    passed, msg = Hero::Level8.new.verify
+    refute passed
+    assert_match(/model/, msg)
+  end
+
+  def test_verify_fails_without_allowed_tools
+    write_file(USER_AGENT, agent_without('allowedTools'))
+    passed, msg = Hero::Level8.new.verify
+    refute passed
+    assert_match(/allowedTools/, msg)
+  end
+
   def test_verify_fails_without_example
-    write_file(USER_AGENT, "---\nname: hero-agent\ndescription: A hero\ncolor: green\n---\nNo examples.\n")
+    write_file(USER_AGENT, agent_without_example)
     passed, msg = Hero::Level8.new.verify
     refute passed
     assert_match(/example/, msg)

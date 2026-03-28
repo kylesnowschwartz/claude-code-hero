@@ -134,17 +134,25 @@ module Hero
     end
 
     def self.solve_8_agents
-      write_file('.claude/agents/hero-agent.md', <<~MD)
+      write_file('.claude/agents/hero-agent.md', hero_agent_content)
+    end
+
+    def self.hero_agent_content
+      <<~MD
         ---
         name: hero-agent
-        description: A hero agent that handles dungeon encounters
+        description: A hero agent for dungeon encounters
         color: green
+        model: haiku
+        allowedTools:
+          - Read
+          - Glob
+          - Grep
         ---
         You are a hero agent. Assess threats and report outcomes.
 
         <example>
-        User: "A goblin blocks the bridge."
-        Action: Dispatch hero-agent to handle the encounter.
+        A goblin blocks the bridge.
         </example>
       MD
     end
@@ -221,6 +229,6 @@ module Hero
                          :append_unique, :heros_decree,
                          :add_permission_rules, :add_hook_entry,
                          :activate_hero_hook, :write_plugin_manifest,
-                         :write_plugin_command
+                         :write_plugin_command, :hero_agent_content
   end
 end

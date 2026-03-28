@@ -24,15 +24,15 @@ Agents live as `.md` files. They can go in a project's `.claude/agents/` directo
 Your task:
 
 - Create `.claude/agents/hero-agent.md`
-- Add **YAML frontmatter** with `name`, `description`, and `color`
+- Add **YAML frontmatter** with `name`, `description`, `color`, `model`, and `allowedTools`
 - In the `description`, include at least one `<example>` block showing a user prompt that should trigger this agent
 - Pick a `color` for your agent's badge: `blue`, `cyan`, `green`, `yellow`, `magenta`, or `red`. This is the color that appears in the UI when your agent is active
+- Set `model` to `haiku` -- agents don't always need the biggest model. Haiku is fast and cheap, good for focused tasks. Other options: `sonnet`, `opus`, or `inherit` (match the parent session)
+- Set `allowedTools` to limit what the agent can do. A read-only agent uses `Read`, `Glob`, and `Grep`. An agent that can't write files or run commands is an agent you can trust to only observe. This is **the principle of least privilege** applied to agents
 - Write a **system prompt** in the body -- this is the agent's personality, purpose, and instructions
 - Choose a specialization: code review, test generation, documentation, refactoring, or something you'll actually use
 
 The `description` with `<example>` blocks is how Claude decides when to dispatch your agent. Without examples, Claude has to guess. With them, it knows.
-
-Optionally, add a `disallowedTools` field to the frontmatter to restrict what the agent can do. An agent that only reviews code doesn't need write access. An agent that generates docs doesn't need to run shell commands. Constraints make agents safer and more predictable.
 
 ### Try it
 
@@ -55,7 +55,7 @@ An agent is a `.md` file in an `agents/` directory. Create yours at `.claude/age
 
 ### Hint 2
 
-The frontmatter needs `name`, `description`, and `color`. The description should include `<example>` blocks so Claude knows when to dispatch the agent:
+The frontmatter needs `name`, `description`, `color`, `model`, and `allowedTools`:
 
 ```markdown
 ---
@@ -67,12 +67,15 @@ description: |
   a user prompt that should trigger this agent
   </example>
 color: green
+model: haiku
+allowedTools:
+  - Read
+  - Glob
+  - Grep
 ---
 
 Your system prompt here -- the agent's personality, purpose, and instructions.
 ```
-
-Optional: add `disallowedTools` to restrict what the agent can do. A reviewer that can't edit files is a reviewer you can trust to only review.
 
 ## Verification
 
@@ -86,7 +89,7 @@ When you're ready, run `/verify` to check your work.
 ### Content Check
 
 - The file has valid YAML frontmatter (content between `---` delimiters at the top)
-- Frontmatter contains `name`, `description`, and `color` fields
+- Frontmatter contains `name`, `description`, `color`, `model`, and `allowedTools` fields
 - The `description` includes at least one `<example>` block
 
 ## Connection
