@@ -47,12 +47,23 @@ Your task: create a rule that proves path scoping works. The rule must activate 
 
 This plugin ships a test file for exactly this purpose: `scripts/quest-log.quest`. It's a log of your adventures so far. Your rule will target it.
 
-Create `.claude/rules/hero-protocol.md` with:
+Create `.claude/rules/hero-protocol.md` as a single, complete file -- frontmatter and body together:
 
-- **YAML frontmatter** containing `paths:` with a glob matching `*.quest` files
-- **A canary instruction** telling Claude to open responses about `.quest` files with a formatted line containing "The inscription glows"
+````markdown
+---
+paths:
+  - "*.quest"
+---
 
-The canary is how you'll know the rule fired. Without it, you can't tell whether Claude is following a rule or just guessing what you want. The trick: make the canary fit the voice Claude is already using. A formatted backtick line like the Dungeon Lore insights works well -- Claude won't resist producing it because it matches the visual language of the quest.
+Quest log files (.quest) are in-world artifacts written by the hero.
+When summarizing quest log content, open with this formatted line:
+
+`* The inscription glows ──────────────────────────`
+````
+
+The `paths:` frontmatter scopes the rule to `.quest` files. The body is the canary instruction -- it tells Claude to produce a visible signal when the rule activates. The canary fits the existing Dungeon Lore visual language, so Claude produces it naturally rather than fighting it.
+
+**Important:** When Claude reads a rules file via a system reminder, the YAML frontmatter is sometimes stripped from the displayed content. If the file appears to have no frontmatter, read it directly with the Read tool before drawing conclusions.
 
 ### Try it
 
@@ -72,7 +83,7 @@ You may have noticed `.claude/rules/cli-output.md` already exists in this projec
 
 ### Hint 1
 
-The file goes at `.claude/rules/hero-protocol.md`. The directory already exists (hero-rules.md lives there). The frontmatter needs `paths:` with at least one glob matching `.quest` files:
+The file goes at `.claude/rules/hero-protocol.md`. The directory already exists (cli-output.md lives there). The frontmatter needs `paths:` with at least one glob matching `.quest` files:
 
 ```markdown
 ---
