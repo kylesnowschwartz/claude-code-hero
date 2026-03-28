@@ -13,7 +13,7 @@ module Hero
       file_exists PROTOCOL
       grep_match PROTOCOL, 'paths:'
       grep_match PROTOCOL, '\*\.quest'
-      grep_match PROTOCOL, 'HERO PROTOCOL ACTIVE'
+      grep_match PROTOCOL, 'inscription glows'
     end
 
     clean do

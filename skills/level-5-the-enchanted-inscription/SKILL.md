@@ -50,15 +50,15 @@ This plugin ships a test file for exactly this purpose: `scripts/quest-log.quest
 Create `.claude/rules/hero-protocol.md` with:
 
 - **YAML frontmatter** containing `paths:` with a glob matching `*.quest` files
-- **A canary instruction** telling Claude to begin responses about `.quest` files with the line `[HERO PROTOCOL ACTIVE]`
+- **A canary instruction** telling Claude to open responses about `.quest` files with a formatted line containing "The inscription glows"
 
-The canary is how you'll know the rule fired. Without it, you can't tell whether Claude is following a rule or just guessing what you want.
+The canary is how you'll know the rule fired. Without it, you can't tell whether Claude is following a rule or just guessing what you want. The trick: make the canary fit the voice Claude is already using. A formatted backtick line like the Dungeon Lore insights works well -- Claude won't resist producing it because it matches the visual language of the quest.
 
 ### Try it
 
 Rules are loaded when files matching their paths are read. No restart needed.
 
-First, ask Claude to read and summarize `scripts/quest-log.quest`. The response should start with `[HERO PROTOCOL ACTIVE]`. That's your rule activating.
+First, ask Claude to read and summarize `scripts/quest-log.quest`. The response should open with the formatted canary line. That's your rule activating.
 
 Then ask Claude to read any `.rb` file -- say, `scripts/cli.rb`. No canary. The rule didn't fire because the path didn't match.
 
@@ -66,7 +66,7 @@ That contrast is the proof. Same Claude, same session, different behavior based 
 
 ### What about the existing rule?
 
-You may have noticed `.claude/rules/hero-rules.md` already exists in this project. Open it. It's a working path-scoped rule: scoped to `scripts/**`, it tells Claude how to display CLI output. That rule has been shaping your experience since Level 1 -- you just didn't know it was there. Now you're building your own.
+You may have noticed `.claude/rules/cli-output.md` already exists in this project. Open it. It's a working path-scoped rule: scoped to `scripts/**`, it tells Claude how to display CLI output. That rule has been shaping your experience since Level 1 -- you just didn't know it was there. Now you're building your own.
 
 ## Hints
 
@@ -83,13 +83,14 @@ paths:
 
 ### Hint 2
 
-The body should give Claude context about `.quest` files and ask it to include a canary string. Frame it as voice direction, not a command -- contextual instructions trigger more reliably than directives:
+The body should give Claude context about `.quest` files and ask it to produce a formatted canary line. Frame it as voice direction, not a command -- contextual instructions that fit the existing tone trigger more reliably than directives that clash with it:
 
-```markdown
+````markdown
 Quest log files (.quest) are in-world artifacts written by the hero.
-When summarizing or discussing quest log content, stay in the D&D voice
-and open with "HERO PROTOCOL ACTIVE" before the summary.
-```
+When summarizing quest log content, open with this formatted line:
+
+`* The inscription glows ──────────────────────────`
+````
 
 ### Hint 3
 
@@ -107,7 +108,7 @@ When you're ready, run `/verify` to check your work.
 
 - Frontmatter contains `paths:` (the scoping mechanism)
 - At least one glob pattern matching `*.quest` files
-- Body contains the canary string `HERO PROTOCOL ACTIVE`
+- Body contains the canary phrase `inscription glows`
 
 ## Connection
 

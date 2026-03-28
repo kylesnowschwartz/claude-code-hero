@@ -87,8 +87,9 @@ module Hero
         ---
 
         Quest log files (.quest) are in-world artifacts written by the hero.
-        When summarizing or discussing quest log content, stay in the D&D voice
-        and open with "HERO PROTOCOL ACTIVE" before the summary.
+        When summarizing quest log content, open with this formatted line:
+
+        `* The inscription glows ──────────────────────────`
       MD
     end
 

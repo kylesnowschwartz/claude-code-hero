@@ -14,8 +14,9 @@ class Level5Test < HeroTestCase
       ---
 
       Quest log files (.quest) are in-world artifacts written by the hero.
-      When summarizing or discussing quest log content, stay in the D&D voice
-      and open with "HERO PROTOCOL ACTIVE" before the summary.
+      When summarizing quest log content, open with this formatted line:
+
+      `* The inscription glows ──────────────────────────`
     MD
   end
 
@@ -49,7 +50,7 @@ class Level5Test < HeroTestCase
     write_file(PROTOCOL, "---\npaths:\n  - \"*.quest\"\n---\nSome instructions.\n")
     passed, msg = Hero::Level5.new.verify
     refute passed
-    assert_match(/HERO PROTOCOL ACTIVE/, msg)
+    assert_match(/inscription glows/, msg)
   end
 
   def test_clean_removes_file
