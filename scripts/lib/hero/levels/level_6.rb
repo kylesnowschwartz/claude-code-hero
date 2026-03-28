@@ -8,7 +8,14 @@ module Hero
     artifact '.claude/settings.json (hooks)'
 
     SETTINGS = '.claude/settings.json'
-    PLACEHOLDER_LINE = 'echo "hero: REPLACE_ME - edit hero-hook.sh with your command" >>/tmp/hero-hook-log.txt'
+    PLACEHOLDER_REGION = <<~'SH'.chomp
+      #
+      # Examples:
+      #   echo "hero: Magic Missile fired at $TARGET ($(date))" >> /tmp/hero-hook-log.txt
+      #   osascript -e "display notification \"Magic Missile fired at $TARGET\" with title \"Claude Code Hero\""
+      #
+      echo "hero: REPLACE_ME - edit hero-hook.sh with your command" >>/tmp/hero-hook-log.txt
+    SH
 
     verify do
       file_exists SETTINGS
@@ -63,7 +70,7 @@ module Hero
           reset_file_region path,
                             start_marker: '# YOUR COMMAND:',
                             end_marker: '# ===',
-                            replacement: PLACEHOLDER_LINE
+                            replacement: PLACEHOLDER_REGION
         end
       end
     end
