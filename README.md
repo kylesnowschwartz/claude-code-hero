@@ -10,7 +10,7 @@ Nine quests. Each one builds a real artifact on your machine. The artifacts conn
 
 The medium is the message: you learn about plugins by using one.
 
-<!-- TODO: Record demo gif and uncomment: ![Demo](docs/demo.gif) -->
+![Demo of Claude Code Hero gameplay](docs/demo.gif)
 
 ## Before You Enter
 
