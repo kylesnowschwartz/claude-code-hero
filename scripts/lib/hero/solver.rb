@@ -6,7 +6,7 @@ require 'fileutils'
 module Hero
   # QA test fixture: creates minimum artifacts to pass verification for each level.
   # Separate from Level definitions because solving is a testing concern, not a game concern.
-  module Solver
+  module Solver # rubocop:disable Metrics/ModuleLength
     SOLUTIONS = {
       1 => :solve_1_map_room,
       2 => :solve_2_tome,
@@ -136,12 +136,14 @@ module Hero
     def self.solve_8_agents
       write_file('.claude/agents/hero-agent.md', <<~MD)
         ---
+        name: hero-agent
         description: A hero agent that handles dungeon encounters
+        color: green
         ---
         You are a hero agent. Assess threats and report outcomes.
 
         <example>
-        User: "There's a goblin blocking the bridge."
+        User: "A goblin blocks the bridge."
         Action: Dispatch hero-agent to handle the encounter.
         </example>
       MD

@@ -10,7 +10,9 @@ class Level8Test < HeroTestCase
   def valid_agent
     <<~MD
       ---
+      name: hero-agent
       description: A brave hero agent
+      color: green
       ---
 
       You are a hero.
@@ -42,15 +44,29 @@ class Level8Test < HeroTestCase
     assert_match(/Missing file/, msg)
   end
 
+  def test_verify_fails_without_name
+    write_file(USER_AGENT, "---\ndescription: A hero\ncolor: green\n---\n<example>\nfoo\n</example>\n")
+    passed, msg = Hero::Level8.new.verify
+    refute passed
+    assert_match(/name/, msg)
+  end
+
   def test_verify_fails_without_description
-    write_file(USER_AGENT, "---\nname: Hero\n---\n<example>\nfoo\n</example>\n")
+    write_file(USER_AGENT, "---\nname: hero-agent\ncolor: green\n---\n<example>\nfoo\n</example>\n")
     passed, msg = Hero::Level8.new.verify
     refute passed
     assert_match(/description/, msg)
   end
 
+  def test_verify_fails_without_color
+    write_file(USER_AGENT, "---\nname: hero-agent\ndescription: A hero\n---\n<example>\nfoo\n</example>\n")
+    passed, msg = Hero::Level8.new.verify
+    refute passed
+    assert_match(/color/, msg)
+  end
+
   def test_verify_fails_without_example
-    write_file(USER_AGENT, "---\ndescription: A hero\n---\nNo examples.\n")
+    write_file(USER_AGENT, "---\nname: hero-agent\ndescription: A hero\ncolor: green\n---\nNo examples.\n")
     passed, msg = Hero::Level8.new.verify
     refute passed
     assert_match(/example/, msg)

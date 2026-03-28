@@ -24,8 +24,9 @@ Agents live as `.md` files. They can go in a project's `.claude/agents/` directo
 Your task:
 
 - Create `.claude/agents/hero-agent.md`
-- Add **YAML frontmatter** with at least `name` and `description`
+- Add **YAML frontmatter** with `name`, `description`, and `color`
 - In the `description`, include at least one `<example>` block showing a user prompt that should trigger this agent
+- Pick a `color` for your agent's badge: `blue`, `cyan`, `green`, `yellow`, `magenta`, or `red`. This is the color that appears in the UI when your agent is active
 - Write a **system prompt** in the body -- this is the agent's personality, purpose, and instructions
 - Choose a specialization: code review, test generation, documentation, refactoring, or something you'll actually use
 
@@ -35,7 +36,7 @@ Optionally, add a `disallowedTools` field to the frontmatter to restrict what th
 
 ### Try it
 
-Summon your agent right here in this session: type `@hero-agent` followed by a task in its domain. The `@agent-name` syntax dispatches the agent as a subprocess -- it works with its own system prompt, completes the task, and returns the result to you.
+First, run `/reload-plugins` so Claude picks up the new agent file. Then type `@hero-agent` followed by a task in its domain. The `@agent-name` syntax dispatches the agent as a subprocess -- it works with its own system prompt, completes the task, and returns the result to you.
 
 You can also launch it as a standalone session: `claude --agent hero-agent`. That starts a fresh Claude session with your agent's system prompt loaded.
 
@@ -54,7 +55,7 @@ An agent is a `.md` file in an `agents/` directory. Create yours at `.claude/age
 
 ### Hint 2
 
-The frontmatter needs `name` and `description`. The description should include `<example>` blocks so Claude knows when to dispatch the agent:
+The frontmatter needs `name`, `description`, and `color`. The description should include `<example>` blocks so Claude knows when to dispatch the agent:
 
 ```markdown
 ---
@@ -65,6 +66,7 @@ description: |
   <example>
   a user prompt that should trigger this agent
   </example>
+color: green
 ---
 
 Your system prompt here -- the agent's personality, purpose, and instructions.
@@ -84,10 +86,8 @@ When you're ready, run `/verify` to check your work.
 ### Content Check
 
 - The file has valid YAML frontmatter (content between `---` delimiters at the top)
-- Frontmatter contains a `name` field with a non-empty value
-- Frontmatter contains a `description` field
+- Frontmatter contains `name`, `description`, and `color` fields
 - The `description` includes at least one `<example>` block
-- The body below the frontmatter contains a system prompt (not empty)
 
 ## Connection
 

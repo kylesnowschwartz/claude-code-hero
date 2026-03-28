@@ -11,7 +11,9 @@ module Hero
 
     verify do
       file_exists AGENT
+      grep_match AGENT, 'name:'
       grep_match AGENT, 'description:'
+      grep_match AGENT, 'color:'
       grep_match AGENT, '<example>'
     end
 
