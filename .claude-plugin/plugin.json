@@ -6,6 +6,5 @@
     "name": "Kyle Snow Schwartz"
   },
   "repository": "https://github.com/kylesnowschwartz/claude-code-hero",
-  "license": "MIT",
-  "outputStyles": "./output-styles/"
+  "license": "MIT"
 }
