@@ -3,6 +3,15 @@
 *.local.json
 .claude/claude-code-hero.json
 
+# Hero quest artifacts (created by solve/play, removed by clean)
+.claude/hero-map.md
+.claude/CLAUDE.md
+.claude/commands/hero-spell.md
+.claude/output-styles/hero-voice.md
+.claude/skills/hero-knowledge/
+.claude/agents/hero-agent.md
+hero-toolkit/
+
 # Force-include agent for --agent CLI discovery
 !.claude/
 !.claude

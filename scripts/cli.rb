@@ -13,8 +13,9 @@ module Hero
       when 'verify'  then cmd_verify(args)
       when 'clean'   then cmd_clean(args)
       when 'levels'  then cmd_levels
+      when 'solve'   then cmd_solve(args)
       else
-        warn 'Usage: ruby scripts/cli.rb {status|verify [N]|clean [--dry-run]|levels}'
+        warn 'Usage: ruby scripts/cli.rb {status|verify [N]|clean [--dry-run]|levels|solve N}'
         exit 1
       end
     end
@@ -66,6 +67,21 @@ module Hero
 
     def self.cmd_levels
       puts JSON.pretty_generate(Level.all.map { |k| k.new.to_h })
+    end
+
+    def self.cmd_solve(args)
+      level_num = args.shift&.to_i
+      unless level_num&.between?(1, 9)
+        warn 'Usage: ruby scripts/cli.rb solve N  (where N is 1-9)'
+        exit 1
+      end
+
+      Solver.solve(level_num)
+      results = verify_levels((1..level_num).to_a)
+      all_pass = results.all? { |r| r[:passed] }
+
+      puts JSON.pretty_generate({ solved_through: level_num, results: results })
+      exit 1 unless all_pass
     end
   end
 end
