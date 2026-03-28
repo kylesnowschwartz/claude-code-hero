@@ -15,7 +15,7 @@ module Hero
       grep_match AGENT, 'description:'
       grep_match AGENT, 'color:'
       grep_match AGENT, 'model:'
-      grep_match AGENT, 'allowedTools'
+      grep_match AGENT, 'tools:'
       grep_match AGENT, '<example>'
     end
 

@@ -144,10 +144,7 @@ module Hero
         description: A hero agent for dungeon encounters
         color: green
         model: haiku
-        allowedTools:
-          - Read
-          - Glob
-          - Grep
+        tools: Read, Glob, Grep
         ---
         You are a hero agent. Assess threats and report outcomes.
 

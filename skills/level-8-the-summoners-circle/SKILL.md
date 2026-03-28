@@ -24,11 +24,11 @@ Agents live as `.md` files. They can go in a project's `.claude/agents/` directo
 Your task:
 
 - Create `.claude/agents/hero-agent.md`
-- Add **YAML frontmatter** with `name`, `description`, `color`, `model`, and `allowedTools`
+- Add **YAML frontmatter** with `name`, `description`, `color`, `model`, and `tools`
 - In the `description`, include at least one `<example>` block showing a user prompt that should trigger this agent
 - Pick a `color` for your agent's badge: `blue`, `cyan`, `green`, `yellow`, `magenta`, or `red`. This is the color that appears in the UI when your agent is active
 - Set `model` to `haiku` -- agents don't always need the biggest model. Haiku is fast and cheap, good for focused tasks. Other options: `sonnet`, `opus`, or `inherit` (match the parent session)
-- Set `allowedTools` to limit what the agent can do. A read-only agent uses `Read`, `Glob`, and `Grep`. An agent that can't write files or run commands is an agent you can trust to only observe. This is **the principle of least privilege** applied to agents
+- Set `tools` to limit what the agent can do. A read-only agent uses `Read`, `Glob`, and `Grep`. An agent that can't write files or run commands is an agent you can trust to only observe. This is **the principle of least privilege** applied to agents
 - Write a **system prompt** in the body -- this is the agent's personality, purpose, and instructions
 - Choose a specialization: code review, test generation, documentation, refactoring, or something you'll actually use
 
@@ -55,7 +55,7 @@ An agent is a `.md` file in an `agents/` directory. Create yours at `.claude/age
 
 ### Hint 2
 
-The frontmatter needs `name`, `description`, `color`, `model`, and `allowedTools`:
+The frontmatter needs `name`, `description`, `color`, `model`, and `tools`:
 
 ```markdown
 ---
@@ -68,10 +68,7 @@ description: |
   </example>
 color: green
 model: haiku
-allowedTools:
-  - Read
-  - Glob
-  - Grep
+tools: Read, Glob, Grep
 ---
 
 Your system prompt here -- the agent's personality, purpose, and instructions.
@@ -89,7 +86,7 @@ When you're ready, run `/verify` to check your work.
 ### Content Check
 
 - The file has valid YAML frontmatter (content between `---` delimiters at the top)
-- Frontmatter contains `name`, `description`, `color`, `model`, and `allowedTools` fields
+- Frontmatter contains `name`, `description`, `color`, `model`, and `tools` fields
 - The `description` includes at least one `<example>` block
 
 ## Connection
