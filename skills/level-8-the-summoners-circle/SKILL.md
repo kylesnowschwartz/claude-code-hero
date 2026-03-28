@@ -93,7 +93,7 @@ When you're ready, run `/verify` to check your work.
 
 The circle glows. Something stirs inside it -- your creation. It has a name, a purpose, and the autonomy to act on both.
 
-The guide leading you through these quests? That's an agent. `heroguide.md`. You've been talking to one this entire time. Same frontmatter. Same markdown body. Same pattern.
+The guide leading you through these quests? That's an agent. `dungeon-master.md`. You've been talking to one this entire time. Same frontmatter. Same markdown body. Same pattern.
 
 Now count the artifacts on your belt. A command (`hero-spell`). A rule (`hero-protocol`). A hook that connects them. A skill (`hero-knowledge`). And now an agent (`hero-agent`). Five components. Each one a different kind of power.
 

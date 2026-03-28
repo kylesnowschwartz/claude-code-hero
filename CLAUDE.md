@@ -14,11 +14,11 @@ Prior art: Block's "Repo Quest" validated gamified learning for developer tools 
 
 ## Architecture
 
-- **Primary interface**: `heroguide` agent (`agents/heroguide.md`, symlinked to `.claude/agents/`)
+- **Primary interface**: `dungeon-master` agent (`agents/dungeon-master.md`, symlinked to `.claude/agents/`)
 - **Level content**: One skill per level (`skills/level-N-<name>/SKILL.md`)
 - **Game engine**: `scripts/cli.rb` -- Ruby CLI with declarative level DSL. Each level is a class in `scripts/lib/hero/levels/`. Verification and cleanup logic live alongside metadata.
 - **Progress**: `.claude/claude-code-hero.json` -- JSON with `current_level` and `completed` timestamps. Agent reads/writes directly.
-- **Voice**: `output-styles/heroguide.md` -- D&D dungeon master. Second person, dry wit, drops character for precision.
+- **Voice**: `output-styles/dungeon-master.md` -- D&D dungeon master. Second person, dry wit, drops character for precision.
 
 ## Design Decisions
 
@@ -41,10 +41,10 @@ Agent and skill markdown is read by Claude, not expanded as a subprocess. `${CLA
 
 ```bash
 # Run the plugin locally (development mode)
-claude --plugin-dir . --agent heroguide
+claude --plugin-dir . --agent dungeon-master
 
-# Launch the heroguide agent directly
-claude --agent heroguide
+# Launch the dungeon-master agent directly
+claude --agent dungeon-master
 
 # Run verification for all levels
 ruby scripts/cli.rb verify
@@ -87,7 +87,7 @@ claude --plugin-dir . --verbose
 
 ## Plugin Structure
 
-Agents go in `agents/` at plugin root for subagent dispatch. For `--agent` CLI discovery, they also need to be in `.claude/agents/` (project level) or `~/.claude/agents/` (user level). This project symlinks `.claude/agents/heroguide.md` -> `agents/heroguide.md`.
+Agents go in `agents/` at plugin root for subagent dispatch. For `--agent` CLI discovery, they also need to be in `.claude/agents/` (project level) or `~/.claude/agents/` (user level). This project symlinks `.claude/agents/dungeon-master.md` -> `agents/dungeon-master.md`.
 
 `marketplace.json` lives in `.claude-plugin/` alongside `plugin.json`. Both are required for full plugin discovery.
 

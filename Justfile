@@ -45,4 +45,4 @@ check: test lint
 
 # Launch the plugin locally
 play:
-    claude --plugin-dir . --agent heroguide
+    claude --plugin-dir . --agent dungeon-master

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Splash screen hook -- fires on SessionStart to inject the game banner.
-# The heroguide agent sees this as additionalContext and displays it
+# The dungeon-master agent sees this as additionalContext and displays it
 # before the first quest prompt.
 #
 # The ASCII art is hardcoded in banner.txt so it renders identically

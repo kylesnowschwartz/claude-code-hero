@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # PreToolUse hook for the Skill tool -- injects a level banner when
-# the heroguide agent loads a level skill.
+# the dungeon-master agent loads a level skill.
 #
 # Reads tool_input.skill from stdin JSON, checks if it matches
 # "level-N-*", and if a banner exists for that level, injects it

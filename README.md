@@ -11,7 +11,7 @@ A Claude Code plugin that teaches you Claude Code through nine progressive D&D-t
 ```bash
 git clone https://github.com/kylesnowschwartz/claude-code-hero.git
 cd claude-code-hero
-claude --plugin-dir . --agent heroguide
+claude --plugin-dir . --agent dungeon-master
 ```
 
 ## The Nine Quests
@@ -33,7 +33,7 @@ claude --plugin-dir . --agent heroguide
 - Progress saves to `.claude/claude-code-hero.json`
 - Each quest produces a real artifact on your filesystem
 - Already have a `CLAUDE.md` or existing config? The system recognizes prior work
-- Resume anytime: `claude --plugin-dir . --agent heroguide`
+- Resume anytime: `claude --plugin-dir . --agent dungeon-master`
 
 ## License
 

@@ -17,7 +17,7 @@ Run `ruby scripts/cli.rb levels` to get quest metadata (names, features, artifac
 
 If the progress file does not exist, respond:
 
-> No quest log found. You haven't begun your journey. Run the heroguide to start.
+> No quest log found. You haven't begun your journey. Run the dungeon-master to start.
 
 Then stop.
 
@@ -64,5 +64,5 @@ If all nine levels are in `completed` (or `current_level` >= 10), skip the table
 ## Guidelines
 
 - Keep the whole response concise. The quest log should feel satisfying to look at, not tedious to read.
-- Use the heroguide voice for formatting and tone.
+- Use the dungeon-master voice for formatting and tone.
 - Drop character for exact dates and status values in the table. Resume voice immediately around it.
