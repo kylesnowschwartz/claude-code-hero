@@ -14,4 +14,5 @@ require_relative 'hero/progress'
 
 Dir[File.join(__dir__, 'hero', 'levels', '*.rb')].each { |f| require f }
 
+require_relative 'hero/statusline'
 require_relative 'hero/solver'

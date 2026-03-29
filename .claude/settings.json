@@ -4,5 +4,9 @@
     "allow": [
       "Bash(ruby scripts/cli.rb:*)"
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "ruby ${CLAUDE_PLUGIN_ROOT}/scripts/cli.rb statusline"
   }
 }

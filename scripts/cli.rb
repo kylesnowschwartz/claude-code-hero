@@ -9,13 +9,14 @@ module Hero
     def self.run(args)
       command = args.shift
       case command
-      when 'status'  then cmd_status
-      when 'verify'  then cmd_verify(args)
-      when 'clean'   then cmd_clean(args)
-      when 'levels'  then cmd_levels
-      when 'solve'   then cmd_solve(args)
+      when 'status'     then cmd_status
+      when 'verify'     then cmd_verify(args)
+      when 'clean'      then cmd_clean(args)
+      when 'levels'     then cmd_levels
+      when 'solve'      then cmd_solve(args)
+      when 'statusline' then cmd_statusline
       else
-        warn 'Usage: ruby scripts/cli.rb {status|verify [N]|clean [--dry-run]|levels|solve N}'
+        warn 'Usage: ruby scripts/cli.rb {status|verify [N]|clean [--dry-run]|levels|solve N|statusline}'
         exit 1
       end
     end
@@ -82,6 +83,16 @@ module Hero
 
       puts JSON.pretty_generate({ solved_through: level_num, results: results })
       exit 1 unless all_pass
+    end
+
+    def self.cmd_statusline
+      begin
+        $stdin.read_nonblock(65_536)
+      rescue StandardError
+        nil
+      end
+      progress = Progress.new
+      puts Statusline.new(progress).render
     end
   end
 end

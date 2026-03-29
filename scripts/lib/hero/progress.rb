@@ -14,6 +14,9 @@ module Hero
       @data = load_or_init
     end
 
+    def current_level = @data['current_level']
+    def completed     = @data['completed']
+
     def reconcile!
       highest = 0
       (1..9).each do |n|
