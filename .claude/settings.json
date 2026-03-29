@@ -7,6 +7,6 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "ruby ${CLAUDE_PLUGIN_ROOT}/scripts/cli.rb statusline"
+    "command": "ruby scripts/cli.rb statusline"
   }
 }
