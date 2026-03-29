@@ -46,7 +46,7 @@ A guide will meet you at the entrance.
 | 2 | The Tome of First Instructions | `CLAUDE.md` |
 | 3 | The Goblin Lair of Commands | Slash commands |
 | 4 | The Warden's Keys | Settings and permissions |
-| 5 | The Shapeshifter's Mask | Output styles |
+| 5 | The Enchanted Inscription | Rules |
 | 6 | The Tripwire Cavern | Hooks |
 | 7 | The Skill Quest of Doom | Skills |
 | 8 | The Summoner's Circle | Agents |
