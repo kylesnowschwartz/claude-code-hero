@@ -6,8 +6,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/splash.sh",
-            "timeout": 5
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/preflight.sh",
+            "timeout": 10
           }
         ]
       }
