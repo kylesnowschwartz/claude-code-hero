@@ -26,6 +26,22 @@ module Hero
         registry.find { |klass| klass._number == num }
       end
 
+      def numbers
+        registry.map(&:_number).sort
+      end
+
+      def min_number
+        numbers.first
+      end
+
+      def max_number
+        numbers.last
+      end
+
+      def count
+        registry.size
+      end
+
       # DSL methods
       def number(val)    = (@_number = val)
       def name(val)      = (@_name = val)

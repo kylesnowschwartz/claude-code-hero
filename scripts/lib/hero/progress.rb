@@ -18,8 +18,8 @@ module Hero
     def completed     = @data['completed']
 
     def reconcile!
-      highest = 0
-      (1..9).each do |n|
+      highest = nil
+      Level.numbers.each do |n|
         klass = Level.find(n)
         next unless klass
 
@@ -30,16 +30,18 @@ module Hero
         end
       end
 
-      @data['current_level'] = [highest + 1, 10].min if highest >= @data['current_level']
+      return save! unless highest
+      next_level = [highest + 1, Level.max_number + 1].min
+      @data['current_level'] = next_level if highest >= @data['current_level']
       save!
       self
     end
 
     def status
       cl = @data['current_level']
-      if cl == 1 && @data['completed'].empty?
+      if cl == Level.min_number && @data['completed'].empty?
         'new'
-      elsif cl > 9
+      elsif cl > Level.max_number
         'complete'
       else
         'in_progress'
@@ -47,7 +49,7 @@ module Hero
     end
 
     def highest_passing
-      (1..9).select { |n| @data['completed'].key?(n.to_s) }.max || 0
+      Level.numbers.select { |n| @data['completed'].key?(n.to_s) }.max || 0
     end
 
     def to_h

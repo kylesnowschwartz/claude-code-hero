@@ -2,8 +2,6 @@
 
 module Hero
   class Statusline
-    TOTAL_LEVELS = 9
-
     # ANSI color codes
     CYAN    = "\e[36m"
     YELLOW  = "\e[33m"
@@ -24,7 +22,7 @@ module Hero
     private
 
     def complete?
-      @progress.current_level > TOTAL_LEVELS
+      @progress.current_level > Level.max_number
     end
 
     def completed_count
@@ -33,7 +31,7 @@ module Hero
 
     def accent
       level = @progress.current_level
-      if level > TOTAL_LEVELS then GREEN
+      if level > Level.max_number then GREEN
       elsif level >= 7 then MAGENTA
       elsif level >= 4 then YELLOW
       else CYAN
@@ -43,7 +41,7 @@ module Hero
     def render_complete
       lines = []
       lines << " ⚔ #{GREEN}#{BOLD}HERO COMPLETE#{RESET}"
-      lines << " 🏆 All #{TOTAL_LEVELS} artifacts forged"
+      lines << " 🏆 All #{Level.count} artifacts forged"
       lines.join("\n")
     end
 
@@ -56,7 +54,7 @@ module Hero
       artifact = klass ? File.basename(klass._artifact) : '???'
 
       lines = []
-      lines << " 🗡  #{accent}Lvl #{level}/#{TOTAL_LEVELS}#{RESET}  #{accent}#{quest_name}#{RESET}"
+      lines << " 🗡  #{accent}Lvl #{level}/#{Level.max_number}#{RESET}  #{accent}#{quest_name}#{RESET}"
       lines << " 🔮 Quest: #{accent}#{feature}#{RESET}"
       lines << " 🏰 Artifacts: #{accent}#{completed_count} forged#{RESET}#{artifact_hint(artifact)}"
       lines.join("\n")

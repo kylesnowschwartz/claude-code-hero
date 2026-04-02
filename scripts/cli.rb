@@ -29,7 +29,7 @@ module Hero
 
     def self.cmd_verify(args)
       level_num = args.shift&.to_i
-      levels = level_num ? [level_num] : (1..9).to_a
+      levels = level_num ? [level_num] : Hero::Level.numbers
       results = verify_levels(levels)
       all_pass = results.all? { |r| r[:passed] }
 
@@ -72,13 +72,14 @@ module Hero
 
     def self.cmd_solve(args)
       level_num = args.shift&.to_i
-      unless level_num&.between?(1, 9)
-        warn 'Usage: ruby scripts/cli.rb solve N  (where N is 1-9)'
+      valid_levels = Hero::Level.numbers
+      unless level_num && valid_levels.include?(level_num)
+        warn "Usage: ruby scripts/cli.rb solve N  (where N is #{valid_levels.first}-#{valid_levels.last})"
         exit 1
       end
 
       Solver.solve(level_num)
-      results = verify_levels((1..level_num).to_a)
+      results = verify_levels(Hero::Level.numbers.select { |n| n <= level_num })
       all_pass = results.all? { |r| r[:passed] }
 
       puts JSON.pretty_generate({ solved_through: level_num, results: results })

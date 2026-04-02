@@ -20,7 +20,7 @@ module Hero
     }.freeze
 
     def self.solve(level)
-      (1..level).each do |n|
+      Level.numbers.select { |n| n <= level }.each do |n|
         method = SOLUTIONS[n]
         raise "No solution defined for level #{n}" unless method
 
