@@ -100,7 +100,7 @@ The last rune locks into place. The artifact hums. It's whole.
 
 Look at what's on the workbench. A command that fires magic missiles. A rule that activates by path. A hook that reacts when the spell is cast. A skill that holds your expertise. An agent that acts on its own. And now a plugin that binds them all together.
 
-Everything you built across nine quests -- it was all plugin components. You just didn't know it yet.
+Everything you built across ten quests -- it was all plugin components. You just didn't know it yet.
 
 ## Further Reading
 
@@ -108,7 +108,7 @@ Everything you built across nine quests -- it was all plugin components. You jus
 
 ---
 
-Nine chambers. Nine trials. Each one a power claimed, a pattern learned, a tool forged.
+Ten chambers. Ten trials. Each one a power claimed, a pattern learned, a tool forged.
 
 You entered this labyrinth mapping walls. You leave it building them.
 

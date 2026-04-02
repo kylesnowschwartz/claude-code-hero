@@ -15,8 +15,8 @@ class CLITest < HeroTestCase
     stdout, _, status = cli('levels')
     assert status.success?
     data = JSON.parse(stdout)
-    assert_equal 9, data.size
-    assert_equal 1, data.first['level']
+    assert_equal 10, data.size
+    assert_equal 0, data.first['level']
     assert_equal 9, data.last['level']
   end
 
@@ -45,7 +45,7 @@ class CLITest < HeroTestCase
   def test_status_new_player
     stdout, = cli('status')
     data = JSON.parse(stdout)
-    assert_equal 1, data['current_level']
+    assert_equal 0, data['current_level']
     assert_equal 'new', data['status']
   end
 
@@ -66,7 +66,7 @@ class CLITest < HeroTestCase
     stdout, = cli('verify')
     data = JSON.parse(stdout)
     assert data.key?('results')
-    assert_equal 9, data['results'].size
+    assert_equal 10, data['results'].size
   end
 
   def test_verify_human_messages_on_stderr
@@ -86,7 +86,7 @@ class CLITest < HeroTestCase
     write_progress({ 'current_level' => 5, 'completed' => { '1' => 'x' } })
     cli('clean')
     data = read_json('.claude/claude-code-hero.json')
-    assert_equal 1, data['current_level']
+    assert_equal 0, data['current_level']
     assert_empty data['completed']
   end
 

@@ -6,7 +6,7 @@ You know the basics. Chat, CLAUDE.md, maybe a prompt or two. But there are deepe
 
 This is the dungeon that teaches you how.
 
-Nine quests. Each one builds a real artifact on your machine. The artifacts connect -- the spell you forge in Level 3 gets a tripwire in Level 6, and everything binds together in Level 9. You start by mapping the filesystem. You end by building your own plugin.
+Ten quests. Each one builds a real artifact on your machine. The artifacts connect -- the spell you forge in Level 3 gets a tripwire in Level 6, and everything binds together in Level 9. You start at the threshold learning to talk to Claude Code. You end by building your own plugin.
 
 The medium is the message: you learn about plugins by using one.
 
@@ -38,10 +38,11 @@ $ claude --plugin-dir . --agent dungeon-master
 
 A guide will meet you at the entrance.
 
-## The Nine Chambers
+## The Ten Chambers
 
 | Quest | Chamber | What You Learn |
 |-------|---------|----------------|
+| 0 | The Threshold | Basic Claude Code interaction |
 | 1 | The Map Room | The `.claude/` directory |
 | 2 | The Tome of First Instructions | `CLAUDE.md` |
 | 3 | The Goblin Lair of Commands | Slash commands |

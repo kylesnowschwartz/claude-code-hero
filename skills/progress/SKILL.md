@@ -39,6 +39,7 @@ Then render a table:
 
 | Quest | Name | Status | Completed |
 |-------|------|--------|-----------|
+| 0 | The Threshold | COMPLETE | 2026-03-27 |
 | 1 | The Map Room | COMPLETE | 2026-03-27 |
 | 2 | The Tome of First Instructions | COMPLETE | 2026-03-27 |
 | 3 | The Goblin Lair of Commands | CURRENT | -- |
@@ -53,11 +54,11 @@ After the table, add brief annotations in DM voice:
 - **Current quest**: A nudge to continue. "The third chamber stands open. Step inside when you're ready."
 - **Locked quests**: One or two mysterious hints about what lies deeper. Don't spoil the content -- intrigue only.
 
-Close with an overall progress line: "{N} of 9 chambers conquered. The deeper halls await."
+Close with an overall progress line: "{N} of 10 chambers conquered. The deeper halls await."
 
 ### 5. All Complete
 
-If all nine levels are in `completed` (or `current_level` >= 10), skip the table annotations and instead deliver:
+If all ten levels are in `completed` (or `current_level` >= 10), skip the table annotations and instead deliver:
 
 > The quest log is full. Every chamber conquered, every seal broken. You are no longer an adventurer. You are an artificer.
 

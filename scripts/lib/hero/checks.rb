@@ -28,6 +28,12 @@ module Hero
       raise CheckFailed, "Missing directory: #{path}" unless File.directory?(full)
     end
 
+    def min_content_lines(path, min:)
+      full = expand(path)
+      count = File.readlines(full).count { |l| !l.strip.empty? }
+      raise CheckFailed, "Expected >= #{min} non-blank lines in #{path}, found #{count}" unless count >= min
+    end
+
     def heading_count(path, min:)
       full = expand(path)
       count = File.readlines(full).count { |l| l.match?(/^## /) }

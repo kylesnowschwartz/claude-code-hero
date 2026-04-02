@@ -62,7 +62,7 @@ module Hero
     end
 
     def reset!
-      @data = { 'current_level' => 1, 'completed' => {} }
+      @data = { 'current_level' => 0, 'completed' => {} }
       save!
     end
 
@@ -78,7 +78,7 @@ module Hero
       if File.exist?(@path)
         JSON.parse(File.read(@path))
       else
-        { 'current_level' => 1, 'completed' => {} }
+        { 'current_level' => 0, 'completed' => {} }
       end
     end
 

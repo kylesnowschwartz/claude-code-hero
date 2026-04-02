@@ -8,6 +8,7 @@ module Hero
   # Separate from Level definitions because solving is a testing concern, not a game concern.
   module Solver # rubocop:disable Metrics/ModuleLength
     SOLUTIONS = {
+      0 => :solve_0_threshold,
       1 => :solve_1_map_room,
       2 => :solve_2_tome,
       3 => :solve_3_commands,
@@ -27,6 +28,17 @@ module Hero
         send(method)
         warn "Level #{n}: SOLVED"
       end
+    end
+
+    def self.solve_0_threshold
+      write_file('.claude/hero-journal.md', <<~MD)
+        ## First Steps
+
+        I stand at the threshold. The prompt box is the interface -- type a message,
+        press Enter, and Claude acts. The @ symbol references files directly, so
+        Claude reads them instead of guessing. And with a clear instruction, Claude
+        creates files on disk. That's the fundamental loop: speak, point, create.
+      MD
     end
 
     def self.solve_1_map_room

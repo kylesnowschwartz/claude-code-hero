@@ -10,7 +10,7 @@ class ProgressTest < HeroTestCase
 
   def test_initializes_with_defaults
     p = Hero::Progress.new(path: progress_path)
-    assert_equal 1, p.data['current_level']
+    assert_equal 0, p.data['current_level']
     assert_empty p.data['completed']
   end
 
@@ -51,7 +51,7 @@ class ProgressTest < HeroTestCase
     write_progress({ 'current_level' => 5, 'completed' => { '1' => 'x' } })
     p = Hero::Progress.new(path: progress_path)
     p.reset!
-    assert_equal 1, p.data['current_level']
+    assert_equal 0, p.data['current_level']
     assert_empty p.data['completed']
   end
 
