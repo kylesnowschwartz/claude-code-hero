@@ -91,6 +91,43 @@ Agents go in `agents/` at plugin root for subagent dispatch. For `--agent` CLI d
 
 `marketplace.json` lives in `.claude-plugin/` alongside `plugin.json`. Both are required for full plugin discovery.
 
+## QA Playtesting via tmux
+
+After changing quest content, DM behavior, or hooks, QA the change by playtesting in a tmux pane before declaring it done.
+
+```bash
+# 1. Open a tmux pane and launch the game
+tmux split-window -h -P -F '#{pane_id}'   # note the pane ID (e.g. %273)
+tmux send-keys -t %ID 'claude --plugin-dir . --agent dungeon-master' Enter
+
+# 2. Wait for startup, then capture output
+sleep 8 && tmux capture-pane -t %ID -p -S -300 | tail -60
+
+# 3. Send player messages
+tmux send-keys -t %ID "your message here" Enter
+
+# 4. Capture responses (allow 15-30s for generation)
+sleep 20 && tmux capture-pane -t %ID -p -S -300 | grep -v "^$" | tail -60
+
+# 5. Accept permission prompts
+tmux send-keys -t %ID Enter
+
+# 6. When done, exit and clean up
+tmux send-keys -t %ID '/exit' Enter
+sleep 3 && tmux kill-pane -t %ID
+ruby scripts/cli.rb clean
+```
+
+What to check during playtesting:
+- Quest narrative reads clearly and objectives are unmissable
+- DM stays in voice (no cheerleading, no emoji, no medieval English)
+- Collaborative model works (DM helps when asked, stays back when not)
+- Permission prompts get in-world framing during levels 0-3
+- `/verify` correctly passes/fails
+- Level transitions are smooth with good bridging narrative
+
+Always clean up QA artifacts after playtesting with `ruby scripts/cli.rb clean`.
+
 ## Spec and Discovery Docs
 
 - Spec: `.agent-history/journal/claude-code-hero/02-spec.md`

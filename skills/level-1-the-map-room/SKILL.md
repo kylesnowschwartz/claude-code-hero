@@ -19,13 +19,15 @@ You push open a heavy door. Beyond it, a vast chamber -- the Map Room. Its walls
 
 Your task: explore this project's `.claude/` directory and write a map of what you find. Not a surface glance. A real survey, written down so you can refer back to it.
 
-Start by listing what's inside `.claude/`:
+Start by listing what's inside `.claude/`. You can ask the dungeon master to look for you ("what's in the .claude directory?"), or type a shell command directly into the prompt box -- Claude will run it:
 
 ```
 ls -la .claude/
 ```
 
-Then dig into each thing you find. Open files. Read their contents. Understand their structure.
+Everything in Claude Code goes through the prompt. Questions, commands, requests -- all in the same place. There's no separate terminal to open.
+
+Then dig into each thing you find. Read files. Ask questions about what you see. Understand their structure.
 
 Here's what to investigate:
 

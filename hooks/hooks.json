@@ -22,6 +22,18 @@
             "timeout": 5
           }
         ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/warden-stirs.sh",
+            "if": "Write(*.claude/hero-journal.md)",
+            "timeout": 5,
+            "statusMessage": "The Warden watches..."
+          }
+        ]
       }
     ]
   }
