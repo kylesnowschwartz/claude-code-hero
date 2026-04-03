@@ -15,8 +15,9 @@ module Hero
       when 'levels'     then cmd_levels
       when 'solve'      then cmd_solve(args)
       when 'statusline' then cmd_statusline
+      when 'music'      then cmd_music(args)
       else
-        warn 'Usage: ruby scripts/cli.rb {status|verify [N]|clean [--dry-run]|levels|solve N|statusline}'
+        warn 'Usage: ruby scripts/cli.rb {status|verify [N]|clean [--dry-run]|levels|solve N|statusline|music toggle}'
         exit 1
       end
     end
@@ -26,6 +27,8 @@ module Hero
       progress.reconcile!
       puts JSON.pretty_generate(progress.to_h)
     end
+
+    MUSIC_TRANSITIONS = { 2 => true }.freeze
 
     def self.cmd_verify(args)
       level_num = args.shift&.to_i
@@ -46,8 +49,17 @@ module Hero
         end
         passed, message = klass.new.verify
         warn "Level #{num}: #{passed ? 'PASS' : 'FAIL'} - #{message}"
+        transition_music if passed && MUSIC_TRANSITIONS[num]
         { level: num, passed: passed, message: message }
       end
+    end
+
+    def self.transition_music
+      script = File.join(__dir__, 'play-music.sh')
+      system('pkill', '-f', 'afplay.*assets/audio', err: File::NULL, out: File::NULL)
+      system('pkill', '-f', 'play-music.sh', err: File::NULL, out: File::NULL)
+      sleep 0.5
+      system('bash', script)
     end
 
     def self.cmd_clean(args)
@@ -84,6 +96,20 @@ module Hero
 
       puts JSON.pretty_generate({ solved_through: level_num, results: results })
       exit 1 unless all_pass
+    end
+
+    def self.cmd_music(args)
+      action = args.shift
+      unless action == 'toggle'
+        warn 'Usage: ruby scripts/cli.rb music toggle'
+        exit 1
+      end
+
+      progress = Progress.new
+      current = progress.music?
+      new_state = !current
+      progress.set_music!(new_state)
+      puts JSON.pretty_generate({ music: new_state })
     end
 
     def self.cmd_statusline

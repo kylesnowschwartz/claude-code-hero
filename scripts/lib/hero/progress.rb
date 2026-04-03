@@ -16,23 +16,16 @@ module Hero
 
     def current_level = @data['current_level']
     def completed     = @data['completed']
+    def music?        = @data.fetch('music', true)
+
+    def set_music!(enabled)
+      @data['music'] = enabled
+      save!
+    end
 
     def reconcile!
-      highest = nil
-      Level.numbers.each do |n|
-        klass = Level.find(n)
-        next unless klass
-
-        passed, = klass.new.verify
-        if passed
-          highest = n
-          @data['completed'][n.to_s] ||= DateTime.now.new_offset(0).strftime('%Y-%m-%dT%H:%M:%SZ')
-        end
-      end
-
-      return save! unless highest
-      next_level = [highest + 1, Level.max_number + 1].min
-      @data['current_level'] = next_level if highest >= @data['current_level']
+      highest = backfill_completed
+      advance_to!(highest) if highest
       save!
       self
     end
@@ -67,12 +60,36 @@ module Hero
     end
 
     def advance!(level)
-      @data['completed'][level.to_s] = DateTime.now.new_offset(0).strftime('%Y-%m-%dT%H:%M:%SZ')
+      @data['completed'][level.to_s] = iso8601_now
       @data['current_level'] = level + 1 if level >= @data['current_level']
       save!
     end
 
     private
+
+    def backfill_completed
+      highest = nil
+      Level.numbers.each do |n|
+        klass = Level.find(n)
+        next unless klass
+
+        passed, = klass.new.verify
+        if passed
+          highest = n
+          @data['completed'][n.to_s] ||= iso8601_now
+        end
+      end
+      highest
+    end
+
+    def advance_to!(highest)
+      next_level = [highest + 1, Level.max_number + 1].min
+      @data['current_level'] = next_level if highest >= @data['current_level']
+    end
+
+    def iso8601_now
+      DateTime.now.new_offset(0).strftime('%Y-%m-%dT%H:%M:%SZ')
+    end
 
     def load_or_init
       if File.exist?(@path)
