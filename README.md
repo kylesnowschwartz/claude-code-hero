@@ -60,6 +60,7 @@ A guide will meet you at the entrance.
 | `/hero-status` | Unroll the quest log |
 | `/verify` | Test whether your current quest is complete |
 | `/music` | Toggle dungeon music on or off |
+| `/solve <N>` | Create minimum artifacts to pass levels 0 through N (QA tool) |
 | `/restart` | Wipe all artifacts and return to the entrance |
 
 ## How Progress Works
