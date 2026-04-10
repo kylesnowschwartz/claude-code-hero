@@ -5,14 +5,14 @@
   },
   "metadata": {
     "description": "Learn Claude Code by building real things, one level at a time",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
   "plugins": [
     {
       "name": "claude-code-hero",
       "source": "./",
       "description": "Progressive D&D-themed quests that teach Claude Code features",
-      "version": "0.1.0"
+      "version": "0.2.0"
     }
   ]
 }
