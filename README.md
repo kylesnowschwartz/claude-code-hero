@@ -57,11 +57,11 @@ A guide will meet you at the entrance.
 
 | Command | What it does |
 |---|---|
-| `/hero-status` | Unroll the quest log |
-| `/verify` | Test whether your current quest is complete |
-| `/music` | Toggle dungeon music on or off |
-| `/solve <N>` | Create minimum artifacts to pass levels 0 through N (QA tool) |
-| `/restart` | Wipe all artifacts and return to the entrance |
+| `/claude-code-hero:hero-status` | Unroll the quest log |
+| `/claude-code-hero:verify` | Test whether your current quest is complete |
+| `/claude-code-hero:music` | Toggle dungeon music on or off |
+| `/claude-code-hero:solve <N>` | Create minimum artifacts to pass levels 0 through N (QA tool) |
+| `/claude-code-hero:restart` | Wipe all artifacts and return to the entrance |
 
 ## How Progress Works
 
