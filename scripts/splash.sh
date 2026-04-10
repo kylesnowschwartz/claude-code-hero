@@ -20,7 +20,7 @@ BANNER=$(cat "$SCRIPT_DIR/banners/splash.txt")
 PROGRESS_FILE="$SCRIPT_DIR/../.claude/claude-code-hero.json"
 MUSIC_PREF="true"
 if [[ -f "$PROGRESS_FILE" ]] && command -v jq >/dev/null 2>&1; then
-  MUSIC_PREF=$(jq -r '.music // true' "$PROGRESS_FILE" 2>/dev/null || echo "true")
+  MUSIC_PREF=$(jq -r 'if has("music") then .music else true end' "$PROGRESS_FILE" 2>/dev/null || echo "true")
 fi
 
 if [[ "${HERO_NO_MUSIC:-}" != "1" && "$MUSIC_PREF" != "false" ]]; then
