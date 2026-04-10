@@ -108,7 +108,7 @@ if [[ -f "$PROGRESS_FILE" ]]; then
 else
   mkdir -p "$(dirname "$PROGRESS_FILE")"
   jq -n --arg ruby "$CURRENT_RUBY" --arg jq_ver "$CURRENT_JQ" \
-    '{current_level: 1, completed: {}, preflight: {ruby: $ruby, jq: $jq_ver}}' >"$PROGRESS_FILE"
+    '{preflight: {ruby: $ruby, jq: $jq_ver}}' >"$PROGRESS_FILE"
 fi
 
 # --- deps good: show the splash ---

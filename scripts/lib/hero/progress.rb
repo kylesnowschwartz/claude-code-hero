@@ -92,10 +92,11 @@ module Hero
     end
 
     def load_or_init
+      defaults = { 'current_level' => 0, 'completed' => {} }
       if File.exist?(@path)
-        JSON.parse(File.read(@path))
+        defaults.merge(JSON.parse(File.read(@path)))
       else
-        { 'current_level' => 0, 'completed' => {} }
+        defaults
       end
     end
 
