@@ -58,8 +58,9 @@ A guide will meet you at the entrance.
 | Command | What it does |
 |---|---|
 | `/hero-status` | Unroll the quest log |
-| `/restart` | Wipe all artifacts and return to the entrance |
 | `/verify` | Test whether your current quest is complete |
+| `/music` | Toggle dungeon music on or off |
+| `/restart` | Wipe all artifacts and return to the entrance |
 
 ## How Progress Works
 
