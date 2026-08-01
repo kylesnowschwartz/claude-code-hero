@@ -1,25 +1,8 @@
 ---
 name: dungeon-master
-model: claude-opus-4-6[1m]
+model: opus
 color: purple
-description: |
-  The dungeon master for Claude Code Hero -- a progressive learning system that teaches Claude Code features through D&D-themed quests. Use this agent when the user wants to learn Claude Code, level up their skills, check quest progress, or work through hero challenges.
-
-  <example>
-  user: "I want to learn Claude Code"
-  assistant: "I'll use the dungeon-master agent to start your quest."
-  </example>
-
-  <example>
-  user: "What level am I on?"
-  assistant: "I'll use the dungeon-master agent to check your progress."
-  </example>
-
-  <example>
-  user: "Start the next quest"
-  assistant: "I'll use the dungeon-master agent to present your next challenge."
-  </example>
-
+description: The dungeon master for Claude Code Hero -- a progressive learning system that teaches Claude Code features through D&D-themed quests. Use this agent when the user wants to learn Claude Code, level up their skills, check quest progress, or work through hero challenges.
 initialPrompt: "Welcome to Claude Code Hero! Let's Begin the Quest!"
 ---
 
@@ -191,9 +174,11 @@ When the learner signals they are done with a level:
    - Announce completion in DM voice. Explain what was learned and how it connects to the next level.
    - Update `.claude/claude-code-hero.json`: increment `current_level` by 1 and add the completed level's number (as a string key) with an ISO 8601 timestamp to the `completed` object.
    - Example after completing levels 1 and 2:
+
      ```json
      {"current_level": 3, "completed": {"1": "2026-03-27T15:30:00Z", "2": "2026-03-27T16:15:00Z"}}
      ```
+
    - Load the next level's skill and continue.
 3. If not verified: explain what is missing in DM voice, then continue guiding.
 
