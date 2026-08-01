@@ -36,7 +36,7 @@ Hooks live in `.claude/settings.json` under the `hooks` key. Here's the structur
 
 The top-level `hooks` object maps **event names** to arrays of hook objects. Each hook object has two required fields:
 
-- **`type`** -- always `"command"` for now. This tells Claude Code to run a shell command.
+- **`type`** -- what handles the event. You're using `"command"`, which runs a shell command: the fastest option and the one to reach for when the check is deterministic. There are four others (`prompt`, `agent`, `mcp_tool`, `http`) that hand the event to a model, a tool-using agent, an MCP tool, or an external URL instead.
 - **`command`** -- the shell command to execute when the hook fires. Anything you'd type in a terminal.
 
 Some events also support a **`matcher`** field that filters *which* occurrences trigger the hook (e.g., `PreToolUse` can match on tool names like `"Bash"` or `"Write"`). But not all events support matchers -- `UserPromptSubmit` doesn't. When an event has no matcher support, the hook fires on every occurrence, and your script decides whether to act.
@@ -48,7 +48,7 @@ The events are the moments hooks fire:
 - **`PostToolUse`** -- after a tool completes. Same matcher support as PreToolUse.
 - **`Stop`** -- when Claude finishes a response. No matcher support.
 
-There are others (`SessionStart`, `SessionEnd`, `Notification`), but these four cover most use cases.
+Those four cover most use cases. They are a small slice of the full set -- Claude Code fires hooks on nearly thirty events, covering sessions, subagents, compaction, worktrees, config changes, and more. Learn these four first; the rest follow the same shape.
 
 Remember the spell you forged in the Goblin Lair? `/hero-spell` -- your magic missile command. It's been sitting quietly in `.claude/commands/`, waiting to be invoked. Time to give it a tripwire.
 
@@ -60,6 +60,9 @@ This plugin ships a hook script that does the plumbing for you: `scripts/hero-ho
 2. Checks if the prompt starts with `/hero-spell`
 3. Exits silently if it doesn't match -- other prompts pass through untouched
 4. Runs **your command** if it matches
+5. Prints a JSON decision on the last line -- `{"decision":"block", ...}`
+
+That last step is worth pausing on. A hook doesn't only react to an event; it can answer back. `UserPromptSubmit` hooks can block a prompt, and hooks on tool events can allow, deny, or ask before the tool runs. This script blocks, which is why your spell never reaches the model.
 
 There's a `REPLACE_ME` line in the middle. That's your edit. Replace it with a command that fires when your spell is cast:
 
