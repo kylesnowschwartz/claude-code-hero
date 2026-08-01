@@ -19,3 +19,7 @@ Metrics/PerceivedComplexity:
 
 Metrics/ModuleLength:
   Max: 175
+
+Metrics/ClassLength:
+  Exclude:
+    - 'test/**/*_test.rb'

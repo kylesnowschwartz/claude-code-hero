@@ -20,7 +20,7 @@ module Hero
     verify do
       file_exists SETTINGS
       json_field_exists SETTINGS, %w[hooks UserPromptSubmit]
-      json_array_match SETTINGS, %w[hooks UserPromptSubmit], pattern: 'hero-hook'
+      json_hook_entry_match SETTINGS, %w[hooks UserPromptSubmit], pattern: 'hero-hook'
 
       script = find_hero_hook
       grep_match script, 'REPLACE_ME', expect_missing: true

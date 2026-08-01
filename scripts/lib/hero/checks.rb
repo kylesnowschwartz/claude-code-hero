@@ -74,6 +74,24 @@ module Hero
       raise CheckFailed, "No element matching /#{pattern}/ in #{keys.join('.')} of #{path}"
     end
 
+    # A hook event array holds matcher groups; the hook definitions nest in each
+    # group's 'hooks' array. A flat array of hook objects is rejected by the
+    # settings schema, so the shape is checked before the pattern.
+    def json_hook_entry_match(path, event_keys, pattern:)
+      full = expand(path)
+      data = JSON.parse(File.read(full))
+      groups = dig_keys(data, event_keys)
+      event = event_keys.join('.')
+      raise CheckFailed, "Key path #{event} not found in #{path}" unless groups.is_a?(Array)
+
+      require_matcher_groups(groups, event, path)
+
+      re = Regexp.new(pattern)
+      return if groups.flat_map { |g| g['hooks'] }.any? { |entry| entry.to_s.match?(re) }
+
+      raise CheckFailed, "No hook matching /#{pattern}/ nested under #{event} in #{path}"
+    end
+
     def json_field_exists(path, keys)
       full = expand(path)
       data = JSON.parse(File.read(full))
@@ -176,6 +194,15 @@ module Hero
     end
 
     private
+
+    def require_matcher_groups(groups, event, path)
+      flat = groups.reject { |g| g.is_a?(Hash) && g['hooks'].is_a?(Array) }
+      return if flat.empty?
+
+      raise CheckFailed,
+            "#{event} in #{path} must hold matcher groups, each with a nested 'hooks' array. " \
+            "Found an entry with no 'hooks' array: #{flat.first.to_s[0, 120]}"
+    end
 
     def count_section_lines(lines, heading)
       in_section = false

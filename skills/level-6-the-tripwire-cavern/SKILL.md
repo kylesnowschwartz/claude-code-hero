@@ -26,20 +26,30 @@ Hooks live in `.claude/settings.json` under the `hooks` key. Here's the structur
   "hooks": {
     "EventName": [
       {
-        "type": "command",
-        "command": "shell command to execute"
+        "hooks": [
+          {
+            "type": "command",
+            "command": "shell command to execute"
+          }
+        ]
       }
     ]
   }
 }
 ```
 
-The top-level `hooks` object maps **event names** to arrays of hook objects. Each hook object has two required fields:
+There are two layers there, and the nesting trips up almost everyone the first time.
+
+The top-level `hooks` object maps **event names** to arrays. Those arrays do not hold hooks directly -- they hold **matcher groups**. Each group answers "which occurrences of this event do I care about?" and carries its own nested `hooks` array holding the actual hook definitions. The nested `hooks` array is required even when the group has no matcher and holds a single hook.
+
+Write it flat, with `type` and `command` sitting directly in the event array, and Claude Code rejects the file: `Expected array, but received undefined`.
+
+Each hook object inside the nested array has two required fields:
 
 - **`type`** -- what handles the event. You're using `"command"`, which runs a shell command: the fastest option and the one to reach for when the check is deterministic. There are four others (`prompt`, `agent`, `mcp_tool`, `http`) that hand the event to a model, a tool-using agent, an MCP tool, or an external URL instead.
 - **`command`** -- the shell command to execute when the hook fires. Anything you'd type in a terminal.
 
-Some events also support a **`matcher`** field that filters *which* occurrences trigger the hook (e.g., `PreToolUse` can match on tool names like `"Bash"` or `"Write"`). But not all events support matchers -- `UserPromptSubmit` doesn't. When an event has no matcher support, the hook fires on every occurrence, and your script decides whether to act.
+The group itself takes an optional **`matcher`** field that filters *which* occurrences trigger the hooks inside it (e.g., `PreToolUse` can match on tool names like `"Bash"` or `"Write"`). Not every event supports matchers -- `UserPromptSubmit` doesn't. Omit `matcher` and the group fires on every occurrence, leaving your script to decide whether to act. That is exactly what you're about to build: a group with no matcher, holding one hook.
 
 The events are the moments hooks fire:
 
@@ -77,9 +87,9 @@ The `$TARGET` variable is already set for you -- it's whatever the caster aimed 
 Once you've edited the script, wire it into `.claude/settings.json`:
 
 - Add a `hooks` object if one doesn't exist
-- Inside it, add a **`UserPromptSubmit`** key with an array containing one hook object
-- Set `type` to `"command"`
-- Set `command` to run the script: `bash <path-to-plugin>/scripts/hero-hook.sh`
+- Inside it, add a **`UserPromptSubmit`** key holding an array with one matcher group
+- The group needs no `matcher` -- just a nested `hooks` array
+- Inside that nested array, one hook object: `type` set to `"command"`, and `command` set to run the script: `bash <path-to-plugin>/scripts/hero-hook.sh`
 
 The path to the script depends on where this plugin is installed. Ask Claude to help you find it, or use `find` to locate `hero-hook.sh`.
 
@@ -125,13 +135,19 @@ Your `settings.json` already has `permissions` from Level 4. The `hooks` key sit
   "hooks": {
     "UserPromptSubmit": [
       {
-        "type": "command",
-        "command": "bash /path/to/scripts/hero-hook.sh"
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /path/to/scripts/hero-hook.sh"
+          }
+        ]
       }
     ]
   }
 }
 ```
+
+Count the brackets. `UserPromptSubmit` holds an array, that array holds one group, and the group holds its own `hooks` array. Three levels before you reach `type`.
 
 To find the script's path, run: `find / -name "hero-hook.sh" -path "*/claude-code-hero/*" 2>/dev/null`
 
@@ -147,9 +163,10 @@ When you're ready, run `/verify` to check your work.
 
 - `.claude/settings.json` must exist
 - A `hooks` object exists at the top level
-- `hooks.UserPromptSubmit` contains at least one hook object
-- The hook object has `type` set to `"command"`
-- The `command` field references `hero-hook.sh`
+- `hooks.UserPromptSubmit` contains at least one matcher group
+- Each group has a nested `hooks` array (a flat hook object here fails the check, as it does in Claude Code)
+- A hook inside that nested array has `type` set to `"command"`
+- Its `command` field references `hero-hook.sh`
 
 ### Script Check
 

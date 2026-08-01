@@ -10,12 +10,14 @@ class Level6Test < HeroTestCase
     File.join(@tmpdir, 'Code/claude-code-hero/scripts/hero-hook.sh')
   end
 
+  def hook_group(command)
+    { 'hooks' => [{ 'type' => 'command', 'command' => command }] }
+  end
+
   def valid_settings
     {
       'hooks' => {
-        'UserPromptSubmit' => [
-          { 'command' => "bash #{hero_hook_path}" }
-        ]
+        'UserPromptSubmit' => [hook_group("bash #{hero_hook_path}")]
       }
     }
   end
@@ -68,10 +70,18 @@ class Level6Test < HeroTestCase
   end
 
   def test_verify_fails_without_hero_hook_reference
-    write_settings({ 'hooks' => { 'UserPromptSubmit' => [{ 'command' => 'bash other.sh' }] } })
+    write_settings({ 'hooks' => { 'UserPromptSubmit' => [hook_group('bash other.sh')] } })
     passed, msg = Hero::Level6.new.verify
     refute passed
     assert_match(/hero-hook/, msg)
+  end
+
+  def test_verify_fails_on_flat_hook_object
+    flat = { 'type' => 'command', 'command' => "bash #{hero_hook_path}" }
+    write_settings({ 'hooks' => { 'UserPromptSubmit' => [flat] } })
+    passed, msg = Hero::Level6.new.verify
+    refute passed
+    assert_match(/nested 'hooks' array/, msg)
   end
 
   def test_verify_fails_when_hook_script_has_placeholder
@@ -104,8 +114,8 @@ class Level6Test < HeroTestCase
     settings = {
       'hooks' => {
         'UserPromptSubmit' => [
-          { 'command' => "bash #{hero_hook_path}" },
-          { 'command' => 'bash other-hook.sh' }
+          hook_group("bash #{hero_hook_path}"),
+          hook_group('bash other-hook.sh')
         ]
       }
     }
@@ -113,9 +123,9 @@ class Level6Test < HeroTestCase
     Hero::Level6.new.clean
 
     data = read_json(SETTINGS)
-    hooks = data['hooks']['UserPromptSubmit']
-    assert_equal 1, hooks.size
-    assert_match(/other-hook/, hooks.first['command'])
+    groups = data['hooks']['UserPromptSubmit']
+    assert_equal 1, groups.size
+    assert_match(/other-hook/, groups.first['hooks'].first['command'])
   end
 
   def test_clean_resets_hook_script_to_placeholder
