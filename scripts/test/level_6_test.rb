@@ -7,6 +7,11 @@ class Level6Test < HeroTestCase
   SETTINGS = '.claude/settings.json'
 
   def hero_hook_path
+    File.join(@tmpdir, 'scripts/hero-hook.sh')
+  end
+
+  # A second clone of the plugin elsewhere on disk. Level 6 must ignore it.
+  def stray_hook_path
     File.join(@tmpdir, 'Code/claude-code-hero/scripts/hero-hook.sh')
   end
 
@@ -43,9 +48,13 @@ class Level6Test < HeroTestCase
 
   def setup
     super
-    # Level 6 searches for hero-hook.sh under search dirs. Put it where find_file can find it.
     FileUtils.mkdir_p(File.dirname(hero_hook_path))
     File.write(hero_hook_path, valid_hook_script)
+  end
+
+  def write_stray_hook(content)
+    FileUtils.mkdir_p(File.dirname(stray_hook_path))
+    File.write(stray_hook_path, content)
   end
 
   # --- Verification ---
@@ -100,6 +109,33 @@ class Level6Test < HeroTestCase
     assert_match(/hero/, msg)
   end
 
+  def test_verify_ignores_a_second_clone_on_disk
+    write_settings(valid_settings)
+    write_stray_hook(placeholder_hook_script)
+
+    passed, = Hero::Level6.new.verify
+    assert passed, 'an unedited copy in another clone must not fail the plugin copy'
+  end
+
+  def test_verify_fails_when_only_a_second_clone_was_edited
+    write_settings(valid_settings)
+    File.write(hero_hook_path, placeholder_hook_script)
+    write_stray_hook(valid_hook_script)
+
+    passed, msg = Hero::Level6.new.verify
+    refute passed, 'editing another clone must not satisfy the quest'
+    assert_match(/REPLACE_ME/, msg)
+  end
+
+  def test_verify_fails_when_plugin_hook_script_missing
+    write_settings(valid_settings)
+    FileUtils.rm_f(hero_hook_path)
+
+    passed, msg = Hero::Level6.new.verify
+    refute passed
+    assert_match(%r{Missing file.*scripts/hero-hook\.sh}, msg)
+  end
+
   # --- Cleanup ---
 
   def test_clean_removes_hero_hook_from_settings
@@ -134,6 +170,15 @@ class Level6Test < HeroTestCase
 
     content = File.read(hero_hook_path)
     assert_match(/REPLACE_ME/, content)
+  end
+
+  def test_clean_leaves_a_second_clone_untouched
+    write_settings(valid_settings)
+    write_stray_hook(valid_hook_script)
+    Hero::Level6.new.clean
+
+    assert_equal valid_hook_script, File.read(stray_hook_path),
+                 'clean must not write into another clone of the plugin'
   end
 
   def test_clean_dry_run_preserves_everything

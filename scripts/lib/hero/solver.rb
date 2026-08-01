@@ -122,7 +122,7 @@ module Hero
     end
 
     def self.activate_hero_hook
-      hook_path = File.join(Hero::PROJECT_ROOT, 'scripts', 'hero-hook.sh')
+      hook_path = Hero.hook_script_path
       return unless File.exist?(hook_path)
 
       content = File.read(hook_path)
