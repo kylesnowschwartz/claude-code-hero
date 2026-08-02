@@ -159,6 +159,23 @@ module Hero
       MD
     end
 
+    def self.solve_10_advanced_hooks
+      merge_settings_json do |data|
+        data['hooks'] ||= {}
+        data['hooks']['PreToolUse'] ||= []
+        next if data['hooks']['PreToolUse'].any? { |g| g.to_s.match?(/hero/i) }
+
+        data['hooks']['PreToolUse'] << {
+          'matcher' => 'Write|Edit',
+          'hooks' => [{
+            'type' => 'prompt',
+            'prompt' => 'The hero swore an oath to guard this realm. Deny changes that would ' \
+                        'delete a hero artifact, and say why. Otherwise allow.'
+          }]
+        }
+      end
+    end
+
     def self.solve_9_plugin
       plugin_dir = File.join(Hero::PROJECT_ROOT, 'hero-toolkit')
       FileUtils.mkdir_p(File.join(plugin_dir, '.claude-plugin'))

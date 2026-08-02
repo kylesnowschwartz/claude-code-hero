@@ -15,9 +15,9 @@ class CLITest < HeroTestCase
     stdout, _, status = cli('levels')
     assert status.success?
     data = JSON.parse(stdout)
-    assert_equal 10, data.size
-    assert_equal 0, data.first['level']
-    assert_equal 9, data.last['level']
+    assert_equal Hero::Level.count, data.size
+    assert_equal Hero::Level.min_number, data.first['level']
+    assert_equal Hero::Level.max_number, data.last['level']
   end
 
   def test_levels_returns_valid_json
@@ -66,7 +66,7 @@ class CLITest < HeroTestCase
     stdout, = cli('verify')
     data = JSON.parse(stdout)
     assert data.key?('results')
-    assert_equal 10, data['results'].size
+    assert_equal Hero::Level.count, data['results'].size
   end
 
   def test_verify_human_messages_on_stderr

@@ -34,7 +34,7 @@ class ProgressTest < HeroTestCase
   end
 
   def test_status_complete
-    write_progress({ 'current_level' => 10, 'completed' => {} })
+    write_progress({ 'current_level' => Hero::Level.max_number + 1, 'completed' => {} })
     p = Hero::Progress.new(path: progress_path)
     assert_equal 'complete', p.status
   end
