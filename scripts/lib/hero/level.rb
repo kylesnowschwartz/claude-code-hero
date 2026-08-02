@@ -7,7 +7,8 @@ module Hero
     include Checks
 
     class << self
-      attr_reader :_number, :_name, :_feature, :_artifact, :_verify_block, :_clean_block
+      attr_reader :_number, :_name, :_feature, :_artifact, :_verify_block, :_clean_block,
+                  :_bonus_label, :_bonus_block
 
       def inherited(subclass)
         super
@@ -49,6 +50,13 @@ module Hero
       def artifact(val)  = (@_artifact = val)
       def verify(&blk)   = (@_verify_block = blk)
       def clean(&blk)    = (@_clean_block = blk)
+
+      # An optional extra objective. Reported alongside the result but never
+      # required to pass, so a player can finish the level without it.
+      def bonus(label, &blk)
+        @_bonus_label = label
+        @_bonus_block = blk
+      end
     end
 
     def initialize(dry_run: false)
@@ -65,9 +73,21 @@ module Hero
 
     def verify
       instance_eval(&self.class._verify_block)
-      [true, 'PASS']
+      [true, pass_message]
     rescue CheckFailed => e
       [false, e.message]
+    end
+
+    def bonus_label = self.class._bonus_label
+    def bonus?      = !self.class._bonus_block.nil?
+
+    def bonus_earned?
+      return false unless bonus?
+
+      instance_eval(&self.class._bonus_block)
+      true
+    rescue CheckFailed
+      false
     end
 
     def clean
@@ -78,6 +98,14 @@ module Hero
 
     def to_h
       { level: number, name: name, feature: feature, artifact: artifact }
+    end
+
+    private
+
+    def pass_message
+      return 'PASS' unless bonus?
+
+      "PASS -- bonus (#{bonus_label}): #{bonus_earned? ? 'earned' : 'not attempted'}"
     end
   end
 end

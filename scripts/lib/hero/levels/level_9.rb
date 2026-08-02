@@ -17,11 +17,48 @@ module Hero
       check_has_components(plugin_dir)
     end
 
+    bonus 'publishing to a marketplace' do
+      _manifest, plugin_dir = find_hero_plugin
+      check_marketplace(plugin_dir)
+    end
+
     clean do
       remove_hero_plugins
     end
 
     private
+
+    # A marketplace is what makes a plugin installable by someone else, so the
+    # entry has to actually point at the plugin the player just built.
+    def check_marketplace(plugin_dir)
+      path = File.join(plugin_dir, '.claude-plugin', 'marketplace.json')
+      raise CheckFailed, "No marketplace.json at #{path}" unless File.file?(path)
+
+      data = parse_json(path)
+      raise CheckFailed, 'marketplace.json needs a "name"' unless data['name'].is_a?(String)
+      raise CheckFailed, 'marketplace.json needs an "owner" object' unless data['owner'].is_a?(Hash)
+
+      entries = data['plugins']
+      raise CheckFailed, 'marketplace.json needs a non-empty "plugins" array' unless entries.is_a?(Array) &&
+                                                                                     !entries.empty?
+
+      check_marketplace_entry(entries)
+    end
+
+    def check_marketplace_entry(entries)
+      listed = entries.find { |e| e.is_a?(Hash) && e['name'].to_s.match?(/hero/i) && e['source'] }
+      return if listed
+
+      raise CheckFailed,
+            'No entry in "plugins" with a hero name and a "source". ' \
+            "Found: #{entries.map { |e| e.is_a?(Hash) ? e['name'] : e }.inspect}"
+    end
+
+    def parse_json(path)
+      JSON.parse(File.read(path))
+    rescue JSON::ParserError => e
+      raise CheckFailed, "marketplace.json is not valid JSON: #{e.message}"
+    end
 
     def find_hero_plugin
       CANDIDATES.each do |candidate|
@@ -49,8 +86,9 @@ module Hero
         next unless File.read(manifest).match?(/hero/i)
 
         unless dry_run?
-          File.delete(manifest)
           plugin_meta_dir = File.dirname(manifest)
+          File.delete(manifest)
+          FileUtils.rm_f(File.join(plugin_meta_dir, 'marketplace.json'))
           Dir.rmdir(plugin_meta_dir) if (Dir.entries(plugin_meta_dir) - %w[. ..]).empty?
         end
         record_action("remove plugin #{candidate}")

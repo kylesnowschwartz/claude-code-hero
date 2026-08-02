@@ -6,7 +6,7 @@ You know the basics. Chat, CLAUDE.md, maybe a prompt or two. But there are deepe
 
 This is the dungeon that teaches you how.
 
-Ten quests. Each one builds a real artifact on your machine. The artifacts connect -- the spell you forge in Level 3 gets a tripwire in Level 6, and everything binds together in Level 9. You start at the threshold learning to talk to Claude Code. You end by building your own plugin.
+A quest per feature. Each one builds a real artifact on your machine. The artifacts connect -- the spell you forge in Level 3 gets a tripwire in Level 6, and everything binds together into a plugin in Level 9. You start at the threshold learning to talk to Claude Code. You end by building and publishing your own plugin.
 
 The medium is the message: you learn about plugins by using one.
 

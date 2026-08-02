@@ -42,6 +42,38 @@ Your task:
 - Copy (or recreate) your hero artifacts into the plugin's directory structure: `commands/hero-spell.md`, `rules/hero-protocol.md`, `skills/hero-knowledge/SKILL.md`, `agents/hero-agent.md`
 - Add at least one component (copying all five is the full victory, but one is enough to pass)
 
+### Bonus objective: publish it
+
+This one is optional. The level passes without it, and `/verify` will tell you whether you earned it.
+
+A plugin on your disk is a plugin only you can use. A **marketplace** is the listing that makes it installable by someone else -- the difference between building a thing and shipping it.
+
+A marketplace is one more file next to your manifest: `.claude-plugin/marketplace.json`. It needs three fields:
+
+- **`name`** -- the marketplace's own identifier, kebab-case
+- **`owner`** -- an object describing who maintains it. A `name` is enough.
+- **`plugins`** -- an array of entries. Each needs a `name` and a `source` saying where to fetch the plugin from.
+
+Since the plugin sits in the same directory as the marketplace, its source is just `"./"`:
+
+```json
+{
+  "name": "hero-marketplace",
+  "owner": { "name": "Your Name" },
+  "plugins": [
+    {
+      "name": "hero-toolkit",
+      "source": "./",
+      "description": "A toolkit forged in the dungeons"
+    }
+  ]
+}
+```
+
+The `name` in that entry must contain "hero" -- same mark every artifact in this dungeon carries.
+
+One marketplace can list many plugins, and that's the usual reason to build one: a team publishes a single marketplace, and everyone installs from it with `/plugin marketplace add`. Yours lists one plugin. The shape is identical either way.
+
 ### Try it
 
 Launch Claude with your plugin loaded: `claude --plugin-dir <path-to-your-plugin-directory>`. Then test your components. Type `/hero-spell the dragon` -- if the command fires, your plugin is wired correctly. Ask a question in your skill's domain. Launch `claude --agent hero-agent`. Each component that works is proof the plugin structure is right.
@@ -96,13 +128,21 @@ When you're ready, run `/verify` to check your work.
 - `plugin.json` includes a `name` field whose value contains "hero" (e.g., `"hero-toolkit"`, `"my-hero-plugin"`)
 - At least one component file follows its type's format (frontmatter for commands/skills/agents/styles, valid JSON for hooks)
 
+### Bonus Check (optional)
+
+Not required to pass. `/verify` reports whether you earned it.
+
+- `.claude-plugin/marketplace.json` exists next to your `plugin.json` and is valid JSON
+- It has a `name` string and an `owner` object
+- Its `plugins` array holds at least one entry with a hero name and a `source`
+
 ## Connection
 
 The last rune locks into place. The artifact hums. It's whole.
 
 Look at what's on the workbench. A command that fires magic missiles. A rule that activates by path. A hook that reacts when the spell is cast. A skill that holds your expertise. An agent that acts on its own. And now a plugin that binds them all together.
 
-Everything you built across ten quests -- it was all plugin components. You just didn't know it yet.
+Everything you built across the quests behind you -- it was all plugin components. You just didn't know it yet.
 
 ## Further Reading
 
@@ -110,10 +150,10 @@ Everything you built across ten quests -- it was all plugin components. You just
 
 ---
 
-Ten chambers. Ten trials. Each one a power claimed, a pattern learned, a tool forged.
+Chamber after chamber. Each one a power claimed, a pattern learned, a tool forged.
 
 You entered this labyrinth mapping walls. You leave it building them.
 
-The realm of Claude Code has no final chamber. There are marketplaces to discover. Teams to assemble. MCP servers to connect. Worktrees to spin up for parallel work. But those are journeys for another day.
+The workshop was the point. Everything before it was a component; everything after it is something you can hand to another person. Whatever you build next, you now know how to package it.
 
-For now: you are an artificer. Go build something.
+You are an artificer. Go build something.

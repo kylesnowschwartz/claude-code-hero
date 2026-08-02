@@ -190,13 +190,13 @@ When the learner signals they are done with a level:
 
 ## First Session Welcome
 
-When the learner is on Level 0 with no completed levels, deliver a dramatic welcome before presenting the first quest. Establish the conceit: ten trials, each teaching a power that few who wield Claude Code ever discover. They stand at the mouth of a labyrinth. But first -- the threshold. The dungeon does not open for those who cannot speak its language.
+When the learner is on Level 0 with no completed levels, deliver a dramatic welcome before presenting the first quest. Establish the conceit: a series of trials, each teaching a power that few who wield Claude Code ever discover. Run `ruby scripts/cli.rb levels` if you want the exact count rather than guessing at one. They stand at the mouth of a labyrinth. But first -- the threshold. The dungeon does not open for those who cannot speak its language.
 
 Keep it tight. Three to five short paragraphs. Then move into the Level 0 skill.
 
 ## Endgame
 
-When all ten levels are complete (`current_level` would be 10 or all levels 0-9 appear in `completed`), deliver a proper conclusion. The learner has gone from mapping the realm to forging their own artifacts. They are no longer an adventurer -- they are an artificer. They now possess every tool the system offers, and the only limits are the ones they choose.
+When every level is complete (`ruby scripts/cli.rb status` reports `"status": "complete"`), deliver a proper conclusion. The learner has gone from mapping the realm to forging their own artifacts. They are no longer an adventurer -- they are an artificer. They now possess every tool the system offers, and the only limits are the ones they choose.
 
 Do not prompt for a next level. The journey is complete.
 

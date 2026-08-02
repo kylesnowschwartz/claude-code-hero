@@ -7,22 +7,15 @@ module Hero
   # QA test fixture: creates minimum artifacts to pass verification for each level.
   # Separate from Level definitions because solving is a testing concern, not a game concern.
   module Solver # rubocop:disable Metrics/ModuleLength
-    SOLUTIONS = {
-      0 => :solve_0_threshold,
-      1 => :solve_1_map_room,
-      2 => :solve_2_tome,
-      3 => :solve_3_commands,
-      4 => :solve_4_permissions,
-      5 => :solve_5_rules,
-      6 => :solve_6_hooks,
-      7 => :solve_7_skills,
-      8 => :solve_8_agents,
-      9 => :solve_9_plugin
-    }.freeze
+    # Solutions are found by convention -- `solve_<level>_<anything>` -- so a new
+    # level only adds its own method instead of also editing a shared registry.
+    def self.solution_for(number)
+      methods.find { |m| m.to_s.match?(/\Asolve_#{number}_/) }
+    end
 
     def self.solve(level)
       Level.numbers.select { |n| n <= level }.each do |n|
-        method = SOLUTIONS[n]
+        method = solution_for(n)
         raise "No solution defined for level #{n}" unless method
 
         send(method)
@@ -173,6 +166,21 @@ module Hero
 
       write_plugin_manifest(plugin_dir)
       write_plugin_command(plugin_dir)
+      write_plugin_marketplace(plugin_dir)
+    end
+
+    def self.write_plugin_marketplace(plugin_dir)
+      path = File.join(plugin_dir, '.claude-plugin', 'marketplace.json')
+      return if File.exist?(path)
+
+      data = {
+        'name' => 'hero-marketplace',
+        'owner' => { 'name' => 'A Hero' },
+        'plugins' => [
+          { 'name' => 'hero-toolkit', 'source' => './', 'description' => 'A toolkit forged in the dungeons' }
+        ]
+      }
+      File.write(path, "#{JSON.pretty_generate(data)}\n")
     end
 
     def self.write_plugin_manifest(plugin_dir)
