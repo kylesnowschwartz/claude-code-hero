@@ -189,6 +189,27 @@ module Hero
       File.write(path, "#{JSON.pretty_generate(data)}\n")
     end
 
+    def self.solve_12_workflows
+      write_file('.claude/workflows/hero-warband.js', <<~JS)
+        export const meta = {
+          name: 'hero-warband',
+          description: 'Send scouts into three corners of the dungeon',
+          phases: [{ title: 'Scout' }],
+        }
+
+        const CORNERS = ['the flooded vault', 'the collapsed stair', 'the singing door']
+
+        const reports = await pipeline(
+          CORNERS,
+          corner => agent(`You are a scout. Describe what you find at ${corner} in two sentences.`,
+                          { label: `scout:${corner}`, phase: 'Scout' })
+        )
+
+        log(`${reports.filter(Boolean).length} scouts returned`)
+        return reports
+      JS
+    end
+
     def self.solve_9_plugin
       plugin_dir = File.join(Hero::PROJECT_ROOT, 'hero-toolkit')
       FileUtils.mkdir_p(File.join(plugin_dir, '.claude-plugin'))
