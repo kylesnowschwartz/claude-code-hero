@@ -86,9 +86,9 @@ module Hero
       data['permissions']['ask'] ||= []
       data['permissions']['deny'] ||= []
 
-      append_unique(data['permissions']['allow'], 'Bash(git:*)')
-      append_unique(data['permissions']['ask'], 'Bash(git push:*)')
-      append_unique(data['permissions']['deny'], 'Bash(git push --force:*)')
+      append_unique(data['permissions']['allow'], 'Bash(git *)')
+      append_unique(data['permissions']['ask'], 'Bash(git push *)')
+      append_unique(data['permissions']['deny'], 'Bash(git push --force *)')
     end
 
     def self.solve_5_rules

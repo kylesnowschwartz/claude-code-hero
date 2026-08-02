@@ -29,20 +29,20 @@ Your task:
 
 Open `.claude/settings.json` (create it if it doesn't exist) and configure three rules that demonstrate all three tiers working together:
 
-1. **Allow** `Bash(git:*)` -- let Claude run git commands freely. This is the most common allow rule.
-2. **Ask** `Bash(git push:*)` -- pushes affect the remote. Claude should ask before pushing, even though git is broadly allowed.
-3. **Deny** `Bash(git push --force:*)` -- force-pushing rewrites remote history. No one should do this casually, not even you. Deny it outright.
+1. **Allow** `Bash(git *)` -- let Claude run git commands freely. This is the most common allow rule.
+2. **Ask** `Bash(git push *)` -- pushes affect the remote. Claude should ask before pushing, even though git is broadly allowed.
+3. **Deny** `Bash(git push --force *)` -- force-pushing rewrites remote history. No one should do this casually, not even you. Deny it outright.
 
 These three rules form a layered policy: git flows freely, pushes require approval, force-pushes are blocked. That's a real permission model, not a checkbox exercise.
 
 Permission rules use the format `ToolName(pattern)` where the pattern supports globs:
 
-- `Bash(git:*)` -- matches `git status`, `git commit`, `git log`, everything starting with `git`
-- `Bash(npm test:*)` -- matches `npm test`, `npm test -- --watch`, etc.
+- `Bash(git *)` -- matches `git status`, `git commit`, `git log`, everything starting with `git`
+- `Bash(npm test *)` -- matches `npm test`, `npm test -- --watch`, etc.
 - `Write` -- allow all file writes (use with caution)
 - `Edit` -- allow all edits. `WebFetch` allows all fetches.
 
-**Tier order matters.** Rules evaluate in a fixed order: **deny first, then ask, then allow**. The first matching rule wins. So `Bash(git push --force:*)` in deny gets checked before `Bash(git push:*)` in ask, which gets checked before `Bash(git:*)` in allow. Deny beats ask beats allow -- always. This is how you build layered policies: broad allow rules at the bottom, carve-outs in ask and deny above them.
+**Tier order matters.** Rules evaluate in a fixed order: **deny first, then ask, then allow**. The first matching rule wins. So `Bash(git push --force *)` in deny gets checked before `Bash(git push *)` in ask, which gets checked before `Bash(git *)` in allow. Deny beats ask beats allow -- always. This is how you build layered policies: broad allow rules at the bottom, carve-outs in ask and deny above them.
 
 ### Try it
 
@@ -59,14 +59,14 @@ The cascade works like this:
 - **`settings.json`** -- committed to the repo, shared with the team. The party's standing orders.
 - **`settings.local.json`** -- gitignored, personal. Your private amendments.
 
-Rules in `.local.json` merge with and override rules in `settings.json`. If the team denies `Bash(rm -rf:*)` but you need it for a cleanup script, your `.local.json` can allow it. The team policy stays intact for everyone else.
+Rules in `.local.json` merge with and override rules in `settings.json`. If the team denies `Bash(rm -rf *)` but you need it for a cleanup script, your `.local.json` can allow it. The team policy stays intact for everyone else.
 
 For this quest, add any permission you find useful. One example:
 
 ```json
 {
   "permissions": {
-    "allow": ["Bash(echo:*)"]
+    "allow": ["Bash(echo *)"]
   }
 }
 ```
@@ -93,17 +93,17 @@ Anything not in any list falls through to `ask` behavior by default. But explici
 
 ### Hint 2
 
-Rules follow the pattern `ToolName(command_prefix:*)`. The colon-star is a glob. For Bash commands, the prefix is the command name:
+Rules follow the pattern `ToolName(command_prefix *)`. The space-star is a glob. For Bash commands, the prefix is the command name:
 
-- `Bash(git:*)` matches `git status`, `git commit`, `git push`, everything starting with `git`
-- `Bash(git push:*)` matches `git push`, `git push origin main`, etc.
-- `Bash(git push --force:*)` matches force-push variants specifically
+- `Bash(git *)` matches `git status`, `git commit`, `git push`, everything starting with `git`
+- `Bash(git push *)` matches `git push`, `git push origin main`, etc.
+- `Bash(git push --force *)` matches force-push variants specifically
 
-More specific rules override broader ones. So you can allow `git` broadly, then carve out exceptions with `ask` and `deny`.
+Specificity is not what decides the outcome -- the tier is. Deny is checked first, then ask, then allow, and the first match wins. That is what lets you allow `git` broadly and still carve out exceptions: the narrower rules sit in higher-priority tiers, not because they are narrower.
 
 ### Hint 3
 
-Put the three required rules in the right tiers: `Bash(git:*)` in `allow`, `Bash(git push:*)` in `ask`, `Bash(git push --force:*)` in `deny`. Add more rules if you want, but these three are required.
+Put the three required rules in the right tiers: `Bash(git *)` in `allow`, `Bash(git push *)` in `ask`, `Bash(git push --force *)` in `deny`. Add more rules if you want, but these three are required.
 
 ## Verification
 
@@ -118,9 +118,9 @@ When you're ready, run `/verify` to check your work.
 
 Three rules, three tiers in `settings.json`:
 
-1. `Bash(git:*)` appears in `permissions.allow`
-2. `Bash(git push:*)` appears in `permissions.ask`
-3. `Bash(git push --force:*)` appears in `permissions.deny`
+1. `Bash(git *)` appears in `permissions.allow`
+2. `Bash(git push *)` appears in `permissions.ask`
+3. `Bash(git push --force *)` appears in `permissions.deny`
 
 And in `settings.local.json`:
 

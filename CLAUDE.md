@@ -23,7 +23,7 @@ Prior art: Block's "Repo Quest" validated gamified learning for developer tools 
 ## Design Decisions
 
 ### Quest-specific artifacts
-Each level requires a specifically named artifact (`hero-spell.md`, `hero-voice.md`, etc.) rather than checking for generic files. Power users already have commands, skills, and hooks -- generic checks would false-positive on day one.
+Each level requires a specifically named artifact (`hero-spell.md`, `hero-protocol.md`, etc.) rather than checking for generic files. Power users already have commands, skills, and hooks -- generic checks would false-positive on day one.
 
 ### Programmatic verification, not semantic
 `scripts/cli.rb verify` runs file-existence checks, grep matches, and JSON field inspections. The agent runs the CLI and reports PASS/FAIL. No "does this CLAUDE.md contain real instructions?" judgment calls. Like a learn-to-code tool: run the tests, check the output.

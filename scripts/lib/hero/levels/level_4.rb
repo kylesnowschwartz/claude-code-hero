@@ -10,10 +10,18 @@ module Hero
     SETTINGS = '.claude/settings.json'
     SETTINGS_LOCAL = '.claude/settings.local.json'
 
+    # The quest teaches `Bash(git *)`. The legacy `Bash(git:*)` form is
+    # deprecated but still valid, so both satisfy the check.
     RULES = {
-      %w[permissions allow] => 'Bash\(git:',
-      %w[permissions ask] => 'Bash\(git push:',
-      %w[permissions deny] => 'Bash\(git push --force:'
+      %w[permissions allow] => 'Bash\(git[ :]',
+      %w[permissions ask] => 'Bash\(git push[ :]',
+      %w[permissions deny] => 'Bash\(git push --force[ :]'
+    }.freeze
+
+    TAUGHT_RULES = {
+      %w[permissions allow] => ['Bash(git *)', 'Bash(git:*)'],
+      %w[permissions ask] => ['Bash(git push *)', 'Bash(git push:*)'],
+      %w[permissions deny] => ['Bash(git push --force *)', 'Bash(git push --force:*)']
     }.freeze
 
     verify do
@@ -27,11 +35,7 @@ module Hero
 
     clean do
       json_remove_from_arrays SETTINGS,
-                              removals: [
-                                [%w[permissions allow], ['Bash(git:*)']],
-                                [%w[permissions ask],   ['Bash(git push:*)']],
-                                [%w[permissions deny],  ['Bash(git push --force:*)']]
-                              ],
+                              removals: TAUGHT_RULES.to_a,
                               cleanup_paths: [%w[permissions allow], %w[permissions ask], %w[permissions deny],
                                               %w[permissions]]
     end

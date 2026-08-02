@@ -39,7 +39,7 @@ module Hero
       return if has_component
 
       raise CheckFailed,
-            'Plugin found but has no component directories (commands/, skills/, agents/, or hooks/)'
+            "Plugin found but has no component directories (#{COMPONENT_DIRS.map { |d| "#{d}/" }.join(', ')})"
     end
 
     def remove_hero_plugins

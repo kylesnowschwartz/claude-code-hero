@@ -149,7 +149,7 @@ Your `settings.json` already has `permissions` from Level 4. The `hooks` key sit
 
 Count the brackets. `UserPromptSubmit` holds an array, that array holds one group, and the group holds its own `hooks` array. Three levels before you reach `type`.
 
-To find the script's path, run: `find / -name "hero-hook.sh" -path "*/claude-code-hero/*" 2>/dev/null`
+You need the path to the copy of `hero-hook.sh` that ships with *this* plugin -- the one you just edited. Verification reads that copy and no other, so if you have more than one clone of the plugin on disk, pointing the hook at the wrong one will leave you casting spells that never fire. Ask Claude for the plugin's location rather than guessing; it knows where it was loaded from.
 
 ### Hint 3
 

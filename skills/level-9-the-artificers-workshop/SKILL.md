@@ -29,7 +29,9 @@ Look at what's on the shelves. You already have:
 
 Every one of those is a plugin component. You just didn't know it yet.
 
-A **plugin** is a directory with a `.claude-plugin/` folder inside it. That folder contains a `plugin.json` manifest -- the declaration of what this plugin is and what it provides. The components live alongside `.claude-plugin/` as top-level directories: `commands/`, `skills/`, `agents/`, `hooks/`, `rules/`.
+A **plugin** is a directory with a `.claude-plugin/` folder inside it. That folder contains a `plugin.json` manifest -- the declaration of what this plugin is and what it provides. The components live alongside `.claude-plugin/` as top-level directories: `commands/`, `skills/`, `agents/`, `rules/`.
+
+Hooks are the exception. They don't get discovered file by file the way commands do -- a plugin declares them in a single `hooks/hooks.json`, holding the same event structure you wrote into `settings.json` back in the Tripwire Cavern, wrapped in a top-level `hooks` key.
 
 Every artifact in this dungeon has carried the hero's mark. Your final creation is no different. The `name` field in your `plugin.json` must contain "hero" -- `hero-toolkit`, `my-hero-plugin`, `hero-utils`, whatever fits. This is how the dungeon knows the artifact is yours.
 

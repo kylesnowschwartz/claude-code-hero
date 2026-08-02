@@ -81,6 +81,17 @@ Two ways to test, and you should try both:
 
 If auto-activation doesn't fire, sharpen the `description`. The description is the trigger -- Claude matches it against the current conversation to decide whether to load the skill.
 
+### Beyond the two required fields
+
+`name` and `description` are the only fields you need, and they're all this quest asks for. But the frontmatter has more, and four of them change what a skill can do:
+
+- **`context: fork`** -- runs the skill in a subagent instead of the current conversation. The work happens, the result comes back, and the intermediate reading never lands in your context. Pair it with `agent` to choose which agent handles the fork.
+- **`paths`** -- glob patterns. The skill only loads when you're working on matching files. A skill scoped to `**/*.sql` stays out of the way until it's relevant.
+- **`allowed-tools`** -- restricts the skill to a specific set of tools while it's active. A read-only research skill has no business calling `Write`.
+- **`model`** -- pins the skill to a specific model regardless of what the session is using.
+
+There's a fifth thing that isn't a field, and it's the one that bites people: skill descriptions share a **visibility budget** of roughly two percent of the context window. Install enough skills and the longest descriptions get dropped from auto-discovery entirely. They still work when invoked directly with `/skill-name` -- they just stop surfacing on their own. A skill that used to trigger and quietly stopped usually didn't break; it got crowded out.
+
 ## Hints
 
 ### Hint 1
@@ -107,6 +118,8 @@ description: "Use when the user asks to draw, map, or visualize a dungeon. Gener
 ### Hint 3
 
 If auto-activation doesn't fire, the `description` might be too vague. Try being more specific about trigger words: "draw", "map", "visualize", "dungeon layout", "cartography."
+
+Two things sharpen a description more than length does. Write it in the third person -- "This skill should be used when the user asks to..." reads as an instruction to Claude, where "Use when..." reads as an instruction to the user. And quote the phrases a person would actually type, rather than describing the topic in the abstract.
 
 ## Verification
 
