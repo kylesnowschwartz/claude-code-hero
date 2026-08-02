@@ -55,6 +55,8 @@ module Hero
     end
 
     def self.transition_music
+      return unless Music.enabled?
+
       script = File.join(__dir__, 'play-music.sh')
       system('pkill', '-f', 'afplay.*assets/audio', err: File::NULL, out: File::NULL)
       system('pkill', '-f', 'play-music.sh', err: File::NULL, out: File::NULL)
@@ -99,17 +101,17 @@ module Hero
     end
 
     def self.cmd_music(args)
-      action = args.shift
-      unless action == 'toggle'
-        warn 'Usage: ruby scripts/cli.rb music toggle'
+      case args.shift
+      when 'toggle' then Music.toggle!
+      when 'on'     then Music.enable!
+      when 'off'    then Music.disable!
+      when 'status' then nil
+      else
+        warn 'Usage: ruby scripts/cli.rb music {toggle|on|off|status}'
         exit 1
       end
 
-      progress = Progress.new
-      current = progress.music?
-      new_state = !current
-      progress.set_music!(new_state)
-      puts JSON.pretty_generate({ music: new_state })
+      puts JSON.pretty_generate({ music: Music.enabled? })
     end
 
     def self.cmd_statusline

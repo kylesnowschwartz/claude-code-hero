@@ -16,12 +16,6 @@ module Hero
 
     def current_level = @data['current_level']
     def completed     = @data['completed']
-    def music?        = @data.fetch('music', true)
-
-    def set_music!(enabled)
-      @data['music'] = enabled
-      save!
-    end
 
     def reconcile!
       highest = backfill_completed
@@ -54,8 +48,11 @@ module Hero
       }
     end
 
+    # Resets quest progress only. Anything else in the file is a preference and
+    # survives, so cleaning a playthrough cannot silently revert a player's
+    # settings.
     def reset!
-      @data = { 'current_level' => 0, 'completed' => {} }
+      @data = @data.merge('current_level' => 0, 'completed' => {})
       save!
     end
 

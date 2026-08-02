@@ -8,8 +8,16 @@
 #
 # Loops until killed. The SessionEnd hook and /music toggle handle cleanup.
 # This script backgrounds itself and exits immediately.
+#
+# Exits without playing when music is off, so no caller needs its own check.
 
 set -euo pipefail
+
+# Every playback path goes through this script, so the preference is checked
+# here rather than at each caller. Path must match Hero::Music.flag_path.
+if [[ -f "$HOME/.claude/claude-code-hero-music-off" || "${HERO_NO_MUSIC:-}" == "1" ]]; then
+  exit 0
+fi
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 AUDIO_DIR="$SCRIPT_DIR/../assets/audio"

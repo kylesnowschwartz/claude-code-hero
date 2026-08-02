@@ -9,7 +9,7 @@
 # regardless of whether figlet is installed on the player's machine.
 #
 # Music: CC0 chiptune tracks, played async via afplay (macOS) or aplay (Linux).
-# Disable with HERO_NO_MUSIC=1.
+# Disable with `ruby scripts/cli.rb music off`, or HERO_NO_MUSIC=1 for one session.
 
 set -euo pipefail
 
@@ -17,15 +17,8 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 BANNER=$(cat "$SCRIPT_DIR/banners/splash.txt")
 
 # --- Background music ---
-PROGRESS_FILE="$SCRIPT_DIR/../.claude/claude-code-hero.json"
-MUSIC_PREF="true"
-if [[ -f "$PROGRESS_FILE" ]] && command -v jq >/dev/null 2>&1; then
-  MUSIC_PREF=$(jq -r 'if has("music") then .music else true end' "$PROGRESS_FILE" 2>/dev/null || echo "true")
-fi
-
-if [[ "${HERO_NO_MUSIC:-}" != "1" && "$MUSIC_PREF" != "false" ]]; then
-  bash "$SCRIPT_DIR/play-music.sh"
-fi
+# play-music.sh checks the preference itself and exits quietly when off.
+bash "$SCRIPT_DIR/play-music.sh"
 
 INSTRUCTION="Display this ASCII art banner at the very start of your response, before any narrative or quest content. Output it inside a code block so it renders with monospace alignment:
 
