@@ -18,6 +18,7 @@ end
 
 require_relative 'hero/music'
 require_relative 'hero/checks'
+require_relative 'hero/mcp_probe'
 require_relative 'hero/level'
 require_relative 'hero/progress'
 

@@ -6,14 +6,13 @@ module Hero
   # Verification and cleanup primitives for level definitions.
   # Included by Hero::Level; methods execute in instance context.
   module Checks
+    # Relative paths are project-root relative, not cwd relative -- the CLI runs
+    # from wherever the player happens to be.
     def expand(path)
-      if path.start_with?('~')
-        path.sub('~', Dir.home)
-      elsif path.start_with?('.claude/')
-        File.join(Hero::PROJECT_ROOT, path)
-      else
-        path
-      end
+      return path.sub('~', Dir.home) if path.start_with?('~')
+      return path if path.start_with?('/')
+
+      File.join(Hero::PROJECT_ROOT, path)
     end
 
     # --- Verification primitives ---
