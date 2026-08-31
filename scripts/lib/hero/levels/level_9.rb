@@ -65,7 +65,7 @@ module Hero
         manifest = File.join(Hero::PROJECT_ROOT, candidate, '.claude-plugin', 'plugin.json')
         next unless File.file?(manifest)
 
-        plugin_dir = File.dirname(manifest, 2)
+        plugin_dir = File.dirname(File.dirname(manifest))
         return [manifest, plugin_dir]
       end
       raise CheckFailed, "No plugin with 'hero' in name found"
