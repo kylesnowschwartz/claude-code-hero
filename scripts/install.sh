@@ -82,8 +82,17 @@ MISSING=()
 
 # Check Ruby
 # https://www.ruby-lang.org/en/documentation/installation/
+# The floor matches scripts/preflight.sh: the quest engine needs Ruby >= 3.0.
+# macOS ships Ruby 2.6 at /usr/bin/ruby, so "ruby exists" is not enough.
+MIN_RUBY_MAJOR=3
 if command -v ruby >/dev/null 2>&1; then
-  ok "ruby $(ruby -e 'puts RUBY_VERSION')"
+  RUBY_VERSION_FOUND=$(ruby -e 'puts RUBY_VERSION')
+  if [[ "${RUBY_VERSION_FOUND%%.*}" -ge "$MIN_RUBY_MAJOR" ]]; then
+    ok "ruby $RUBY_VERSION_FOUND"
+  else
+    fail "ruby $RUBY_VERSION_FOUND is too old (need >= ${MIN_RUBY_MAJOR}.0)"
+    MISSING+=("ruby")
+  fi
 else
   fail "ruby not found"
   MISSING+=("ruby")
